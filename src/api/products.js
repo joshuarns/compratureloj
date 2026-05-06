@@ -98,17 +98,16 @@ export const obtenerMisProductos = async (vendedorId) => {
         auth,
     });
 
-    const ids = wpRespuesta.data.map(p => p.id);
+    const wpData = Array.isArray(wpRespuesta.data) ? wpRespuesta.data : [];
+    const ids    = wpData.map(p => p.id);
     if (ids.length === 0) return [];
 
-    // Paso 2: GET /products?include=<ids>&status=any
-    // status:any para ver todos los estados (draft, pending, publish…)
     const wcRespuesta = await axios.get(`${BASE_URL}/products`, {
         params: { include: ids.join(','), status: 'any', per_page: 100 },
         auth,
     });
 
-    return wcRespuesta.data;
+    return Array.isArray(wcRespuesta.data) ? wcRespuesta.data : [];
 };
 
 // ── crearProducto ─────────────────────────────────────────────────────────────

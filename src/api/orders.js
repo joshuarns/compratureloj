@@ -35,9 +35,9 @@ export const obtenerMisPedidos = async (email) => {
             billing_email: email,
             per_page:      20,
             orderby:       'date',
-            order:         'desc',   // más recientes primero
+            order:         'desc',
         },
         auth,
     });
-    return response.data;
+    return Array.isArray(response.data) ? response.data : [];
 };
