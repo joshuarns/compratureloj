@@ -50,6 +50,15 @@ function EditWatch() {
       try {
         const data = await obtenerProducto(id);
         if (!activo) return;
+
+        // Guardia: si el producto no tiene nombre la respuesta es inválida
+        // (puede ser HTML del captcha de SiteGround en lugar de JSON).
+        // Bloquear el formulario evita guardar valores vacíos y borrar metadatos.
+        if (!data?.name) {
+          setErrorMsg("No se pudo cargar el reloj correctamente. Recarga la página e intenta de nuevo.");
+          return;
+        }
+
         // n() normaliza valores de select (quita acentos, mapea sinónimos)
         // u() elimina unidades de medida al final del valor ("44mm" → "44")
         const n = (key) => normalizarMetaValor(getMeta(data.meta_data, key) || "");
@@ -297,7 +306,7 @@ function EditWatch() {
           <WatchFormFields producto={producto} onChange={handleChange} />
 
           <div className="editActions">
-            <button type="submit" className="btnEnviarReloj" disabled={guardando} style={{ borderRadius: 30 }}>
+            <button type="submit" className="btnEnviarReloj" disabled={guardando || !producto.name} style={{ borderRadius: 30 }}>
               {guardando ? (pasoEnvio || "Guardando...") : "Guardar cambios"}
             </button>
             <Link to="/dashboard" className="editBtnSecondary">
