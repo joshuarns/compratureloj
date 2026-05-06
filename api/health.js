@@ -58,18 +58,27 @@ export default async function handler(req, res) {
     loginTest = { status: upstream.status, body };
   } catch (e) { loginTest = { error: e.message }; }
 
-  // ── Test 5: llamada directa a WordPress /users/me con admin keys ─────────────
+  // ── Test 5: WordPress /users/me con credenciales WP_USER:WP_PASS ────────────
   let wpDirectTest = {};
   try {
-    const wpBase = process.env.WP_BASE_URL
+    const wpBase  = process.env.WP_BASE_URL
       || (process.env.WC_BASE_URL || '').replace('/wc/v3', '/wp/v2');
+    const wpAuth  = Buffer.from(
+      `${process.env.WP_USER || ''}:${process.env.WP_PASS || ''}`
+    ).toString('base64');
     const upstream = await fetch(`${wpBase}/users/me`, {
-      headers: { Authorization: `Basic ${auth}` },
+      headers: { Authorization: `Basic ${wpAuth}` },
     });
     const text = await upstream.text();
     let body;
     try { body = JSON.parse(text); } catch { body = { raw: text.slice(0, 300) }; }
-    wpDirectTest = { status: upstream.status, wpBase, id: body?.id, name: body?.name };
+    wpDirectTest = {
+      status:  upstream.status,
+      wpUser:  process.env.WP_USER ? process.env.WP_USER.slice(0, 3) + '...' : 'NO DEFINIDA',
+      wpPass:  process.env.WP_PASS ? '✓ definida' : 'NO DEFINIDA',
+      id:      body?.id,
+      name:    body?.name,
+    };
   } catch (e) { wpDirectTest = { error: e.message }; }
 
   res.status(200).json({
