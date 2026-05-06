@@ -1,0 +1,180 @@
+/* ─────────────────────────────────────────────────────────
+   POPULARMODELS.CSS
+   Sección de marcas populares con fondo oscuro tipo showroom.
+   Diseño inspirado en portales de relojes premium.
+   ───────────────────────────────────────────────────────── */
+
+/* ── Sección contenedora ── */
+.popularSection {
+  background-color: #111827;   /* Azul muy oscuro, casi negro */
+  padding: 80px 0 88px;
+}
+
+/* ── Encabezado ── */
+.popularHeader {
+  margin-bottom: 48px;
+}
+
+.popularTitle {
+  font-family: "Bai Jamjuree", sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 10px;
+  letter-spacing: -0.01em;
+}
+
+.popularSubtitle {
+  font-family: "Mulish", sans-serif;
+  font-size: 15px;
+  color: #9ca3af;              /* Gris suave sobre fondo oscuro */
+  margin: 0;
+}
+
+/* ── Grid de tarjetas ── */
+/* auto-fill adapta el número de columnas según el espacio disponible */
+.brandGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+/* ── Tarjeta individual ── */
+.brandCard {
+  position: relative;
+  background-color: #1e2a3a;  /* Azul oscuro ligeramente más claro que el fondo */
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: pointer;
+  aspect-ratio: 3 / 4;        /* Proporción vertical como en la referencia */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  outline: none;
+}
+
+/* Efecto al pasar el cursor: la tarjeta sube y brilla */
+.brandCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Imagen del reloj ── */
+.brandCardImg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+}
+
+.brandCardImg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;           /* La imagen cubre toda la tarjeta sin deformarse */
+  object-position: center;
+  transition: transform 0.4s ease;
+}
+
+/* Al hacer hover, la imagen hace un zoom sutil */
+.brandCard:hover .brandCardImg img {
+  transform: scale(1.05);
+}
+
+/* ── Degradado inferior ── */
+/* Gradiente oscuro que hace legible el texto sobre la imagen */
+.brandCard::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 40%,           /* Parte superior: imagen visible */
+    rgba(10, 15, 25, 0.85) 100% /* Parte inferior: oscuro para el texto */
+  );
+  pointer-events: none;        /* No interfiere con los clics */
+  border-radius: 20px;
+}
+
+/* ── Texto en la parte inferior de la tarjeta ── */
+.brandCardInfo {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px 22px 22px;
+  z-index: 2;                  /* Sobre el degradado */
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Nombre de la marca — pequeño y gris */
+.brandCardMarca {
+  font-family: "Mulish", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.65);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Modelos representativos — negrita y blanco */
+.brandCardModelo {
+  font-family: "Bai Jamjuree", sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+/* ── Flecha de "ver más" ── */
+/* Aparece en la esquina superior derecha al hacer hover */
+.brandCardArrow {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 36px;
+  height: 36px;
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(6px);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: #fff;
+  z-index: 2;
+  opacity: 0;                  /* Oculta por defecto */
+  transform: translateY(-4px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+/* La flecha aparece al hacer hover en la tarjeta */
+.brandCard:hover .brandCardArrow {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Responsive ── */
+@media (max-width: 992px) {
+  .brandGrid {
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas en tablet */
+  }
+}
+
+@media (max-width: 576px) {
+  .popularSection {
+    padding: 56px 0 64px;
+  }
+
+  .popularTitle {
+    font-size: 26px;
+  }
+
+  .brandGrid {
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas en móvil */
+    gap: 12px;
+  }
+
+  .brandCardModelo {
+    font-size: 15px;
+  }
+}

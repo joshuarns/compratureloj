@@ -1,0 +1,289 @@
+/* ─────────────────────────────────────────────
+   DASHBOARD.CSS
+   Estilos de la vista privada del vendedor.
+   Se divide en 4 bloques:
+     1. Página y contenido general
+     2. Tabla de relojes (estilo Apple)
+     3. Badges de estado
+     4. Estado vacío
+   ───────────────────────────────────────────── */
+
+
+/* ── 1. PÁGINA Y CONTENIDO GENERAL ─────────────── */
+
+/* Área principal debajo del banner */
+.dashboardContent {
+    padding: 100px 0;
+    background-color: #f5f5f7; /* Fondo gris suave — mismo que el shop y el checkout */
+    min-height: 60vh;
+}
+
+/* Encabezado de la sección "Mis relojes" */
+.dashboardSectionTitle {
+    font-family: "Bai Jamjuree" !important;
+    font-size: 22px;
+    font-weight: 700;
+    color: #1d1d1f;
+    margin-bottom: 4px;
+}
+
+/* Subtítulo con el conteo de relojes */
+.dashboardSectionCount {
+    font-family: "Mulish", sans-serif;
+    font-size: 14px;
+    color: #6e6e73;
+    margin-bottom: 28px;
+}
+
+/* Botón para subir un reloj nuevo — base en App.css (.btnNuevoReloj) */
+.btnNuevoReloj {
+    display: inline-block;
+    padding: 10px 22px;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+
+/* ── 2. TABLA DE RELOJES ────────────────────────── */
+
+/* Tarjeta blanca que envuelve la tabla — base en App.css (.watchTableCard) */
+.watchTableCard {
+    overflow: hidden; /* Evita que el contenido se salga de las esquinas redondeadas */
+}
+
+/* La tabla ocupa todo el ancho de su contenedor */
+.watchTable {
+    width: 100%;
+    border-collapse: collapse; /* Elimina el espacio doble entre celdas */
+}
+
+/* Encabezados de columna — estilo minimalista */
+.watchTable thead th {
+    font-family: "Bai Jamjuree" !important;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;   /* Letras en mayúsculas */
+    letter-spacing: 0.08em;      /* Separación entre letras */
+    color: #6e6e73;
+    padding: 14px 20px;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+    background-color: #fafafa;   /* Fondo levemente gris para diferenciar del body */
+}
+
+/* Celdas de datos */
+.watchTable tbody td {
+    padding: 16px 20px;
+    border-bottom: 1px solid #f5f5f7; /* Línea muy sutil entre filas */
+    vertical-align: middle;           /* Centra el contenido verticalmente */
+}
+
+/* Elimina el borde inferior de la última fila */
+.watchTable tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Efecto hover al pasar el cursor sobre una fila */
+.watchTable tbody tr {
+    transition: background-color 0.15s;
+}
+
+.watchTable tbody tr:hover {
+    background-color: #f5f5f7;
+}
+
+/* ── Celda de imagen ── */
+/* Miniatura cuadrada con esquinas redondeadas */
+.watchThumb {
+    width: 52px;
+    height: 52px;
+    object-fit: cover;       /* Recorta la imagen para que llene el cuadro sin deformarse */
+    border-radius: 10px;
+    background-color: #f5f5f7;
+    flex-shrink: 0;
+}
+
+/* Placeholder cuando no hay imagen */
+.watchThumbPlaceholder {
+    width: 52px;
+    height: 52px;
+    border-radius: 10px;
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+}
+
+/* ── Celda de nombre + marca ── */
+.watchTableName {
+    font-family: "Bai Jamjuree" !important;
+    font-size: 15px;
+    font-weight: 600;
+    color: #1d1d1f;
+    margin: 0 0 2px;
+}
+
+.watchTableMarca {
+    font-family: "Mulish", sans-serif;
+    font-size: 13px;
+    color: #6e6e73;
+    margin: 0;
+}
+
+/* ── Celda de precio ── */
+.watchTablePrice {
+    font-family: "Bai Jamjuree" !important;
+    font-size: 15px;
+    font-weight: 600;
+    color: #1d1d1f;
+    white-space: nowrap; /* Evita que el precio se parta en dos líneas */
+}
+
+/* ── Botón editar ── */
+.btnEditWatch {
+    display: inline-block;
+    padding: 6px 16px;
+    border: 1.5px solid #1c2946;
+    border-radius: 8px;
+    background-color: transparent;
+    color: #1c2946;
+    font-family: "Bai Jamjuree" !important;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s;
+    white-space: nowrap;
+}
+
+.btnEditWatch:hover {
+    background-color: #1c2946;
+    color: #fff;
+}
+
+
+/* ── 3. BADGES DE ESTADO ────────────────────────── */
+
+/* Estilo base compartido por todos los badges */
+.statusBadge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;         /* Forma de píldora */
+    font-family: "Mulish", sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* Cada clase corresponde a un status de WooCommerce */
+.statusBadge.draft   { background-color: #fff3cd; color: #856404; } /* Amarillo — en revisión */
+.statusBadge.pending { background-color: #cfe2ff; color: #084298; } /* Azul — pendiente */
+.statusBadge.publish { background-color: #d1e7dd; color: #0a3622; } /* Verde — en venta */
+.statusBadge.private { background-color: #e2e3e5; color: #41464b; } /* Gris — no publicado */
+
+
+/* ── 4. ESTADO VACÍO ────────────────────────────── */
+
+/* Se muestra cuando el usuario no tiene relojes aún */
+.emptyDashboard {
+    text-align: center;
+    padding: 80px 20px;
+}
+
+.emptyDashboard p {
+    font-family: "Mulish", sans-serif;
+    font-size: 16px;
+    color: #6e6e73;
+    margin-bottom: 24px;
+}
+
+/* Botón para ir a vender el primer reloj */
+.btnSellWatch {
+    display: inline-block;
+    padding: 12px 28px;
+    border: 2px solid #1c2946;
+    background-color: transparent;
+    color: #1c2946;
+    border-radius: 10px;
+    font-family: "Bai Jamjuree" !important;
+    font-weight: 600;
+    font-size: 15px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.btnSellWatch:hover {
+    background-color: #1c2946;
+    color: #fff;
+}
+
+/* Botón cerrar sesión en el banner */
+.btnLogout {
+    border: 2px solid #1c2946;
+    background-color: transparent;
+    color: #1c2946;
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-family: "Bai Jamjuree" !important;
+    font-weight: 500;
+    font-size: 14px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.btnLogout:hover {
+    background-color: #1c2946;
+    color: #fff;
+}
+
+
+/* ── 5. TABS DE NAVEGACIÓN ──────────────────────── */
+
+/* Contenedor de los tabs — barra horizontal con separador inferior */
+.dashboardTabs {
+    display: flex;
+    gap: 4px;
+    border-bottom: 2px solid #e8e8ed;
+    margin-bottom: 28px;
+}
+
+/* Botón individual de tab */
+.dashboardTab {
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    /* El margen negativo hace que el borde del tab tape el borde del contenedor */
+    margin-bottom: -2px;
+    padding: 10px 20px;
+    font-family: "Bai Jamjuree" !important;
+    font-size: 14px;
+    font-weight: 600;
+    color: #6e6e73;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+}
+
+.dashboardTab:hover {
+    color: #1d1d1f;
+}
+
+/* Tab activo — borde inferior oscuro que lo destaca del resto */
+.dashboardTab.active {
+    color: #1c2946;
+    border-bottom-color: #1c2946;
+}
+
+/* Badges extra para estados de pedido */
+.statusBadge.cancelled { background-color: #f8d7da; color: #842029; }
+.statusBadge.refunded  { background-color: #e2e3e5; color: #41464b; }
+
+/* ── RESPONSIVE ─────────────────────────────────── */
+@media (max-width: 768px) {
+    .watchTable .colPrecio { display: none; }
+
+    .watchTable thead th,
+    .watchTable tbody td {
+        padding: 12px 14px;
+    }
+}

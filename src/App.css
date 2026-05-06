@@ -1,38 +1,204 @@
-.App {
-  text-align: center;
+/* ── Tipografía global ── */
+.globalTitle {
+  font-family: "Bai Jamjuree" !important;
+  font-size: 38px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.globalSubTitle {
+  font-family: "Bai Jamjuree" !important;
+  font-size: 32px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.globalSubTitle22 {
+  font-family: "Bai Jamjuree" !important;
+  font-size: 22px;
+  font-weight: 600;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.globalP {
+  font-family: "Mulish", sans-serif;
+  font-size: 16px;
+  color: #000;
+}
+
+.textWelcome {
+  font-family: "Bai Jamjuree";
+  font-weight: 500;
+}
+
+/* ── Banner de sección (usado en Dashboard y MiLista) ── */
+.bannerSingle {
+  background-color: #f5f5f7;
+  padding: 50px 0px 50px 0px;
+}
+
+.bannerSingle h1 {
+  font-family: "Bai Jamjuree" !important;
+  font-size: 34px;
+  font-weight: 700;
+  color: #1d1d1f;
+  margin-bottom: 6px;
+}
+
+.bannerSingle p {
+  font-family: "Mulish", sans-serif;
+  font-size: 15px;
+  color: #6e6e73;
+  margin: 0;
+}
+
+
+/* ── Tarjeta de error de API ──────────────────────────────────────────────────
+   Usada en ListaProductos, DetalleProducto, Dashboard, MiCuenta,
+   FormSellWatch y MiLista cuando una petición a WooCommerce/WordPress falla.
+
+   Estructura:
+     <div className="apiErrorCard">
+       <div className="apiErrorIcon">⚠️</div>
+       <div className="apiErrorBody">
+         <p className="apiErrorTitle">…</p>
+         <p className="apiErrorText">…</p>
+         <button className="apiErrorRetry" onClick={reintentar}>Reintentar</button>
+       </div>
+     </div>
+   ─────────────────────────────────────────────────────────────────────────── */
+.apiErrorCard {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: flex-start;
+  gap: 16px;
+  background: #ffffff;
+  border: 1.5px solid #f5c6c6;
+  border-left: 5px solid #ff3b30;
+  border-radius: 16px;
+  padding: 24px 28px;
+  margin: 24px 0;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
 }
 
-.App-link {
-  color: #61dafb;
+.apiErrorIcon {
+  font-size: 28px;
+  flex-shrink: 0;
+  line-height: 1;
+  margin-top: 2px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
+.apiErrorBody {
+  flex: 1;
+}
+
+.apiErrorTitle {
+  font-family: "Bai Jamjuree", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1d1d1f;
+  margin: 0 0 6px;
+}
+
+.apiErrorText {
+  font-family: "Mulish", sans-serif;
+  font-size: 14px;
+  color: #6e6e73;
+  margin: 0 0 16px;
+  line-height: 1.5;
+}
+
+.apiErrorRetry {
+  display: inline-block;
+  padding: 9px 22px;
+  background: #1c2946;
+  color: #ffffff;
+  border: none;
+  border-radius: 30px;
+  font-family: "Bai Jamjuree", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.15s;
+}
+
+.apiErrorRetry:hover {
+  background: #253761;
+  transform: scale(1.02);
+}
+
+/* ── Botón primario — base compartida ──────────────────────────────────────
+   Todos estos botones comparten fondo #1c2946, texto blanco, Bai Jamjuree y
+   cursor pointer. Cada archivo de componente solo declara lo específico
+   (padding, border-radius, font-size, display, etc.).
+   ─────────────────────────────────────────────────────────────────────────── */
+.btnEnviarReloj,
+.btnConfirmar,
+.btnNuevoReloj,
+.miCuentaBtn,
+.btnVerProducto,
+.miListaEmptyBtn,
+.btnGoShop,
+.btnBackHome {
+  background-color: #1c2946;
+  color: #fff;
+  border: none;
+  font-family: "Bai Jamjuree", sans-serif;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.25s;
+}
+
+.btnEnviarReloj:hover,
+.btnConfirmar:hover,
+.btnNuevoReloj:hover,
+.miCuentaBtn:hover:not(:disabled),
+.btnVerProducto:hover,
+.miListaEmptyBtn:hover,
+.btnGoShop:hover,
+.btnBackHome:hover {
+  background-color: #253761;
+  color: #fff;
+}
+
+/* ── Fondo de página — base compartida ─────────────────────────────────────
+   Fondo gris #f5f5f7, altura mínima de viewport, padding vertical estándar.
+   ─────────────────────────────────────────────────────────────────────────── */
+.sellPage,
+.checkoutPage,
+.shopPage,
+.singlePage,
+.registerPage {
+  background-color: #f5f5f7;
+  min-height: 100vh;
+  padding: 100px 0;
+}
+
+/* ── Card blanca — base compartida ─────────────────────────────────────────
+   Fondo blanco, esquinas redondeadas y sombra sutil.
+   Cada componente añade su propio padding y overrides de border-radius.
+   ─────────────────────────────────────────────────────────────────────────── */
+.checkoutCard,
+.sellCard,
+.miCuentaCard,
+.watchTableCard,
+.specsCard,
+.singleAdvisor,
+.confirmationCard {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+/* ── Animación shimmer — skeleton loaders ───────────────────────────────────
+   Definición única para ListaProductos y DetalleProducto.
+   Dirección: izquierda → derecha (convención estándar).
+   ─────────────────────────────────────────────────────────────────────────── */
+@keyframes shimmer {
+  from { background-position: -200% 0; }
+  to   { background-position:  200% 0; }
+}
+
+/* ── Media queries ── */
+@media (max-width: 576px) {
+  .container,
+  .container-fluid {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
   }
 }

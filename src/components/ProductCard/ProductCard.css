@@ -1,0 +1,147 @@
+/* ── Product Card ── */
+.productCard {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  border: none;
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  text-decoration: none;
+}
+
+.productCard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.10);
+}
+
+.productCardImgWrap {
+  position: relative;
+  overflow: hidden;
+  background-color: #f5f5f7;
+  height: 220px;
+}
+
+.productCardImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.productCard:hover .productCardImg {
+  transform: scale(1.04);
+}
+
+.productCardImgPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 52px;
+  color: #c7c7cc;
+}
+
+/* Badge de marca */
+.productCardBadge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(6px);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-family: "Bai Jamjuree" !important;
+  font-size: 11px;
+  font-weight: 700;
+  color: #1d1d1f;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.productCardBody {
+  padding: 18px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.productCardName {
+  font-family: "Bai Jamjuree" !important;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1d1d1f;
+  line-height: 1.3;
+  margin-bottom: 4px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.productCardMeta {
+  font-family: "Mulish", sans-serif;
+  font-size: 13px;
+  color: #6e6e73;
+  margin-bottom: 12px;
+}
+
+.productCardPrice {
+  font-family: "Bai Jamjuree" !important;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1d1d1f;
+  margin-bottom: 16px;
+  margin-top: auto;
+}
+
+.productCardPrice del {
+  font-size: 14px;
+  color: #aeaeb2;
+  font-weight: 400;
+  margin-left: 6px;
+}
+
+/* ── base en App.css (.btnVerProducto) */
+.btnVerProducto {
+  display: block;
+  width: 100%;
+  padding: 11px 0;
+  border-radius: 10px;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* ── Botón corazón (watchlist) ── */
+.heartBtn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(6px);
+  font-size: 17px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #c0c0c8;
+  transition: color 0.2s, transform 0.18s;
+  z-index: 2;
+}
+
+.heartBtn:hover {
+  transform: scale(1.15);
+  color: #ff3b5c;
+}
+
+.heartBtn.active {
+  color: #ff3b5c;
+}

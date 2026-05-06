@@ -1,0 +1,310 @@
+/* ═══════════════════════════════════════════════════════════
+   CALCULADORAVENTA.CSS
+   Simulador de precio para vendedores no registrados.
+   Diseño: dos columnas dentro de una tarjeta blanca,
+   input con prefijo de moneda, desglose y total destacado.
+   ═══════════════════════════════════════════════════════════ */
+
+
+/* ── Sección contenedora ── */
+/* max-width y margin:auto removidos — el ancho lo controla
+   el col-lg-7 de Bootstrap en SellWatch.jsx */
+.calcSection {
+  margin-bottom: 8px;
+  width: 100%;      /* ocupa todo el ancho del col-lg-7 */
+  display: flex;
+  flex-direction: column;
+}
+
+/* La tarjeta crece para llenar el alto disponible */
+.calcSection .calcCard {
+  flex: 1;
+}
+
+/* ── Encabezado ── */
+.calcHeader {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.calcTitle {
+  font-family: "Bai Jamjuree", sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: #1d1d1f;
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+
+.calcSubtitle {
+  font-family: "Mulish", sans-serif;
+  font-size: 15px;
+  color: #6e6e73;
+  margin: 0;
+}
+
+
+/* ── Tarjeta principal ── */
+/* Dos columnas: input a la izquierda, resultado a la derecha */
+.calcCard {
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.07);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr; /* columna | divisor | columna */
+  overflow: hidden;
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   COLUMNA IZQUIERDA — Input de precio
+   ══════════════════════════════════════════════════════════ */
+
+.calcInputCol {
+  padding: 36px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Etiqueta del campo */
+.calcLabel {
+  font-family: "Bai Jamjuree", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #6e6e73;
+  margin: 0;
+}
+
+/* Input con prefijo "$" */
+.calcInputWrap {
+  display: flex;
+  align-items: stretch;
+  border: 2px solid #e0e0e0;
+  border-radius: 14px;
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Cambia borde al enfocar el input */
+.calcInputWrap:focus-within {
+  border-color: #1c2946;
+  box-shadow: 0 0 0 4px rgba(28, 41, 70, 0.08);
+}
+
+/* Símbolo de moneda */
+.calcCurrency {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  background: #f5f5f7;
+  font-family: "Bai Jamjuree", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1d1d1f;
+  border-right: 2px solid #e0e0e0;
+}
+
+/* Campo numérico */
+.calcInput {
+  flex: 1;
+  padding: 16px 16px;
+  border: none;
+  outline: none;
+  font-family: "Bai Jamjuree", sans-serif;
+  font-size: 28px;          /* Número grande para que se vea prominente */
+  font-weight: 700;
+  color: #1d1d1f;
+  background: #fff;
+  width: 0;                 /* Permite que flex: 1 tome el control del ancho */
+  /* Ocultamos las flechas nativas del input type=number */
+  -moz-appearance: textfield;
+}
+
+.calcInput::-webkit-outer-spin-button,
+.calcInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.calcInput::placeholder {
+  color: #d0d0d5;
+}
+
+/* Texto de rango orientativo */
+.calcRange {
+  font-family: "Mulish", sans-serif;
+  font-size: 12px;
+  color: #b0b0b5;
+  margin: 0;
+}
+
+/* ── Barra de progreso ── */
+/* Llena de izquierda a derecha según el monto ingresado */
+.calcBar {
+  height: 4px;
+  background: #f0f0f5;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.calcBarFill {
+  height: 100%;
+  background: linear-gradient(90deg, #1c2946, #dbbd86); /* Azul → Dorado */
+  border-radius: 4px;
+  transition: width 0.3s ease;                          /* Animación suave */
+}
+
+
+/* ── Divisor vertical ── */
+.calcDivider {
+  width: 1px;
+  background: #f0f0f5;
+  margin: 24px 0;
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   COLUMNA DERECHA — Resumen y total
+   ══════════════════════════════════════════════════════════ */
+
+.calcResultCol {
+  padding: 36px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Etiqueta "Resumen" */
+.calcResultLabel {
+  font-family: "Bai Jamjuree", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #6e6e73;
+  margin: 0 0 20px;
+}
+
+/* ── Desglose de filas ── */
+.calcBreakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Fila: etiqueta + valor */
+.calcRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f5;
+  gap: 12px;
+}
+
+.calcRowLabel {
+  font-family: "Mulish", sans-serif;
+  font-size: 14px;
+  color: #6e6e73;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.calcRowValue {
+  font-family: "Bai Jamjuree", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1d1d1f;
+}
+
+/* El valor de la comisión va en rojo suave */
+.calcRowNegative {
+  color: #c0392b;
+}
+
+/* Badge porcentaje de comisión: "15%" */
+.calcComisionBadge {
+  display: inline-block;
+  font-family: "Bai Jamjuree", sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  background: #fff0e8;
+  color: #c0392b;
+  border-radius: 20px;
+  padding: 2px 8px;
+  letter-spacing: 0.04em;
+}
+
+/* Separador antes del total */
+.calcResultDivider {
+  border: none;
+  border-top: 2px solid #f0f0f5;
+  margin: 16px 0;
+}
+
+/* ── Fila del total ── */
+.calcTotal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.calcTotalLabel {
+  font-family: "Bai Jamjuree", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1d1d1f;
+}
+
+/* Valor del total — se vuelve verde cuando hay un número válido */
+.calcTotalValue {
+  font-family: "Bai Jamjuree", sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: #b0b0b5;           /* Gris por defecto (sin input) */
+  transition: color 0.3s ease;
+  letter-spacing: -0.02em;
+}
+
+/* Color verde cuando el monto es mayor que 0 */
+.calcTotalActive {
+  color: #1a7a40;
+}
+
+/* Nota de pie pequeña */
+.calcNote {
+  font-family: "Mulish", sans-serif;
+  font-size: 12px;
+  color: #b0b0b5;
+  line-height: 1.5;
+  margin: 0;
+}
+
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  /* En móvil, las columnas se apilan verticalmente */
+  .calcCard {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+  }
+
+  /* El divisor pasa de vertical a horizontal */
+  .calcDivider {
+    width: auto;
+    height: 1px;
+    margin: 0 24px;
+  }
+
+  .calcInput {
+    font-size: 22px;
+  }
+
+  .calcTotalValue {
+    font-size: 22px;
+  }
+}

@@ -1,0 +1,40 @@
+/* ── Página Mi Lista (favoritos) ── */
+.miListaContent {
+  background-color: #f5f5f7;
+  min-height: 60vh;
+  padding: 60px 0 100px;
+}
+
+.miListaEmpty {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.miListaEmptyIcon {
+  font-size: 56px;
+  margin-bottom: 20px;
+  line-height: 1;
+}
+
+.miListaEmptyTitle {
+  font-family: "Bai Jamjuree" !important;
+  font-size: 22px;
+  font-weight: 700;
+  color: #1d1d1f;
+  margin-bottom: 8px;
+}
+
+.miListaEmptyText {
+  font-family: "Mulish", sans-serif;
+  font-size: 15px;
+  color: #6e6e73;
+  margin-bottom: 28px;
+}
+
+/* ── base en App.css (.miListaEmptyBtn) */
+.miListaEmptyBtn {
+  display: inline-block;
+  padding: 12px 28px;
+  border-radius: 10px;
+  font-size: 15px;
+}

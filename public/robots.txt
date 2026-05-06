@@ -1,3 +1,18 @@
-# https://www.robotstxt.org/robotstxt.html
+# ─────────────────────────────────────────────────────────────
+# ROBOTS.TXT — compratureloj.com.mx
+#
+# Permite que todos los crawlers indexen las páginas públicas.
+# Bloquea rutas privadas que no deben aparecer en buscadores.
+# ─────────────────────────────────────────────────────────────
+
 User-agent: *
-Disallow:
+Allow: /
+
+# Rutas privadas — no tienen valor SEO y contienen datos del usuario
+Disallow: /dashboard
+Disallow: /editar-reloj/
+Disallow: /checkout
+Disallow: /product-review
+
+# Ubicación del sitemap para que los crawlers lo encuentren automáticamente
+Sitemap: https://compratureloj.com.mx/sitemap.xml

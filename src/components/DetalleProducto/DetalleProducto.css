@@ -1,0 +1,543 @@
+/* ═══════════════════════════════════════════════════════════
+   PRODUCTDETAIL.CSS
+   Estilos de la página de producto único (single product).
+   Sistema de diseño: fondo #f5f5f7, tarjetas blancas,
+   tipografía Bai Jamjuree + Mulish, botones tipo píldora.
+   ═══════════════════════════════════════════════════════════ */
+
+
+/* ── Página ── base en App.css (.singlePage) */
+
+
+/* ══════════════════════════════════════════════════════════
+   SECCIÓN SUPERIOR: Imagen + Info
+   ══════════════════════════════════════════════════════════ */
+
+/* ── Enlace de regreso ── */
+.singleBreadcrumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: "Mulish", sans-serif;
+  font-size: 14px;
+  color: #6e6e73;
+  text-decoration: none;
+  margin-bottom: 28px;
+  transition: color 0.2s;
+}
+
+.singleBreadcrumb:hover {
+  color: #1c2946;
+}
+
+/* ── Tarjeta de imagen ── */
+/* Fondo blanco para que la imagen resalte sobre el fondo gris de la página */
+.singleImageCard {
+  background: #ffffff;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.07);
+}
+
+/* Imagen principal de la galería */
+.singleImage {
+  width: 100%;
+  height: 520px;
+  object-fit: cover;
+  display: block;
+  transition: opacity 0.2s ease; /* fade suave al cambiar de imagen */
+}
+
+/* ── Galería de thumbnails ── */
+/* Fila de miniaturas debajo de la imagen principal */
+.singleGalleryThumbs {
+  display: flex;
+  gap: 10px;
+  padding: 12px 16px;
+  overflow-x: auto;       /* scroll horizontal si hay muchas fotos */
+  scrollbar-width: none;  /* oculta la barra de scroll en Firefox */
+}
+
+.singleGalleryThumbs::-webkit-scrollbar {
+  display: none; /* oculta la barra de scroll en Chrome/Safari */
+}
+
+/* Cada botón-thumbnail */
+.singleGalleryThumb {
+  flex-shrink: 0;
+  width: 72px;
+  height: 72px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  transition: border-color 0.2s, opacity 0.2s;
+  opacity: 0.6;
+}
+
+.singleGalleryThumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Thumbnail activo — borde oscuro y opacidad completa */
+.singleGalleryThumb.active {
+  border-color: #1c2946;
+  opacity: 1;
+}
+
+.singleGalleryThumb:hover {
+  opacity: 1;
+}
+
+/* ── Panel de información (columna derecha) ── */
+.singleInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Badge de marca: "ROLEX", "OMEGA", etc. */
+.singleBrandBadge {
+  display: inline-block;
+  font-family: "Bai Jamjuree", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #6e6e73;
+  background: #e8e8ed;
+  border-radius: 20px;
+  padding: 5px 14px;
+  margin-bottom: 16px;
+}
+
+/* Nombre del producto */
+.singleTitle {
+  font-family: "Bai Jamjuree", sans-serif;
+  font-size: 34px;
+  font-weight: 700;
+  color: #1d1d1f;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+}
+
+/* Descripción en texto corrido */
+.singleDescription {
+  font-family: "Mulish", sans-serif;
+  font-size: 15px;
+  color: #6e6e73;
+  line-height: 1.7;
+  margin-bottom: 0px;
+}
+
+/* Separador fino */
+.singleDivider {
+  border: none;
+  border-top: 1px solid #000;
+  margin: 20px 0;
+}
+
+/* Precio — grande y prominente */
+.singlePrice {
+  font-family: "Bai Jamjuree", sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: #1d1d1f;
+  margin-bottom: 28px;
+  letter-spacing: -0.01em;
+}
+
+/* El price_html de WooCommerce incluye etiquetas <span> con la moneda */
+.singlePrice del {
+  font-size: 22px;
+  color: #b0b0b5;
+  font-weight: 400;
+  margin-right: 10px;
+}
+
+/* ── Botón principal: Comprar ahora ── */
+/* Píldora oscura al estilo Apple */
+.singleBtnCart {
+  width: 100%;
+  padding: 16px;
+  background-color: #1c2946;
+  color: #ffffff;
+  border: none;
+  border-radius: 30px;          /* Forma de píldora */
+  font-family: "Bai Jamjuree", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: background-color 0.25s, transform 0.15s;
+  margin-bottom: 12px;
+}
+
+.singleBtnCart:hover {
+  background-color: #253761;
+  transform: scale(1.01);
+}
+
+/* Estado cuando el producto ya está en el carrito — píldora dorada */
+.singleBtnCart.inCart {
+  background-color: #dbbd86;
+  cursor: default;              /* No hay acción adicional al hacer clic */
+}
+
+.singleBtnCart.inCart:hover {
+  background-color: #dbbd86;
+  transform: none;
+}
+
+/* ── Botón secundario: "Haz una oferta" ── */
+/* Mismo ancho que el botón de compra, pero estilo fantasma */
+.singleBtnOferta {
+  width: 100%;
+  padding: 15px;
+  background-color: transparent;
+  color: #1c2946;
+  border: 1.5px solid #d0d0d5;
+  border-radius: 30px;
+  font-family: "Bai Jamjuree", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s, transform 0.15s;
+  margin-bottom: 16px;
+}
+
+.singleBtnOferta:hover {
+  border-color: #1c2946;
+  background-color: #f5f5f7;
+  transform: scale(1.01);
+}
+
+/* Fila que agrupa "Haz una oferta" y el botón de favoritos */
+.singleActionsRow {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+  margin-bottom: 16px;
+}
+
+/* Cuando hay oferta: ocupa el espacio disponible */
+.singleActionsRow .singleBtnOferta {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+/* Botón de guardar en favoritos en la página de detalle */
+.singleBtnWatchlist {
+  flex-shrink: 0;
+  padding: 12px 18px;
+  background: transparent;
+  border: 1.5px solid #d0d0d5;
+  border-radius: 30px;
+  font-family: "Bai Jamjuree", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #6e6e73;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  white-space: nowrap;
+}
+
+.singleBtnWatchlist:hover {
+  border-color: #ff3b5c;
+  color: #ff3b5c;
+}
+
+.singleBtnWatchlist.active {
+  border-color: #ff3b5c;
+  color: #ff3b5c;
+  background: #fff5f7;
+}
+
+/* ── Pills de características rápidas ── */
+/* Tres datos clave debajo del botón: estado, movimiento, caja */
+.singleFeatures {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.singleFeaturePill {
+  font-family: "Mulish", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #1d1d1f;
+  background: #ffffff;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 20px;
+  padding: 6px 14px;
+}
+
+/* ── Tarjeta de asesor ── base en App.css (.singleAdvisor) */
+.singleAdvisor {
+  border-radius: 18px; /* override: base usa 16px */
+  padding: 22px 24px;
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.singleAdvisorTop {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Foto del asesor en círculo */
+.singleAdvisorImg {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.singleAdvisorText h4 {
+  font-family: "Bai Jamjuree", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1d1d1f;
+  margin: 0 0 4px;
+}
+
+.singleAdvisorText p {
+  font-family: "Mulish", sans-serif;
+  font-size: 13px;
+  color: #6e6e73;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Punto verde de disponibilidad */
+.singleAdvisorOnline {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: "Mulish", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #34c759;
+  margin-top: 4px;
+}
+
+.singleAdvisorOnline::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  background-color: #34c759;
+  border-radius: 50%;
+}
+
+/* Botón de WhatsApp — verde */
+.singleBtnWhatsApp {
+  display: block;
+  width: 100%;
+  padding: 13px;
+  background-color: #25d366;
+  color: #ffffff;
+  border-radius: 30px;
+  font-family: "Bai Jamjuree", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 0.2s, transform 0.15s;
+}
+
+.singleBtnWhatsApp:hover {
+  background-color: #1fb955;
+  color: #ffffff;
+  transform: scale(1.01);
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   SECCIÓN INFERIOR: Especificaciones técnicas
+   ══════════════════════════════════════════════════════════ */
+
+.specsSection {
+  margin-top: 64px;
+}
+
+/* Título de sección */
+.specsTitle {
+  font-family: "Bai Jamjuree", sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #1d1d1f;
+  margin-bottom: 32px;
+  letter-spacing: -0.01em;
+}
+
+/* Grid de 2 columnas para los grupos de specs */
+.specsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+/* Tarjeta de un grupo de specs — base en App.css (.specsCard) */
+.specsCard {
+  border-radius: 18px; /* override: base usa 16px */
+  padding: 28px 28px 8px;
+}
+
+/* Nombre del grupo dentro de la tarjeta */
+.specsCardTitle {
+  font-family: "Bai Jamjuree", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #6e6e73;
+  margin-bottom: 16px;
+}
+
+/* Fila individual: etiqueta + valor */
+.specsRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f5; /* Línea divisoria suave */
+  gap: 12px;
+}
+
+/* Última fila sin línea inferior */
+.specsRow:last-child {
+  border-bottom: none;
+}
+
+/* Nombre del campo (izquierda) */
+.specsLabel {
+  font-family: "Mulish", sans-serif;
+  font-size: 13px;
+  color: #6e6e73;
+  flex-shrink: 0;
+}
+
+/* Valor del campo (derecha) */
+.specsValue {
+  font-family: "Bai Jamjuree", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1d1d1f;
+  text-align: right;
+  text-transform: capitalize; /* "automatico" → "Automatico" */
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   SKELETON LOADER — Single Product
+   Imita el layout real mientras la API responde.
+   El efecto "shimmer" usa un gradiente animado de lado a lado.
+   ══════════════════════════════════════════════════════════ */
+
+.skeletonProduct {
+  background-color: #f5f5f7;
+  min-height: 100vh;
+  padding: 48px 0 80px;
+}
+
+/* Bloque base con color gris */
+.skeletonBlock {
+  background: #e8e8ed;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Gradiente animado que simula una luz pasando por encima */
+.skeletonBlock::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.55) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* @keyframes shimmer — definido en App.css */
+
+/* Placeholder de la imagen del producto */
+.skeletonImg {
+  width: 100%;
+  height: 560px;
+  border-radius: 24px;
+}
+
+/* Línea de texto genérica */
+.skeletonLine {
+  height: 18px;
+  border-radius: 8px;
+  margin-bottom: 14px;
+}
+
+/* Bloque de precio más grande */
+.skeletonPrice {
+  height: 40px;
+  width: 55%;
+  border-radius: 8px;
+  margin: 24px 0 32px;
+}
+
+/* Botón placeholder */
+.skeletonBtn {
+  height: 52px;
+  width: 100%;
+  border-radius: 30px;
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════════════════════ */
+
+@media (max-width: 992px) {
+  .singleImageCard {
+    margin-bottom: 32px;
+  }
+
+  .singleImage {
+    height: 420px;
+  }
+}
+
+@media (max-width: 768px) {
+  .specsGrid {
+    grid-template-columns: 1fr; /* Una columna en móvil */
+  }
+
+  .singleTitle {
+    font-size: 28px;
+  }
+
+  .singlePrice {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 576px) {
+  .singlePage {
+    padding: 60px 0 100px;
+  }
+
+  .singleImage {
+    height: 300px;
+  }
+}

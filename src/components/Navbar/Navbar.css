@@ -1,0 +1,373 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   NavbarV2.css — Navbar estilo Apple
+
+   Principios de diseño aplicados:
+   · Frosted glass: fondo semi-transparente + backdrop-filter blur para que
+     el contenido que queda debajo "se vea a través" de la barra.
+   · Sticky (no fixed): se desplaza con la página hasta llegar al top y
+     ahí se fija, sin cubrir la franja de bienvenida desde el inicio.
+   · Altura compacta (52 px): no roba espacio visual al contenido.
+   · Sin colores de fondo sólidos en los links: solo hover con fondo suave
+     para que la barra no compita visualmente con el contenido debajo.
+   · Mobile-first hamburger: animación CSS pura (☰ → ✕) sin JS extra.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+
+/* ── Barra principal ─────────────────────────────────────────────────────── */
+
+.navBar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  height: 52px;
+
+  /* Frosted glass: el fondo semitransparente permite ver el contenido
+     scrollado por debajo; backdrop-filter añade el desenfoque. */
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* Fila horizontal que contiene logo + links + acciones.
+   Breakpoints idénticos a Bootstrap Container para que el contenido
+   del navbar quede alineado con el resto de las páginas. */
+.navBar__inner {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 12px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+@media (min-width: 576px)  { .navBar__inner { max-width: 540px;  } }
+@media (min-width: 768px)  { .navBar__inner { max-width: 720px;  } }
+@media (min-width: 992px)  { .navBar__inner { max-width: 960px;  } }
+@media (min-width: 1200px) { .navBar__inner { max-width: 1140px; } }
+@media (min-width: 1400px) { .navBar__inner { max-width: 1320px; } }
+
+
+/* ── Logo ────────────────────────────────────────────────────────────────── */
+
+.navBar__logo {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  margin-right: 32px;
+  text-decoration: none;
+}
+
+.navBar__logo img {
+  height: 34px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+
+/* ── Links principales (desktop) ─────────────────────────────────────────── */
+
+.navBar__links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex: 1; /* ocupa todo el espacio entre logo y acciones */
+}
+
+/* Estilo base de cada link */
+.navBar__link {
+  font-family: "Bai Jamjuree", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1d1d1f;
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: background-color 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.navBar__link:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #1d1d1f;
+}
+
+/* Ruta activa: acento dorado del brand */
+.navBar__link--active {
+  color: #c4a03b !important;
+  font-weight: 600;
+}
+
+
+/* ── Acciones del lado derecho (desktop) ─────────────────────────────────── */
+
+.navBar__actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+/* Botones de icono: ♡ favoritos y 🛍 carrito */
+.navBar__iconBtn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  font-size: 17px;
+  line-height: 1;
+  color: #1d1d1f;
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: background-color 0.15s;
+}
+
+.navBar__iconBtn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #1d1d1f;
+}
+
+.navBar__iconBtn--active {
+  color: #c4a03b !important;
+}
+
+/* Badge del contador de favoritos */
+.navBar__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  background: #ff3b5c;
+  color: #fff;
+  border-radius: 20px;
+  font-family: "Mulish", sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  margin-left: 3px;
+  line-height: 1;
+}
+
+/* "Mi cuenta" como link de texto cuando hay sesión */
+.navBar__actions .navBar__link {
+  font-size: 13px;
+  color: #444;
+}
+
+/* "Salir" — no necesita un estilo prominente */
+.navBar__logout {
+  font-family: "Bai Jamjuree", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #6e6e73;
+  background: none;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.navBar__logout:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #1d1d1f;
+}
+
+/* CTA "Iniciar sesión" — píldora oscura para que destaque */
+.navBar__cta {
+  display: inline-block;
+  padding: 7px 18px;
+  background: #1c2946;
+  color: #fff !important;
+  border-radius: 20px;
+  font-family: "Bai Jamjuree", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+  margin-left: 6px;
+}
+
+.navBar__cta:hover {
+  background: #253761;
+}
+
+
+/* ── Botón hamburger (solo visible en móvil) ─────────────────────────────── */
+
+.navBar__hamburger {
+  display: none; /* se activa en el media query de abajo */
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  margin-left: auto;
+  transition: background-color 0.15s;
+}
+
+.navBar__hamburger:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Cada línea del icono hamburger */
+.navBar__hamLine {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #1d1d1f;
+  border-radius: 2px;
+  /* transform-origin: center facilita la animación de giro */
+  transform-origin: center;
+  transition: transform 0.25s ease, opacity 0.2s ease;
+}
+
+/* Cuando el menú está abierto: las 3 líneas forman una X */
+.navBar--open .navBar__hamLine:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.navBar--open .navBar__hamLine:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+.navBar--open .navBar__hamLine:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+
+/* ── Menú móvil (panel deslizante) ───────────────────────────────────────── */
+
+/* position: absolute relativo al navbar (que tiene position: sticky).
+   Se muestra solo en mobile (display: none en desktop, flex en mobile).
+   La animación usa transform + opacity para evitar layout recalculations. */
+.navBar__mobile {
+  display: none; /* oculto en desktop */
+}
+
+/* Link en el menú móvil */
+.navBar__mobileLink {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Bai Jamjuree", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #1d1d1f;
+  text-decoration: none;
+  padding: 13px 24px;
+  transition: background-color 0.15s;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.navBar__mobileLink:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.navBar__mobileLink--active {
+  color: #c4a03b;
+  font-weight: 600;
+}
+
+.navBar__mobileDivider {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.07);
+  margin: 6px 24px;
+}
+
+.navBar__mobileLogout {
+  color: #6e6e73;
+}
+
+/* CTA en móvil: bloque ancho con fondo oscuro */
+.navBar__mobileCta {
+  display: block;
+  margin: 12px 20px 4px;
+  padding: 13px;
+  background: #1c2946;
+  color: #fff !important;
+  border-radius: 12px;
+  font-family: "Bai Jamjuree", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  transition: background-color 0.2s;
+}
+
+.navBar__mobileCta:hover {
+  background: #253761;
+}
+
+/* Overlay oscuro detrás del menú (cierra el panel al hacer click fuera) */
+.navBar__overlay {
+  position: fixed;
+  inset: 0;
+  top: 52px;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: 999;
+  /* El cursor pointer sugiere que se puede hacer click para cerrar */
+  cursor: pointer;
+}
+
+
+/* ── Responsive: breakpoint móvil ───────────────────────────────────────── */
+
+@media (max-width: 992px) {
+  /* Ocultar links y acciones del desktop */
+  .navBar__links,
+  .navBar__actions {
+    display: none;
+  }
+
+  /* Mostrar hamburger */
+  .navBar__hamburger {
+    display: flex;
+  }
+
+  /* El logo empuja al hamburger hasta la derecha */
+  .navBar__logo {
+    margin-right: auto;
+  }
+
+  /* Menú móvil visible en este breakpoint */
+  .navBar__mobile {
+    position: absolute;
+    top: 52px;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.97);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    padding: 8px 0 20px;
+    z-index: 1000;
+
+    /* Estado inicial: invisible y ligeramente desplazado hacia arriba */
+    transform: translateY(-6px);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  /* Estado abierto: visible y en posición correcta */
+  .navBar--open .navBar__mobile {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+}

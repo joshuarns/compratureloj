@@ -1,0 +1,248 @@
+/* ═══════════════════════════════════════════════════════════
+   EDITWATCH.CSS
+   Estilos exclusivos de la pantalla de edición de reloj.
+   El formulario en sí (inputs, cards, labels) se hereda
+   de FormWatch.css. Aquí solo viven los elementos únicos
+   de esta pantalla: breadcrumb, imagen, éxito, skeleton.
+   ═══════════════════════════════════════════════════════════ */
+
+
+/* Contador "2/5" junto al título de la sección de galería */
+.sellGaleriaContador {
+  font-family: "Mulish", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #b0b0b5;
+  margin-left: 6px;
+}
+
+
+/* ── Migas de pan ── */
+/* "Mi dashboard → Editar reloj" en la parte superior */
+.editBreadcrumb {
+  font-family: "Mulish", sans-serif;
+  font-size: 13px;
+  color: #6e6e73;
+  margin-bottom: 10px;
+}
+
+/* El enlace dentro del breadcrumb */
+.editBreadcrumb a {
+  color: #1c2946;
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.editBreadcrumb a:hover {
+  opacity: 0.75;
+}
+
+
+/* ── Banner de error global ── */
+/* Aparece encima del formulario si la API falla */
+.editErrorBanner {
+  background-color: #fff0f0;
+  border: 1.5px solid #f5c6c6;
+  border-radius: 12px;
+  padding: 14px 20px;
+  font-family: "Mulish", sans-serif;
+  font-size: 14px;
+  color: #c0392b;
+  margin-bottom: 20px;
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   SECCIÓN DE IMAGEN
+   Muestra la foto actual del reloj y permite cambiarla.
+   ══════════════════════════════════════════════════════════ */
+
+/* Contenedor de la imagen — posición relativa para el badge */
+.editImageWrap {
+  position: relative;
+  display: inline-block;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+/* Imagen actual o preview de la nueva imagen */
+.editImagePreview {
+  display: block;
+  width: 280px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 16px;
+  border: 1.5px solid #e0e0e0;
+}
+
+/* Placeholder cuando no hay imagen guardada */
+.editImagePlaceholder {
+  width: 280px;
+  height: 200px;
+  border-radius: 16px;
+  border: 2px dashed #d0d0d5;    /* Borde punteado estilo "subir archivo" */
+  background: #f5f5f7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.editImagePlaceholder span {
+  font-size: 32px;
+}
+
+.editImagePlaceholder p {
+  font-family: "Mulish", sans-serif;
+  font-size: 13px;
+  color: #b0b0b5;
+  margin: 0;
+}
+
+/* Badge que aparece cuando el usuario elige una nueva imagen */
+/* Glassmorphism: fondo semitransparente con blur */
+.editImageBadge {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: rgba(28, 41, 70, 0.85);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  font-family: "Mulish", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.02em;
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   BOTONES DE ACCIÓN (Guardar / Cancelar)
+   ══════════════════════════════════════════════════════════ */
+
+/* Contenedor: Guardar arriba, Cancelar debajo */
+.editActions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+/* Botón secundario: "Cancelar" → vuelve al dashboard */
+/* Mismo tamaño que el primario pero fondo transparente */
+.editBtnSecondary {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  background: transparent;
+  color: #6e6e73;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 30px;           /* Misma píldora que el botón primario */
+  font-family: "Bai Jamjuree", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.editBtnSecondary:hover {
+  border-color: #1c2946;
+  color: #1c2946;
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   PANTALLA DE ÉXITO
+   Reemplaza al formulario después de guardar exitosamente.
+   ══════════════════════════════════════════════════════════ */
+
+/* Tarjeta central con el mensaje de confirmación */
+.editSuccessCard {
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.07);
+  padding: 64px 48px;
+  max-width: 520px;
+  margin: 40px auto;
+  text-align: center;
+}
+
+/* Círculo verde con el ✓ */
+.editSuccessIcon {
+  width: 72px;
+  height: 72px;
+  background-color: #d1f2e0;    /* Verde pastel */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  color: #1a7a40;
+  margin: 0 auto 28px;
+}
+
+.editSuccessTitle {
+  font-family: "Bai Jamjuree", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #1d1d1f;
+  margin-bottom: 12px;
+}
+
+.editSuccessText {
+  font-family: "Mulish", sans-serif;
+  font-size: 15px;
+  color: #6e6e73;
+  line-height: 1.7;
+  margin-bottom: 36px;
+}
+
+/* Los dos botones de la pantalla de éxito */
+.editSuccessActions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   SKELETON LOADER
+   Bloques animados que se muestran mientras carga la API.
+   El shimmer es un gradiente que pasa de izquierda a derecha.
+   ══════════════════════════════════════════════════════════ */
+
+.editSkeletonBlock {
+  background: #e8e8ed;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Destello blanco que recorre el bloque en loop */
+.editSkeletonBlock::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: editShimmer 1.5s infinite;
+}
+
+@keyframes editShimmer {
+  from { background-position: -200% 0; }
+  to   { background-position:  200% 0; }
+}
+
+/* Espacio entre el encabezado skeleton y las tarjetas */
+.editSkeletonHeader {
+  margin-bottom: 32px;
+}

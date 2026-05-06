@@ -1,0 +1,148 @@
+.footer {
+  background-color: #1d2946;
+  padding: 64px 0 0;
+  margin-top: auto;
+
+}
+
+/* ── Columnas ── */
+.footerBrand p {
+  font-family: "Mulish", sans-serif;
+  font-size: 14px;
+  color: #FFFFFF;
+  margin-top: 16px;
+  line-height: 1.6;
+  max-width: 220px;
+}
+
+.footerLogo {
+  width: 180px;
+  filter: brightness(0) invert(1); /* convierte el logo a blanco */
+  opacity: 0.9;
+}
+
+.footerColTitle {
+  font-family: "Bai Jamjuree" !important;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.footerLinks {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footerLinks li {
+  margin-bottom: 12px;
+}
+
+.footerLinks a {
+  font-family: "Mulish", sans-serif;
+  font-size: 14px;
+  color: #FFFFFF;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footerLinks a:hover {
+  color: #dbbd86;
+}
+
+/* ── Datos de contacto ── */
+.footerContact {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footerContact li {
+  font-family: "Mulish", sans-serif;
+  font-size: 14px;
+  color: #FFFFFF;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.footerContact a {
+  color: #FFFFFF;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footerContact a:hover {
+  color: #dbbd86;
+}
+
+/* ── Separador y copyright ── */
+.footerBottom {
+  border-top: 1px solid #ddd;
+  margin-top: 48px;
+  padding: 20px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footerCopy {
+  font-family: "Mulish", sans-serif;
+  font-size: 13px;
+  color: #FFFFFF;
+  margin: 0;
+}
+
+.footerLegal {
+  display: flex;
+  gap: 24px;
+}
+
+.footerLegal a {
+  font-family: "Mulish", sans-serif;
+  font-size: 13px;
+  color: #FFFFFF;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footerLegal a:hover {
+  color: #dbbd86;
+}
+
+/* ── Badge dorado ── */
+.footerBadge {
+  display: inline-block;
+  background-color: #dbbd86;
+  color: #1a1a1a;
+  font-family: "Bai Jamjuree" !important;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 48px 0 0;
+  }
+
+  .footerBottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .footerLogo {
+    width: 140px;
+  }
+}
