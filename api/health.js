@@ -32,7 +32,8 @@ export default async function handler(req, res) {
   try {
     const host      = req.headers.host;
     const protocol  = host.includes('localhost') ? 'http' : 'https';
-    const proxyUrl  = `${protocol}://${host}/api/wc/products?per_page=12&page=1&status=publish`;
+    // Nuevo endpoint: /api/wc?_path=products&... (api/wc.js en raíz)
+    const proxyUrl  = `${protocol}://${host}/api/wc?_path=products&per_page=12&page=1&status=publish`;
     const upstream  = await fetch(proxyUrl);
     const text      = await upstream.text();
     let body;
