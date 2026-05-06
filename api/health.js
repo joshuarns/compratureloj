@@ -81,6 +81,24 @@ export default async function handler(req, res) {
     };
   } catch (e) { wpDirectTest = { error: e.message }; }
 
+  // ── Test 6: meta_data del primer producto publicado ─────────────────────────
+  let metaTest = {};
+  try {
+    const url      = `${baseUrl}/products?per_page=1&status=publish`;
+    const upstream = await fetch(url, { headers: { Authorization: `Basic ${auth}` } });
+    const products = await upstream.json();
+    if (Array.isArray(products) && products.length > 0) {
+      const p = products[0];
+      metaTest = {
+        id:        p.id,
+        name:      p.name,
+        meta_data: (p.meta_data || []).filter(m => !m.key.startsWith('_')), // solo keys públicas
+      };
+    } else {
+      metaTest = { error: 'No hay productos publicados' };
+    }
+  } catch (e) { metaTest = { error: e.message }; }
+
   res.status(200).json({
     wcBaseUrl:   baseUrl || 'NO DEFINIDA',
     wpBaseUrl:   process.env.WP_BASE_URL || '(derivada de WC_BASE_URL)',
@@ -90,5 +108,6 @@ export default async function handler(req, res) {
     proxyTest,
     loginTest,
     wpDirectTest,
+    metaTest,
   });
 }
