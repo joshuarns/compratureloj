@@ -142,6 +142,7 @@ function EditWatch() {
         regular_price:  producto.regular_price,
         description:    producto.description,
         stock_quantity: producto.stock_quantity,
+        status:         'draft', // pasa a borrador hasta que el equipo lo revise y publique
         // Existentes conservadas + nuevas subidas
         images: [
           ...imagenesExistentes.map(src => ({ src })),
