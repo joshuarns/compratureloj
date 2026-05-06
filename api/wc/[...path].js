@@ -38,8 +38,16 @@ export default async function handler(req, res) {
       body:    body.length > 0 ? body : undefined,
     });
 
-    const contentType = upstream.headers.get('content-type');
-    if (contentType) res.setHeader('Content-Type', contentType);
+    // Reenviar todos los headers relevantes, incluyendo x-wp-totalpages
+    // que WooCommerce usa para la paginación.
+    const headersToForward = [
+      'content-type', 'x-wp-total', 'x-wp-totalpages',
+      'x-wc-store-api-nonce', 'cache-control',
+    ];
+    for (const header of headersToForward) {
+      const value = upstream.headers.get(header);
+      if (value) res.setHeader(header, value);
+    }
 
     const data = await upstream.arrayBuffer();
     res.status(upstream.status).send(Buffer.from(data));

@@ -15,12 +15,12 @@
 .DS_Store
 
 # Variables de entorno con credenciales reales — nunca subir al repositorio.
+# .env.production solo contiene REACT_APP_USE_PROXY=true (sin credenciales) y SÍ se sube.
 # .env.example y server/.env.example son las plantillas seguras que sí se suben.
 server/.env
 .env
 .env.local
 .env.development
-.env.production
 .env.development.local
 .env.test.local
 .env.production.local
