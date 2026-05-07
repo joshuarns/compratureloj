@@ -62,7 +62,12 @@ function LoginForm() {
       navigate(destino, { replace: true });
 
     } catch (error) {
-      setError("Usuario o contraseña incorrectos. Intenta de nuevo.");
+      const code = error.response?.data?.code;
+      if (code === 'user_not_approved') {
+        setError("Tu cuenta está pendiente de aprobación. Te avisaremos por email cuando esté activa.");
+      } else {
+        setError("Usuario o contraseña incorrectos. Intenta de nuevo.");
+      }
     } finally {
       setCargando(false);
     }
