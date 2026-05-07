@@ -79,6 +79,7 @@ function WatchFormFields({ producto, onChange }) {
               <option value="">Selecciona</option>
               <option value="hombre">Hombre</option>
               <option value="mujer">Mujer</option>
+              <option value="unisex">Unisex</option>
             </select>
           </div>
           <div className="col-md-4">
@@ -133,11 +134,15 @@ function WatchFormFields({ producto, onChange }) {
             <select name="material_de_la_caja" value={producto.material_de_la_caja} onChange={onChange} required>
               <option value="">Selecciona</option>
               <option value="acero">Acero</option>
+              <option value="acero_oro">Acero oro</option>
               <option value="oro">Oro</option>
               <option value="platino">Platino</option>
               <option value="ceramica">Cerámica</option>
+              <option value="zafiro">Zafiro</option>
+              <option value="plastico">Plástico</option>
               <option value="titanio">Titanio</option>
               <option value="bronce">Bronce</option>
+              <option value="carbotech">Carbotech</option>
             </select>
           </div>
           <div className="col-md-6">
@@ -150,8 +155,10 @@ function WatchFormFields({ producto, onChange }) {
               <option value="platino">Platino</option>
               <option value="ceramica">Cerámica</option>
               <option value="zafiro">Zafiro</option>
+              <option value="bronce">Bronce</option>
               <option value="aluminio">Aluminio</option>
               <option value="titanio">Titanio</option>
+              <option value="carbotech">Carbotech</option>
             </select>
           </div>
           <div className="col-md-6">
@@ -166,6 +173,8 @@ function WatchFormFields({ producto, onChange }) {
               <option value="piel">Piel</option>
               <option value="caucho">Caucho</option>
               <option value="nato">Nato</option>
+              <option value="zafiro">Zafiro</option>
+              <option value="tantalio">Tantalio</option>
               <option value="titanio">Titanio</option>
               <option value="otro">Otro</option>
             </select>
@@ -190,6 +199,7 @@ function WatchFormFields({ producto, onChange }) {
               <option value="desplegable">Desplegable</option>
               <option value="desplegable_con_botones">Desplegable con botones</option>
               <option value="hebilla">Hebilla</option>
+              <option value="magnetico">Magnético</option>
               <option value="broche_de_gancho">Broche de gancho</option>
               <option value="cierre_de_malla">Cierre de malla</option>
               <option value="velcro">Velcro</option>

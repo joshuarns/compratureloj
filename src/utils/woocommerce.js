@@ -63,46 +63,43 @@ export const normalizarMetaValor = (valor) => {
     .replace(/[̀-ͯ]/g, '')
     .trim();
 
-  // 2) Mapa de sinónimos: WordPress admin labels → valores internos del select
+  // 2) Mapa de sinónimos: ACF/WordPress labels → valores internos del select de React.
+  //    ACF guarda la etiqueta del choice como valor (ej. "Masculino", "Acero oro").
+  //    Después del paso 1 (lowercase + sin acentos) el base ya es comparable.
   const mapa = {
-    // genero
+    // genero — ACF choices: Masculino, Femenino, Unisex
     'masculino': 'hombre',
     'femenino':  'mujer',
-    // movimiento
-    'automatico': 'automatico',
-    'cuarzo':     'cuarzo',
-    'cuerda':     'cuerda',
-    // documentacion (con espacios → con guiones bajos)
-    'solo reloj':          'solo_reloj',
-    'estuche original':    'estuche_original',
-    'estuche y manuales':  'estuche_y_manuales',
-    'full set':            'full_set',
-    // estado_del_reloj
-    'poco uso':  'poco_uso',
-    'con uso':   'con_uso',
-    'mucho uso': 'mucho_uso',
-    // estetica_del_reloj
-    'muy buena': 'muy_buena',
-    'muy mala':  'muy_mala',
-    // broche
+    // movimiento — ACF choices: Automático, Cuerda, Cuarzo (NFD ya quita acento)
+    // broche — ACF choices con espacios
     'desplegable con botones': 'desplegable_con_botones',
     'broche de gancho':        'broche_de_gancho',
     'cierre de malla':         'cierre_de_malla',
-    // material — variantes de etiquetas del admin de WordPress
-    'acero inoxidable':  'acero',
+    // material — ACF choice "Acero oro" → React option value "acero_oro"
     'acero oro':         'acero_oro',
     'acero y oro':       'acero_oro',
     'acero/oro':         'acero_oro',
-    'acero - oro':       'acero_oro',
+    'acero inoxidable':  'acero',
     // cristal — variantes
     'cristal de zafiro': 'zafiro',
     'vidrio mineral':    'mineral',
     'vidrio':            'mineral',
     'plexiglas':         'plexiglass',
-    // extensible — variantes
+    // documentacion — ACF choices con espacios
+    'solo reloj':         'solo_reloj',
+    'estuche original':   'estuche_original',
+    'estuche y manuales': 'estuche_y_manuales',
+    'full set':           'full_set',
+    // estado_del_reloj — ACF choices con espacios
+    'poco uso':  'poco_uso',
+    'con uso':   'con_uso',
+    'mucho uso': 'mucho_uso',
+    // estetica_del_reloj — ACF choices con espacios
+    'muy buena': 'muy_buena',
+    'muy mala':  'muy_mala',
+    // variantes extra
     'hule':   'caucho',
     'rubber': 'caucho',
-    'leather':'piel',
     'cuero':  'piel',
   };
 
