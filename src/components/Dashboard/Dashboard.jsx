@@ -181,9 +181,13 @@ function MisRelojes({ usuario }) {
                   </div>
                 </td>
                 <td>
-                  <span className={`statusBadge ${reloj.status}`}>
-                    {estadoProductoTexto[reloj.status] || reloj.status}
-                  </span>
+                  {reloj.status === 'publish' && reloj.stock_status === 'outofstock' ? (
+                    <span className="statusBadge outofstock">Sin existencia</span>
+                  ) : (
+                    <span className={`statusBadge ${reloj.status}`}>
+                      {estadoProductoTexto[reloj.status] || reloj.status}
+                    </span>
+                  )}
                 </td>
                 <td className="colPrecio">
                   <span className="watchTablePrice">
