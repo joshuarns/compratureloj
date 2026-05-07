@@ -85,9 +85,22 @@ export const normalizarMetaValor = (valor) => {
     'desplegable con botones': 'desplegable_con_botones',
     'broche de gancho':        'broche_de_gancho',
     'cierre de malla':         'cierre_de_malla',
-    // material
-    'acero oro':    'acero_oro',
-    'acero inoxidable': 'acero',
+    // material — variantes de etiquetas del admin de WordPress
+    'acero inoxidable':  'acero',
+    'acero oro':         'acero_oro',
+    'acero y oro':       'acero_oro',
+    'acero/oro':         'acero_oro',
+    'acero - oro':       'acero_oro',
+    // cristal — variantes
+    'cristal de zafiro': 'zafiro',
+    'vidrio mineral':    'mineral',
+    'vidrio':            'mineral',
+    'plexiglas':         'plexiglass',
+    // extensible — variantes
+    'hule':   'caucho',
+    'rubber': 'caucho',
+    'leather':'piel',
+    'cuero':  'piel',
   };
 
   return mapa[base] ?? base;

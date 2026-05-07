@@ -158,25 +158,30 @@ function EditWatch() {
           ...imagenesExistentes.map(src => ({ src })),
           ...urlsSubidas.map(src => ({ src })),
         ],
+        // Solo incluir campos select que tengan valor para no sobreescribir
+        // datos válidos en WordPress con strings vacíos (protección ante
+        // guardados accidentales cuando la captcha bloqueó la carga).
+        // Los campos de texto libre siempre se envían (el usuario los puede vaciar intencionalmente).
         meta_data: [
           { key: "marca",                   value: producto.marca },
           { key: "modelo",                  value: producto.modelo },
           { key: "referencia",              value: producto.referencia },
           { key: "numero_de_serie",         value: producto.numero_de_serie },
           { key: "ano_de_fabricacion",      value: producto.ano_de_fabricacion },
-          { key: "genero",                  value: producto.genero },
-          { key: "movimiento",              value: producto.movimiento },
           { key: "medida_de_la_caja_",      value: producto.medida_de_la_caja_ },
           { key: "medida_del_extensible",   value: producto.medida_del_extensible },
           { key: "resistencia_al_agua",     value: producto.resistencia_al_agua },
-          { key: "broche",                  value: producto.broche },
-          { key: "material_del_bisel",      value: producto.material_del_bisel },
-          { key: "material_de_la_caja",     value: producto.material_de_la_caja },
-          { key: "material_del_extensible", value: producto.material_del_extensible },
-          { key: "cristal",                 value: producto.cristal },
-          { key: "documentacion",           value: producto.documentacion },
-          { key: "estetica_del_reloj",      value: producto.estetica_del_reloj },
-          { key: "estado_del_reloj",        value: producto.estado_del_reloj },
+          // Selects: solo guardar si el usuario eligió una opción
+          ...(producto.genero              ? [{ key: "genero",                  value: producto.genero }]              : []),
+          ...(producto.movimiento          ? [{ key: "movimiento",              value: producto.movimiento }]          : []),
+          ...(producto.broche              ? [{ key: "broche",                  value: producto.broche }]              : []),
+          ...(producto.material_del_bisel  ? [{ key: "material_del_bisel",      value: producto.material_del_bisel }]  : []),
+          ...(producto.material_de_la_caja ? [{ key: "material_de_la_caja",     value: producto.material_de_la_caja }] : []),
+          ...(producto.material_del_extensible ? [{ key: "material_del_extensible", value: producto.material_del_extensible }] : []),
+          ...(producto.cristal             ? [{ key: "cristal",                 value: producto.cristal }]             : []),
+          ...(producto.documentacion       ? [{ key: "documentacion",           value: producto.documentacion }]       : []),
+          ...(producto.estetica_del_reloj  ? [{ key: "estetica_del_reloj",      value: producto.estetica_del_reloj }]  : []),
+          ...(producto.estado_del_reloj    ? [{ key: "estado_del_reloj",        value: producto.estado_del_reloj }]    : []),
         ],
       });
       setExito(true);
