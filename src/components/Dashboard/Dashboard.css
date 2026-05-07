@@ -328,3 +328,40 @@
     color: #fff;
     font-weight: 700;
 }
+
+/* ── ACCIONES DE RELOJ ──────────────────────────── */
+.dashAcciones {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.btnPublicar {
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1.5px solid #1c2946;
+    background: #1c2946;
+    color: #fff;
+    font-family: "Mulish", sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    white-space: nowrap;
+}
+
+.btnPublicar:hover:not(:disabled) { opacity: 0.82; }
+.btnPublicar:disabled { opacity: 0.45; cursor: default; }
+
+.btnPublicar.btnDespublicar {
+    background: transparent;
+    color: #6e6e73;
+    border-color: #d1d1d6;
+}
+
+.btnPublicar.btnDespublicar:hover:not(:disabled) {
+    border-color: #8e2020;
+    color: #8e2020;
+    opacity: 1;
+}

@@ -25,7 +25,7 @@ import {
 
 import { useAuth } from "../../context/AuthContext";
 // obtenerUsuario y actualizarUsuario se usan solo en MiCuenta → se importan allá
-import { obtenerMisProductos, obtenerMisPedidos } from "../../api";
+import { obtenerMisProductos, obtenerMisPedidos, actualizarProducto } from "../../api";
 
 // MiCuenta vive en su propio archivo para mantener Dashboard.jsx manejable
 import MiCuenta from "./MiCuenta";
@@ -78,6 +78,24 @@ function MisRelojes({ usuario }) {
   const [error, setError]       = useState(false);
   const [reintento, setReintento] = useState(0);
   const [pagina, setPagina]     = useState(1);
+  // id del reloj que está siendo publicado/despublicado en este momento
+  const [publicando, setPublicando] = useState(null);
+
+  const togglePublicar = async (reloj) => {
+    const nuevoStatus = reloj.status === 'publish' ? 'draft' : 'publish';
+    setPublicando(reloj.id);
+    try {
+      await actualizarProducto(reloj.id, { status: nuevoStatus });
+      // Actualizar el estado local sin recargar toda la lista
+      setRelojes(prev => prev.map(r =>
+        r.id === reloj.id ? { ...r, status: nuevoStatus } : r
+      ));
+    } catch {
+      alert('No se pudo cambiar el estado. Intenta de nuevo.');
+    } finally {
+      setPublicando(null);
+    }
+  };
 
   // `activo` evita setState si el componente se desmonta antes de que
   // la petición responda (ej. el usuario cambia de tab muy rápido).
@@ -173,9 +191,20 @@ function MisRelojes({ usuario }) {
                   </span>
                 </td>
                 <td>
-                  <Link to={`/editar-reloj/${reloj.id}`} className="btnEditWatch">
-                    Editar
-                  </Link>
+                  <div className="dashAcciones">
+                    <Link to={`/editar-reloj/${reloj.id}`} className="btnEditWatch">
+                      Editar
+                    </Link>
+                    <button
+                      className={`btnPublicar ${reloj.status === 'publish' ? 'btnDespublicar' : ''}`}
+                      disabled={publicando === reloj.id}
+                      onClick={() => togglePublicar(reloj)}
+                    >
+                      {publicando === reloj.id
+                        ? '...'
+                        : reloj.status === 'publish' ? 'Despublicar' : 'Publicar'}
+                    </button>
+                  </div>
                 </td>
               </tr>
             );
