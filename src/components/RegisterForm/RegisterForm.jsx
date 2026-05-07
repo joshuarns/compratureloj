@@ -38,7 +38,6 @@ function RegisterForm() {
         password:   formData.password,
         first_name: formData.first_name,
         last_name:  formData.last_name,
-        roles:      ["shop_manager"],
       });
 
       setMessage({ text: "¡Registro exitoso! Tu cuenta está pendiente de aprobación. Te avisaremos por email cuando esté activa.", type: "success" });
