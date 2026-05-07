@@ -86,30 +86,69 @@ export const obtenerProductosPorCategoria = async (slug, page = 1, perPage = 12)
 };
 
 // ── obtenerMisProductos ───────────────────────────────────────────────────────
-// Trae los productos de un vendedor filtrando por el meta campo `vendedor_id`.
+// Trae los productos de un vendedor usando un enfoque híbrido:
 //
-// Por qué NO filtramos por `author` de WordPress:
-//   La WC REST API asigna el producto al dueño de las API keys (admin).
-//   Aunque ahora corregimos el autor después de crear, los productos creados
-//   antes del fix siguen con author=admin, lo que causaría que el admin vea
-//   los productos de todos los usuarios y los demás no vieran ninguno.
+//   1. Productos CON `vendedor_id` en meta_data → filtrar por ese campo.
+//      Es el caso de todos los productos creados desde FormSellWatch.
+//      Garantiza que el reloj de otro usuario nunca aparezca aquí.
 //
-// Por qué filtramos por `vendedor_id`:
-//   FormSellWatch siempre guarda `{ key: "vendedor_id", value: usuario.id }`
-//   al crear el producto, así que este campo es siempre confiable.
+//   2. Productos SIN `vendedor_id` → son productos creados directamente desde
+//      el admin de WordPress. Para esos, filtramos por author vía WP REST API
+//      (el autor sí se asigna bien en el admin de WP).
+//
+// Ambos conjuntos se fusionan y deduplicан por ID.
 export const obtenerMisProductos = async (vendedorId) => {
+    const idStr = String(vendedorId);
+
+    // ── Paso 1: traer todos los productos (con meta_data incluido) ────────────
     const wcRespuesta = await axios.get(`${BASE_URL}/products`, {
         params: { status: 'any', per_page: 100 },
         auth,
     });
-
     const todos = Array.isArray(wcRespuesta.data) ? wcRespuesta.data : [];
-    const idStr = String(vendedorId);
 
-    // Devolver solo los productos cuyo meta `vendedor_id` coincide con el usuario
-    return todos.filter(p => {
+    // Separar productos según tengan o no `vendedor_id`
+    const conVendedorId  = [];
+    const sinVendedorId  = [];
+
+    for (const p of todos) {
         const meta = (p.meta_data || []).find(m => m.key === 'vendedor_id');
-        return meta?.value === idStr;
+        if (meta?.value && meta.value !== '-1') {
+            conVendedorId.push(p);
+        } else {
+            sinVendedorId.push(p);
+        }
+    }
+
+    // Filtrar por vendedor_id estrictamente
+    const porMeta = conVendedorId.filter(p => {
+        const meta = (p.meta_data || []).find(m => m.key === 'vendedor_id');
+        return meta.value === idStr;
+    });
+
+    // ── Paso 2: para los sin vendedor_id, consultar author vía WP REST API ────
+    let porAutor = [];
+    if (sinVendedorId.length > 0) {
+        try {
+            const wpRespuesta = await axios.get(`${BASE_URL_WP}/product`, {
+                params: { author: vendedorId, status: 'any', per_page: 100, _fields: 'id' },
+                auth,
+            });
+            const wpIds = new Set(
+                (Array.isArray(wpRespuesta.data) ? wpRespuesta.data : []).map(p => p.id)
+            );
+            porAutor = sinVendedorId.filter(p => wpIds.has(p.id));
+        } catch {
+            // Si falla la consulta WP (p.ej. captcha), omitir silenciosamente
+        }
+    }
+
+    // ── Fusionar y deduplicar por ID ──────────────────────────────────────────
+    const vistos = new Set();
+    return [...porMeta, ...porAutor].filter(p => {
+        if (vistos.has(p.id)) return false;
+        vistos.add(p.id);
+        return true;
     });
 };
 
