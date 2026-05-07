@@ -86,36 +86,60 @@ export const obtenerProductosPorCategoria = async (slug, page = 1, perPage = 12)
 };
 
 // ── obtenerMisProductos ───────────────────────────────────────────────────────
-// Trae los productos publicados por un vendedor específico.
-// WooCommerce REST API no soporta filtrar por autor directamente,
-// pero la WordPress REST API sí → hacemos dos peticiones:
-//   Paso 1 → WP nos da los IDs de los posts del usuario
-//   Paso 2 → WC nos da los datos completos de esos IDs
+// Trae los productos de un vendedor filtrando por el meta campo `vendedor_id`.
+//
+// Por qué NO filtramos por `author` de WordPress:
+//   La WC REST API asigna el producto al dueño de las API keys (admin).
+//   Aunque ahora corregimos el autor después de crear, los productos creados
+//   antes del fix siguen con author=admin, lo que causaría que el admin vea
+//   los productos de todos los usuarios y los demás no vieran ninguno.
+//
+// Por qué filtramos por `vendedor_id`:
+//   FormSellWatch siempre guarda `{ key: "vendedor_id", value: usuario.id }`
+//   al crear el producto, así que este campo es siempre confiable.
 export const obtenerMisProductos = async (vendedorId) => {
-    // Paso 1: GET /wp/v2/product?author=<id>&_fields=id (solo necesitamos los IDs)
-    const wpRespuesta = await axios.get(`${BASE_URL_WP}/product`, {
-        params: { author: vendedorId, status: 'any', per_page: 100, _fields: 'id' },
-        auth,
-    });
-
-    const wpData = Array.isArray(wpRespuesta.data) ? wpRespuesta.data : [];
-    const ids    = wpData.map(p => p.id);
-    if (ids.length === 0) return [];
-
     const wcRespuesta = await axios.get(`${BASE_URL}/products`, {
-        params: { include: ids.join(','), status: 'any', per_page: 100 },
+        params: { status: 'any', per_page: 100 },
         auth,
     });
 
-    return Array.isArray(wcRespuesta.data) ? wcRespuesta.data : [];
+    const todos = Array.isArray(wcRespuesta.data) ? wcRespuesta.data : [];
+    const idStr = String(vendedorId);
+
+    // Devolver solo los productos cuyo meta `vendedor_id` coincide con el usuario
+    return todos.filter(p => {
+        const meta = (p.meta_data || []).find(m => m.key === 'vendedor_id');
+        return meta?.value === idStr;
+    });
 };
 
 // ── crearProducto ─────────────────────────────────────────────────────────────
 // Crea un nuevo producto en WooCommerce.
 // Llamado desde FormSellWatch cuando el vendedor envía el formulario.
 // El objeto productoData debe seguir el esquema de la WC REST API v3.
-export const crearProducto = async (productoData) => {
+//
+// autorId (opcional): ID de WordPress del vendedor. Si se pasa, se hace una
+// segunda llamada vía WP REST API para asignar el autor correcto, ya que la
+// WC API siempre registra el producto bajo el dueño de las API keys (admin).
+// Sin esto, todos los productos aparecerían en el dashboard del admin y ninguno
+// en el de los demás vendedores.
+export const crearProducto = async (productoData, autorId) => {
     const response = await axios.post(`${BASE_URL}/products`, productoData, { auth });
+    const productoId = response.data.id;
+
+    // Corregir el autor: WooCommerce REST API asigna el producto al dueño de
+    // las API keys (admin). Actualizamos el campo `author` del post de WordPress
+    // para que cada vendedor vea solo sus propios productos en "Mis relojes".
+    if (autorId) {
+        try {
+            await axios.put(`${BASE_URL_WP}/product/${productoId}`, { author: autorId });
+        } catch (err) {
+            // No es fatal — el producto se creó correctamente, solo el autor queda
+            // como admin. El vendedor puede contactar soporte para corregirlo.
+            console.warn('[crearProducto] No se pudo actualizar el autor:', err?.response?.data || err.message);
+        }
+    }
+
     return response.data;
 };
 
