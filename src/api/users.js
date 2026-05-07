@@ -37,7 +37,9 @@ export const loginUsuario = async (username, password) => {
 // ── createUser ────────────────────────────────────────────────────────────────
 // Registra un nuevo usuario en WordPress.
 // Llamado desde RegisterForm cuando el visitante completa el formulario.
-// El rol "shop_manager" permite al usuario publicar y gestionar productos.
+// El rol "vendor" da acceso limitado al WP admin (solo sus productos).
+// La creación y edición de productos desde React usa credenciales de admin
+// del proxy, por lo que el rol del usuario no afecta ese flujo.
 export const createUser = async (userData) => {
     const response = await axios.post(
         `${BASE_URL_WP}/users`,
@@ -47,7 +49,7 @@ export const createUser = async (userData) => {
             password:   userData.password,
             first_name: userData.first_name,
             last_name:  userData.last_name,
-            roles:      ['shop_manager'], // necesario para que pueda subir relojes
+            roles:      ['vendor'],
         },
         { auth },
     );
