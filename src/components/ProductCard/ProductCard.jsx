@@ -46,9 +46,13 @@ function ProductCard({ producto }) {
         <p className="productCardPrice"
           dangerouslySetInnerHTML={{ __html: producto.price_html }}
         />
-        <Link to={`/producto/${producto.id}`} className="btnVerProducto">
-          Ver detalles
-        </Link>
+        {producto.stock_status === 'outofstock' ? (
+          <span className="btnVerProducto btnVerProductoAgotado">Sin existencia</span>
+        ) : (
+          <Link to={`/producto/${producto.id}`} className="btnVerProducto">
+            Ver detalles
+          </Link>
+        )}
       </div>
     </div>
   );

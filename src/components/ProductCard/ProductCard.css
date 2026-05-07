@@ -115,6 +115,16 @@
   text-align: center;
 }
 
+/* Estado sin existencia — misma forma que el botón normal pero gris */
+.btnVerProductoAgotado {
+  background-color: #e5e5ea;
+  color: #8e8e93;
+  cursor: not-allowed;
+  pointer-events: none;
+  font-family: "Bai Jamjuree", sans-serif;
+  font-weight: 600;
+}
+
 /* ── Botón corazón (watchlist) ── */
 .heartBtn {
   position: absolute;
