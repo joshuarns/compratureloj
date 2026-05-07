@@ -171,7 +171,29 @@ function ctr_procesar_aprobacion() {
 
 
 // ════════════════════════════════════════════════════════════════════════════
-// 6. EMAIL DE APROBACIÓN — enlace al login de React, no de WordPress
+// 6. ENDPOINT DE VERIFICACIÓN DE APROBACIÓN  /wp-json/ctr/v1/check-approval/{id}
+//    Solo accesible con credenciales de admin. El proxy de login lo consulta
+//    tras autenticar al usuario para decidir si devuelve la sesión a React.
+// ════════════════════════════════════════════════════════════════════════════
+add_action( 'rest_api_init', function () {
+    register_rest_route( 'ctr/v1', '/check-approval/(?P<id>\d+)', [
+        'methods'             => 'GET',
+        'callback'            => function ( WP_REST_Request $request ) {
+            $user_id  = (int) $request['id'];
+            $aprobado = get_user_meta( $user_id, CTR_META_KEY, true );
+            return new WP_REST_Response( [
+                'approved' => (int) $aprobado === 1,
+            ], 200 );
+        },
+        'permission_callback' => function () {
+            return current_user_can( 'edit_users' );
+        },
+    ] );
+} );
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// 7. EMAIL DE APROBACIÓN — enlace al login de React, no de WordPress
 // ════════════════════════════════════════════════════════════════════════════
 function ctr_enviar_email_aprobacion( $user_id ) {
     $user = get_userdata( $user_id );
