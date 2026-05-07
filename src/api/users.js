@@ -35,11 +35,10 @@ export const loginUsuario = async (username, password) => {
 };
 
 // ── createUser ────────────────────────────────────────────────────────────────
-// Registra un nuevo usuario en WordPress.
-// Llamado desde RegisterForm cuando el visitante completa el formulario.
+// Registra un nuevo usuario en WordPress y lo marca como pendiente de aprobación.
 // El rol "vendor" da acceso limitado al WP admin (solo sus productos).
-// La creación y edición de productos desde React usa credenciales de admin
-// del proxy, por lo que el rol del usuario no afecta ese flujo.
+// Tras crear el usuario, se escribe wp_user_is_approved=0 para que WP Approve
+// User lo bloquee hasta que el admin lo apruebe manualmente.
 export const createUser = async (userData) => {
     const response = await axios.post(
         `${BASE_URL_WP}/users`,
@@ -53,6 +52,19 @@ export const createUser = async (userData) => {
         },
         { auth },
     );
+
+    // Marcar como pendiente de aprobación usando el mismo meta que WP Approve User.
+    // El snippet PHP registró este meta con show_in_rest:true para permitir esto.
+    try {
+        await axios.put(
+            `${BASE_URL_WP}/users/${response.data.id}`,
+            { meta: { wp_user_is_approved: 0 } },
+            { auth },
+        );
+    } catch {
+        // No es fatal — el snippet PHP también lo marca vía user_register hook
+    }
+
     return response.data;
 };
 
