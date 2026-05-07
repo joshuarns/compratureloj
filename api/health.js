@@ -81,21 +81,30 @@ export default async function handler(req, res) {
     };
   } catch (e) { wpDirectTest = { error: e.message }; }
 
-  // ── Test 6: meta_data del primer producto publicado ─────────────────────────
+  // ── Test 6: meta_data de un producto (pasa ?pid=ID para uno específico) ──────
   let metaTest = {};
   try {
-    const url      = `${baseUrl}/products?per_page=1&status=publish`;
+    const pid    = req.query.pid;
+    const url    = pid
+      ? `${baseUrl}/products/${pid}`
+      : `${baseUrl}/products?per_page=1&status=any`;
     const upstream = await fetch(url, { headers: { Authorization: `Basic ${auth}` } });
-    const products = await upstream.json();
-    if (Array.isArray(products) && products.length > 0) {
-      const p = products[0];
+    const data     = await upstream.json();
+    const p        = Array.isArray(data) ? data[0] : data;
+    if (p?.id) {
       metaTest = {
         id:        p.id,
         name:      p.name,
-        meta_data: (p.meta_data || []).filter(m => !m.key.startsWith('_')), // solo keys públicas
+        status:    p.status,
+        // Mostrar TODAS las keys (incluyendo privadas) para diagnóstico
+        meta_data: (p.meta_data || []).map(m => ({
+          key:        m.key,
+          value:      m.value,
+          valueType:  Array.isArray(m.value) ? 'array' : typeof m.value,
+        })),
       };
     } else {
-      metaTest = { error: 'No hay productos publicados' };
+      metaTest = { error: 'Producto no encontrado', raw: data };
     }
   } catch (e) { metaTest = { error: e.message }; }
 
