@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { crearPedido } from "../../api";
+import { useAuth } from "../../context/AuthContext";
 import PaymentConfirmation from "../PaymentConfirmation/PaymentConfirmation";
 import './Checkout.css';
 
 function Checkout() {
+  const { usuario } = useAuth();
   const [carrito, setCarrito] = useState([]);
   const [pedidoEnviado, setPedidoEnviado] = useState(false);
   // Guardamos el objeto completo del pedido (no solo el ID) para mostrarlo
@@ -56,6 +58,9 @@ function Checkout() {
       // set_paid: true marca el pedido como procesado y dispara los correos
       // de confirmación tanto al admin como al cliente automáticamente
       set_paid: true,
+      // customer_id vincula el pedido al usuario registrado para que aparezca
+      // en "Mis compras". Si no hay sesión (compra como invitado) se omite.
+      ...(usuario?.id ? { customer_id: usuario.id } : {}),
       billing: { ...datosCliente },
       shipping: {
         first_name: datosCliente.first_name,

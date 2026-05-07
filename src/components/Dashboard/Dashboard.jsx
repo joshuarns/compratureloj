@@ -243,7 +243,7 @@ function MisCompras({ usuario }) {
     setError(false);
     setPagina(1);
 
-    obtenerMisPedidos(usuario.email)
+    obtenerMisPedidos(usuario.id)
       .then(data  => { if (activo) setPedidos(data); })
       .catch(err  => {
         if (!activo) return;
@@ -252,7 +252,7 @@ function MisCompras({ usuario }) {
       .finally(() => { if (activo) setCargando(false); });
 
     return () => { activo = false; };
-  }, [usuario.email, reintento]);
+  }, [usuario.id, reintento]);
 
   const totalPaginas  = Math.ceil(pedidos.length / POR_PAGINA_COMPRAS);
   const pedidosPagina = pedidos.slice((pagina - 1) * POR_PAGINA_COMPRAS, pagina * POR_PAGINA_COMPRAS);

@@ -25,17 +25,16 @@ export const obtenerPedido = async (id) => {
 };
 
 // ── obtenerMisPedidos ─────────────────────────────────────────────────────────
-// Trae el historial de pedidos de un comprador filtrando por email de facturación.
-// WooCommerce no garantiza un customer_id consistente para todos los flujos de
-// compra, así que el email es la clave más confiable para asociar pedidos a
-// una persona (funciona con usuarios registrados y compradores invitados).
-export const obtenerMisPedidos = async (email) => {
+// Trae el historial de pedidos de un comprador filtrando por su ID de WordPress.
+// El parámetro ?customer= es el único filtro confiable en WC REST API v3 —
+// billing_email no es un parámetro válido y la API lo ignora silenciosamente.
+export const obtenerMisPedidos = async (customerId) => {
     const response = await axios.get(`${BASE_URL}/orders`, {
         params: {
-            billing_email: email,
-            per_page:      20,
-            orderby:       'date',
-            order:         'desc',
+            customer: customerId,
+            per_page: 20,
+            orderby:  'date',
+            order:    'desc',
         },
         auth,
     });
