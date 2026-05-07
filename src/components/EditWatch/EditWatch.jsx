@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { obtenerProducto, actualizarProducto, uploadImage } from "../../api";
 import { getMeta, normalizarMetaValor, stripUnidad, validarArchivos } from "../../utils/woocommerce";
+import { useAuth } from "../../context/AuthContext";
 import useForm from "../../hooks/useForm";
 import WatchFormFields from "../WatchForm/WatchFormFields";
 import ErrorImagenes from "../WatchForm/ErrorImagenes";
@@ -23,6 +24,7 @@ const PRODUCTO_VACIO = {
 
 function EditWatch() {
   const { id } = useParams();
+  const { usuario } = useAuth();
 
   // Estados de pantalla
   const [cargando,  setCargando]  = useState(true);
@@ -163,6 +165,8 @@ function EditWatch() {
         // guardados accidentales cuando la captcha bloqueó la carga).
         // Los campos de texto libre siempre se envían (el usuario los puede vaciar intencionalmente).
         meta_data: [
+          // Siempre conservar el vendedor_id para que el filtro de "Mis relojes" funcione
+          ...(usuario?.id ? [{ key: "vendedor_id", value: String(usuario.id) }] : []),
           { key: "marca",                   value: producto.marca },
           { key: "modelo",                  value: producto.modelo },
           { key: "referencia",              value: producto.referencia },
