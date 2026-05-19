@@ -237,14 +237,6 @@ function DetalleProducto() {
               {/* Nombre del producto */}
               <h1 className="singleTitle">{producto.name}</h1>
 
-              {/* Descripción en texto plano (el HTML viene de WooCommerce) */}
-              <div
-                className="singleDescription"
-                dangerouslySetInnerHTML={{ __html: producto.description }}
-              />
-
-              <hr className="singleDivider" />
-
               {/* Precio — dangerouslySetInnerHTML porque WooCommerce envía HTML
                   con etiquetas <span>, moneda, precio original tachado, etc. */}
               <div
@@ -323,6 +315,22 @@ function DetalleProducto() {
             </div>
           </Col>
         </Row>
+
+        {/* ════════════════════════════════════════════════════
+            SECCIÓN MEDIA: Descripción editorial full-width
+            ════════════════════════════════════════════════════ */}
+        {producto.description && (
+          <div className="singleDescSection">
+            <div className="singleDescLeft">
+              <p className="singleDescLabel">Descripción</p>
+              <h2 className="singleDescHeading">{producto.name}</h2>
+            </div>
+            <div
+              className="singleDescBody"
+              dangerouslySetInnerHTML={{ __html: producto.description }}
+            />
+          </div>
+        )}
 
         {/* ════════════════════════════════════════════════════
             SECCIÓN INFERIOR: Especificaciones técnicas

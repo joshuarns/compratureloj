@@ -122,23 +122,7 @@
   color: #1d1d1f;
   line-height: 1.1;
   letter-spacing: -0.02em;
-  margin-bottom: 16px;
-}
-
-/* Descripción en texto corrido */
-.singleDescription {
-  font-family: "Mulish", sans-serif;
-  font-size: 15px;
-  color: #6e6e73;
-  line-height: 1.7;
-  margin-bottom: 0px;
-}
-
-/* Separador fino */
-.singleDivider {
-  border: none;
-  border-top: 1px solid #000;
-  margin: 20px 0;
+  margin-bottom: 28px;
 }
 
 /* Precio — grande y prominente */
@@ -374,6 +358,60 @@
 
 
 /* ══════════════════════════════════════════════════════════
+   SECCIÓN MEDIA: Descripción editorial
+   Layout 2 col: label/título izquierda · texto derecha
+   ══════════════════════════════════════════════════════════ */
+
+.singleDescSection {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 64px;
+  align-items: start;
+  padding: 72px 0;
+  border-top: 1px solid #e5e5ea;
+  margin-top: 56px;
+}
+
+/* Columna izquierda: label + nombre del reloj */
+.singleDescLeft {
+  position: sticky;
+  top: 24px;  /* Se queda visible al hacer scroll */
+}
+
+.singleDescLabel {
+  font-family: "Bai Jamjuree", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #6e6e73;
+  margin-bottom: 12px;
+}
+
+.singleDescHeading {
+  font-family: "Bai Jamjuree", sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: #1d1d1f;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+/* Columna derecha: texto de descripción */
+.singleDescBody {
+  font-family: "Mulish", sans-serif;
+  font-size: 17px;
+  color: #3a3a3c;
+  line-height: 1.85;
+}
+
+.singleDescBody p {
+  margin-bottom: 0;
+}
+
+
+/* ══════════════════════════════════════════════════════════
    SECCIÓN INFERIOR: Especificaciones técnicas
    ══════════════════════════════════════════════════════════ */
 
@@ -541,6 +579,25 @@
 
   .singlePrice {
     font-size: 28px;
+  }
+
+  /* Descripción: una sola columna en móvil */
+  .singleDescSection {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 48px 0;
+  }
+
+  .singleDescLeft {
+    position: static;
+  }
+
+  .singleDescHeading {
+    font-size: 22px;
+  }
+
+  .singleDescBody {
+    font-size: 15px;
   }
 }
 
