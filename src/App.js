@@ -13,6 +13,7 @@ import NavbarMenu            from "./components/Navbar/Navbar";
 import PrivateRoute          from "./components/PrivateRoute/PrivateRoute";
 import Footer                from "./components/Footer/Footer";
 import InstallPWA            from "./components/InstallPWA/InstallPWA";
+import ScrollToTop           from "./components/ScrollToTop";
 import { Container }         from "react-bootstrap";
 
 // ── Páginas — carga diferida (lazy) ──────────────────────────────────────────
@@ -61,6 +62,7 @@ function App() {
           */}
           <ToastProvider>
             <Router>
+              <ScrollToTop />
               {/* Franja de bienvenida sobre el navbar */}
               <Container className="pb-3 pt-3">
                 <div className="w-100 text-center textWelcome">¡Bienvenido a Compra Tu Reloj!</div>
