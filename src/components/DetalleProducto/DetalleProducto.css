@@ -117,22 +117,22 @@
 /* Nombre del producto */
 .singleTitle {
   font-family: "Bai Jamjuree", sans-serif;
-  font-size: 34px;
-  font-weight: 700;
+  font-size: 28px;
+  font-weight: 600;
   color: #1d1d1f;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  margin-bottom: 28px;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  margin-bottom: 10px;
 }
 
 /* Precio — grande y prominente */
 .singlePrice {
   font-family: "Bai Jamjuree", sans-serif;
-  font-size: 36px;
-  font-weight: 700;
+  font-size: 42px;
+  font-weight: 800;
   color: #1d1d1f;
-  margin-bottom: 28px;
-  letter-spacing: -0.01em;
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
 }
 
 /* El price_html de WooCommerce incluye etiquetas <span> con la moneda */
@@ -254,12 +254,12 @@
 }
 
 /* ── Pills de características rápidas ── */
-/* Tres datos clave debajo del botón: estado, movimiento, caja */
+/* Tres datos clave debajo del precio */
 .singleFeatures {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
-  margin-top: 8px;
+  margin-bottom: 24px;
 }
 
 .singleFeaturePill {

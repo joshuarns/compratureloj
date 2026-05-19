@@ -244,6 +244,13 @@ function DetalleProducto() {
                 dangerouslySetInnerHTML={{ __html: producto.price_html }}
               />
 
+              {/* Pills con 3 características clave del reloj */}
+              <div className="singleFeatures">
+                {estado     && <span className="singleFeaturePill">🏷 {estado.replace(/_/g, " ")}</span>}
+                {movimiento && <span className="singleFeaturePill">⚙️ {movimiento}</span>}
+                {caja       && <span className="singleFeaturePill">📐 {caja} mm</span>}
+              </div>
+
               {/* Botón primario: Comprar ahora / En tu selección ✓ / Sin existencia */}
               {producto.stock_status === 'outofstock' ? (
                 <button className="singleBtnCart outOfStock" disabled>
@@ -275,14 +282,6 @@ function DetalleProducto() {
                 >
                   {guardado ? "♥ Guardado" : "♡ Guardar"}
                 </button>
-              </div>
-
-              {/* Pills con 3 características clave del reloj */}
-              {/* Solo se muestran si el campo existe en meta_data */}
-              <div className="singleFeatures">
-                {estado    && <span className="singleFeaturePill">🏷 {estado.replace(/_/g, " ")}</span>}
-                {movimiento && <span className="singleFeaturePill">⚙️ {movimiento}</span>}
-                {caja      && <span className="singleFeaturePill">📐 {caja} mm</span>}
               </div>
 
               {/* ── Tarjeta de contacto con asesor ── */}
