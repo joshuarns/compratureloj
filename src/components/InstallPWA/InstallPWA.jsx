@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./InstallPWA.css";
 
 const logo = "/logo192.png";
@@ -6,97 +6,102 @@ const logo = "/logo192.png";
 // ─────────────────────────────────────────────────────────────────────────────
 // InstallPWA
 //
-// Muestra una card estilo Sonos explicando cómo instalar la app.
-// Solo aparece en dispositivos móviles, una vez cada 7 días,
-// y nunca si la app ya está instalada (modo standalone).
+// Dos flujos según plataforma:
+//
+//  Android Chrome → captura `beforeinstallprompt`, muestra card con botón
+//    "Instalar" que llama a deferredPrompt.prompt() → diálogo nativo del SO.
+//
+//  iOS Safari / iOS Chrome / otros → card con instrucciones manuales paso a
+//    paso (iOS no soporta beforeinstallprompt).
+//
+// Condiciones para mostrar:
+//   - Dispositivo móvil (iOS o Android)
+//   - App NO instalada (no display-mode: standalone)
+//   - No descartada en los últimos 7 días
 // ─────────────────────────────────────────────────────────────────────────────
 
-const STORAGE_KEY   = "ctr_pwa_dismissed";
-const DIAS_ESPERAR  = 7;
+const STORAGE_KEY  = "ctr_pwa_dismissed";
+const DIAS_ESPERAR = 7;
 
 function detectarPlataforma() {
   const ua = navigator.userAgent || "";
-  const isIOS     = /iphone|ipad|ipod/i.test(ua);
-  const isAndroid = /android/i.test(ua);
-  const isChrome  = /chrome|crios/i.test(ua) && !/edg/i.test(ua);
-  const isSafari  = /safari/i.test(ua) && !/chrome|crios/i.test(ua);
-  const isFirefox = /firefox|fxios/i.test(ua);
-
-  if (isIOS && isSafari) return "ios-safari";
-  if (isIOS && isChrome) return "ios-chrome";
-  if (isAndroid && isChrome) return "android-chrome";
-  if (isAndroid && isFirefox) return "android-firefox";
-  if (isAndroid) return "android-other";
+  if (/iphone|ipad|ipod/i.test(ua)) {
+    return /crios/i.test(ua) ? "ios-chrome" : "ios-safari";
+  }
+  if (/android/i.test(ua)) {
+    if (/firefox|fxios/i.test(ua)) return "android-firefox";
+    return "android-chrome"; // Chrome, Samsung Browser, WebView…
+  }
   return "other";
 }
 
-const INSTRUCCIONES = {
-  "ios-safari": {
-    pasos: [
-      { icono: "⬆️", texto: 'Toca el botón "Compartir" en la barra inferior' },
-      { icono: "➕", texto: 'Selecciona "Añadir a pantalla de inicio"'        },
-      { icono: "✅", texto: 'Toca "Añadir" para confirmar'                    },
-    ],
-  },
-  "ios-chrome": {
-    pasos: [
-      { icono: "⋯",  texto: 'Toca los tres puntos en la esquina inferior'      },
-      { icono: "➕", texto: 'Selecciona "Añadir a pantalla de inicio"'         },
-      { icono: "✅", texto: 'Toca "Añadir" para confirmar'                     },
-    ],
-  },
-  "android-chrome": {
-    pasos: [
-      { icono: "⋮",  texto: 'Toca los tres puntos en la esquina superior'      },
-      { icono: "📲", texto: 'Selecciona "Instalar app" o "Añadir a inicio"'    },
-      { icono: "✅", texto: 'Toca "Instalar" para confirmar'                   },
-    ],
-  },
-  "android-firefox": {
-    pasos: [
-      { icono: "⋮",  texto: 'Toca el menú en la esquina inferior'              },
-      { icono: "📲", texto: 'Selecciona "Instalar"'                            },
-      { icono: "✅", texto: 'Toca "Añadir" para confirmar'                     },
-    ],
-  },
-  "android-other": {
-    pasos: [
-      { icono: "⋮",  texto: "Abre el menú de tu navegador"                     },
-      { icono: "📲", texto: 'Busca "Instalar app" o "Añadir a inicio"'         },
-      { icono: "✅", texto: "Confirma la instalación"                           },
-    ],
-  },
-  other: {
-    pasos: [
-      { icono: "⋮",  texto: "Abre el menú de tu navegador"                     },
-      { icono: "📲", texto: 'Busca "Instalar app" o "Añadir a inicio"'         },
-      { icono: "✅", texto: "Confirma la instalación"                           },
-    ],
-  },
+const PASOS_MANUALES = {
+  "ios-safari": [
+    { icono: "⬆️", texto: 'Toca el botón "Compartir" en la barra inferior' },
+    { icono: "➕", texto: 'Selecciona "Añadir a pantalla de inicio"'        },
+    { icono: "✅", texto: 'Toca "Añadir" para confirmar'                    },
+  ],
+  "ios-chrome": [
+    { icono: "⋯",  texto: 'Toca los tres puntos en la esquina inferior'     },
+    { icono: "➕", texto: 'Selecciona "Añadir a pantalla de inicio"'        },
+    { icono: "✅", texto: 'Toca "Añadir" para confirmar'                    },
+  ],
+  "android-firefox": [
+    { icono: "⋮",  texto: 'Toca el menú en la esquina inferior'             },
+    { icono: "📲", texto: 'Selecciona "Instalar"'                           },
+    { icono: "✅", texto: 'Toca "Añadir" para confirmar'                    },
+  ],
 };
 
 function InstallPWA() {
-  const [visible, setVisible] = useState(false);
+  const [visible,  setVisible]  = useState(false);
+  // flujo: "native" (Chrome Android con beforeinstallprompt) | { tipo:"manual", pasos }
+  const [flujo,    setFlujo]    = useState(null);
+  const deferredPrompt          = useRef(null);
 
   useEffect(() => {
-    // No mostrar si ya está instalada como PWA
-    const yaInstalada = window.matchMedia("(display-mode: standalone)").matches
-      || window.navigator.standalone === true;
+    // Ya instalada → nunca mostrar
+    const yaInstalada =
+      window.matchMedia("(display-mode: standalone)").matches ||
+      window.navigator.standalone === true;
     if (yaInstalada) return;
 
-    // No mostrar en desktop
+    // Solo mobile
     const esMobile = /iphone|ipad|ipod|android/i.test(navigator.userAgent);
     if (!esMobile) return;
 
-    // No mostrar si fue descartada recientemente
+    // Descartada recientemente
     const dismissedAt = localStorage.getItem(STORAGE_KEY);
     if (dismissedAt) {
-      const diasTranscurridos = (Date.now() - Number(dismissedAt)) / (1000 * 60 * 60 * 24);
-      if (diasTranscurridos < DIAS_ESPERAR) return;
+      const dias = (Date.now() - Number(dismissedAt)) / (1000 * 60 * 60 * 24);
+      if (dias < DIAS_ESPERAR) return;
     }
 
-    // Mostrar con pequeño retraso para no interrumpir la carga inicial
-    const timer = setTimeout(() => setVisible(true), 2500);
+    const plataforma = detectarPlataforma();
+
+    // ── Android Chrome: esperar el evento nativo ──────────────────────────────
+    // Chrome solo dispara beforeinstallprompt cuando la PWA cumple todos los
+    // criterios de instalabilidad. Capturarlo evita el mini-banner automático
+    // y nos permite mostrar nuestra propia UI, llamando .prompt() al hacer click.
+    if (plataforma === "android-chrome") {
+      const onBeforeInstall = (e) => {
+        e.preventDefault();             // suprime el banner automático de Chrome
+        deferredPrompt.current = e;     // guardamos el evento para usarlo luego
+        setTimeout(() => {
+          setFlujo("native");
+          setVisible(true);
+        }, 2500);
+      };
+      window.addEventListener("beforeinstallprompt", onBeforeInstall);
+      return () => window.removeEventListener("beforeinstallprompt", onBeforeInstall);
+    }
+
+    // ── iOS / Firefox / otros: instrucciones manuales ─────────────────────────
+    const pasos = PASOS_MANUALES[plataforma] || PASOS_MANUALES["ios-safari"];
+    const timer = setTimeout(() => {
+      setFlujo({ tipo: "manual", pasos });
+      setVisible(true);
+    }, 2500);
     return () => clearTimeout(timer);
   }, []);
 
@@ -105,10 +110,15 @@ function InstallPWA() {
     setVisible(false);
   };
 
-  if (!visible) return null;
+  const instalarNativo = async () => {
+    if (!deferredPrompt.current) return;
+    deferredPrompt.current.prompt();
+    await deferredPrompt.current.userChoice;
+    deferredPrompt.current = null;
+    cerrar();
+  };
 
-  const plataforma   = detectarPlataforma();
-  const instrucciones = INSTRUCCIONES[plataforma] || INSTRUCCIONES.other;
+  if (!visible || !flujo) return null;
 
   return (
     <div className="pwaMask" onClick={cerrar}>
@@ -122,23 +132,32 @@ function InstallPWA() {
         {/* Título */}
         <h2 className="pwaTitle">Instala la app</h2>
         <p className="pwaSubtitle">
-          Añade Compra Tu Reloj a tu pantalla de inicio para acceder más rápido.
+          Accede a Compra Tu Reloj directo desde tu pantalla de inicio.
         </p>
 
-        {/* Pasos */}
-        <ol className="pwaPasos">
-          {instrucciones.pasos.map((paso, i) => (
-            <li key={i} className="pwaPaso">
-              <span className="pwaPasoIcono">{paso.icono}</span>
-              <span className="pwaPasoTexto">{paso.texto}</span>
-            </li>
-          ))}
-        </ol>
+        {/* ── Flujo nativo (Android Chrome) ── */}
+        {flujo === "native" && (
+          <button className="pwaBtnEntendido" onClick={instalarNativo}>
+            📲 Añadir a pantalla de inicio
+          </button>
+        )}
 
-        {/* Botón */}
-        <button className="pwaBtnEntendido" onClick={cerrar}>
-          Entendido
-        </button>
+        {/* ── Flujo manual (iOS / otros) ── */}
+        {flujo?.tipo === "manual" && (
+          <>
+            <ol className="pwaPasos">
+              {flujo.pasos.map((paso, i) => (
+                <li key={i} className="pwaPaso">
+                  <span className="pwaPasoIcono">{paso.icono}</span>
+                  <span className="pwaPasoTexto">{paso.texto}</span>
+                </li>
+              ))}
+            </ol>
+            <button className="pwaBtnEntendido" onClick={cerrar}>
+              Entendido
+            </button>
+          </>
+        )}
 
         {/* Cerrar */}
         <button className="pwaBtnCerrar" onClick={cerrar} aria-label="Cerrar">
