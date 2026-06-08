@@ -4,9 +4,8 @@ import './PopularModels.css';
 // Importamos las imágenes de cada marca desde assets
 // Al importarlas así, Webpack les asigna la ruta correcta en producción
 import rolexImg        from '../../assets/images/rolex.avif';
-import omegaImg        from '../../assets/images/omega.avif';
 import audemarsPiguetImg from '../../assets/images/audemars-piguet.avif';
-import breitlingImg    from '../../assets/images/breitling.avif';
+import cartierImg      from '../../assets/images/cartier.png';
 
 // ─────────────────────────────────────────────────────────
 // Lista de marcas populares
@@ -21,22 +20,16 @@ const MARCAS = [
     slug: "rolex",        // ← slug de la categoría en WooCommerce
   },
   {
-    nombre: "Omega",
-    modelo: "Speedmaster · Seamaster",
-    imagen: omegaImg,
-    slug: "omega",
-  },
-  {
     nombre: "Audemars Piguet",
     modelo: "Royal Oak · Offshore",
     imagen: audemarsPiguetImg,
     slug: "audemars-piguet",
   },
   {
-    nombre: "Breitling",
-    modelo: "Navitimer · Superocean",
-    imagen: breitlingImg,
-    slug: "breitling",
+    nombre: "Cartier",
+    modelo: "Santos · Tank · Panthère",
+    imagen: cartierImg,
+    slug: "cartier",
   },
 ];
 
