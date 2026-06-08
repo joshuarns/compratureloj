@@ -390,3 +390,127 @@
     opacity: 0.45;
     cursor: default;
 }
+
+/* ── Tab Reseñas ── */
+.resenasDashCard {
+    background: #fff;
+    border-radius: 16px;
+    padding: 36px 40px;
+    max-width: 600px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+.resenasDashTitulo {
+    font-family: "Bai Jamjuree", sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #1d1d1f;
+    margin-bottom: 8px;
+}
+
+.resenasDashSub {
+    font-family: "Mulish", sans-serif;
+    font-size: 14px;
+    color: #6e6e73;
+    margin-bottom: 28px;
+    line-height: 1.6;
+}
+
+.resenasDashForm { display: flex; flex-direction: column; gap: 20px; }
+
+.resenasDashField { display: flex; flex-direction: column; gap: 6px; }
+
+.resenasDashField label {
+    font-family: "Bai Jamjuree", sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1d1d1f;
+}
+
+.resenasDashField textarea {
+    border: 1.5px solid #d1d1d6;
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-family: "Mulish", sans-serif;
+    font-size: 14px;
+    color: #1d1d1f;
+    background: #fafafa;
+    outline: none;
+    resize: vertical;
+    transition: border-color 0.2s;
+}
+
+.resenasDashField textarea:focus { border-color: #1c2946; }
+
+.resenasDashEstrellas { display: flex; gap: 6px; }
+
+.resenasDashEstrella {
+    background: none;
+    border: none;
+    font-size: 30px;
+    color: #d1d1d6;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    transition: color 0.15s;
+}
+
+.resenasDashEstrella.activa,
+.resenasDashEstrella:hover { color: #f5a623; }
+
+.resenasDashSubmit {
+    align-self: flex-start;
+    padding: 13px 32px;
+    background: #1c2946;
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    font-family: "Bai Jamjuree", sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.resenasDashSubmit:disabled { opacity: 0.55; cursor: not-allowed; }
+
+.resenasDashError {
+    font-family: "Mulish", sans-serif;
+    font-size: 13px;
+    color: #c0392b;
+}
+
+.resenasDashExito {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 32px 0;
+    text-align: center;
+}
+
+.resenasDashExito p {
+    font-family: "Mulish", sans-serif;
+    font-size: 15px;
+    color: #3d3d3f;
+    line-height: 1.6;
+}
+
+.resenasDashOtra {
+    font-family: "Bai Jamjuree", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1c2946;
+    background: transparent;
+    border: 2px solid #1c2946;
+    border-radius: 30px;
+    padding: 9px 22px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.resenasDashOtra:hover { background: #1c2946; color: #fff; }
+
+@media (max-width: 600px) {
+    .resenasDashCard { padding: 24px 18px; }
+}

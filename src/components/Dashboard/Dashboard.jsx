@@ -24,7 +24,7 @@ import {
 } from "../../utils/woocommerce";
 
 import { useAuth } from "../../context/AuthContext";
-import { obtenerMisProductos, obtenerMisPedidos, actualizarProducto, eliminarProducto, obtenerResenas } from "../../api";
+import { obtenerMisProductos, obtenerMisPedidos, actualizarProducto, eliminarProducto, crearResena } from "../../api";
 import { REVIEWS_PRODUCT_ID } from "../../config/constants";
 
 // MiCuenta vive en su propio archivo para mantener Dashboard.jsx manejable
@@ -364,69 +364,90 @@ function MisCompras({ usuario }) {
 
 // ─────────────────────────────────────────────────────────
 // SUB-COMPONENTE: Tab "Reseñas"
+// Formulario para que el usuario logueado deje su experiencia.
+// Al enviarse aparece en el carrusel del Home una vez aprobada.
 // ─────────────────────────────────────────────────────────
-function MisResenas() {
-  const [resenas, setResenas]   = useState([]);
-  const [cargando, setCargando] = useState(true);
-  const [error, setError]       = useState(false);
-  const [reintento, setReintento] = useState(0);
+function MisResenas({ usuario }) {
+  const [calificacion, setCalificacion] = useState(5);
+  const [resena, setResena]             = useState('');
+  const [enviando, setEnviando]         = useState(false);
+  const [enviada, setEnviada]           = useState(false);
+  const [error, setError]               = useState('');
 
-  useEffect(() => {
-    let activo = true;
-    setCargando(true);
-    setError(false);
-    obtenerResenas(REVIEWS_PRODUCT_ID)
-      .then(data  => { if (activo) setResenas(data); })
-      .catch(()   => { if (activo) setError(true); })
-      .finally(() => { if (activo) setCargando(false); });
-    return () => { activo = false; };
-  }, [reintento]);
-
-  if (error) return (
-    <div className="apiErrorCard">
-      <div className="apiErrorIcon">⚠️</div>
-      <div className="apiErrorBody">
-        <p className="apiErrorTitle">No se pudieron cargar las reseñas</p>
-        <button className="apiErrorRetry" onClick={() => setReintento(r => r + 1)}>Reintentar</button>
-      </div>
-    </div>
-  );
-
-  if (cargando) return (
-    <p style={{ fontFamily: "Mulish", color: "#6e6e73", paddingTop: 20 }}>Cargando reseñas...</p>
-  );
-
-  if (resenas.length === 0) return (
-    <div className="emptyDashboard">
-      <div style={{ fontSize: 48, marginBottom: 16 }}>⭐</div>
-      <p>Aún no hay reseñas publicadas.</p>
-    </div>
-  );
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setEnviando(true);
+    setError('');
+    try {
+      await crearResena(REVIEWS_PRODUCT_ID, {
+        nombre:       usuario.nombre,
+        email:        usuario.email,
+        resena,
+        calificacion,
+      });
+      setEnviada(true);
+      setResena('');
+      setCalificacion(5);
+    } catch {
+      setError('No se pudo enviar tu reseña. Intenta de nuevo.');
+    } finally {
+      setEnviando(false);
+    }
+  };
 
   return (
-    <div className="watchTableCard">
-      <table className="watchTable">
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Reseña</th>
-            <th>Calificación</th>
-            <th>Fecha</th>
-          </tr>
-        </thead>
-        <tbody>
-          {resenas.map(r => (
-            <tr key={r.id}>
-              <td><p className="watchTableName">{r.reviewer}</p></td>
-              <td><p className="watchTableMarca" dangerouslySetInnerHTML={{ __html: r.review }} /></td>
-              <td><span className="statusBadge publish">{"⭐".repeat(r.rating)}</span></td>
-              <td><span style={{ fontFamily: "Mulish", fontSize: 14, color: "#444" }}>
-                {new Date(r.date_created).toLocaleDateString("es-MX", { year: "numeric", month: "short", day: "numeric" })}
-              </span></td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="resenasDashCard">
+      <h3 className="resenasDashTitulo">Comparte tu experiencia</h3>
+      <p className="resenasDashSub">
+        ¿Cómo fue tu experiencia comprando o vendiendo en Compra Tu Reloj?
+        Tu reseña aparecerá en el inicio del sitio una vez aprobada.
+      </p>
+
+      {enviada ? (
+        <div className="resenasDashExito">
+          <span style={{ fontSize: 40 }}>⭐</span>
+          <p>¡Gracias, {usuario.nombre}! Tu reseña fue enviada y aparecerá en el sitio una vez que la aprobemos.</p>
+          <button className="resenasDashOtra" onClick={() => setEnviada(false)}>
+            Enviar otra reseña
+          </button>
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit} className="resenasDashForm">
+
+          <div className="resenasDashField">
+            <label>Tu calificación</label>
+            <div className="resenasDashEstrellas">
+              {[1, 2, 3, 4, 5].map(n => (
+                <button
+                  type="button"
+                  key={n}
+                  className={`resenasDashEstrella${calificacion >= n ? ' activa' : ''}`}
+                  onClick={() => setCalificacion(n)}
+                >
+                  ★
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="resenasDashField">
+            <label>Tu reseña</label>
+            <textarea
+              required
+              rows={5}
+              placeholder="Cuéntanos tu experiencia comprando o vendiendo relojes con nosotros..."
+              value={resena}
+              onChange={e => setResena(e.target.value)}
+            />
+          </div>
+
+          {error && <p className="resenasDashError">{error}</p>}
+
+          <button type="submit" disabled={enviando} className="resenasDashSubmit">
+            {enviando ? 'Enviando...' : 'Publicar reseña'}
+          </button>
+        </form>
+      )}
     </div>
   );
 }
@@ -513,7 +534,7 @@ function Dashboard() {
           {tabActivo === "relojes" && <MisRelojes  usuario={usuario} />}
           {tabActivo === "compras" && <MisCompras  usuario={usuario} />}
           {tabActivo === "cuenta"  && <MiCuenta    usuario={usuario} />}
-          {tabActivo === "resenas" && <MisResenas />}
+          {tabActivo === "resenas" && <MisResenas usuario={usuario} />}
 
         </div>
       </div>
