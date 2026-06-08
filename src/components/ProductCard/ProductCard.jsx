@@ -18,7 +18,15 @@ function ProductCard({ producto }) {
       {/* Imagen */}
       <div className="productCardImgWrap">
         {imagen ? (
-          <img src={imagen} alt={producto.name} className="productCardImg" />
+          <img
+            src={imagen}
+            alt={producto.name}
+            className="productCardImg"
+            loading="lazy"
+            decoding="async"
+            width="400"
+            height="400"
+          />
         ) : (
           <div className="productCardImgPlaceholder">⌚</div>
         )}

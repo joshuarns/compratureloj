@@ -18,8 +18,19 @@ import './ShopWatch.css';
 const DEBOUNCE_MS = 400;
 
 function ShopWatch() {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const categoria = searchParams.get("categoria");
+  const pageParam = parseInt(searchParams.get("page") || "1", 10);
+
+  const handlePageChange = (nueva) => {
+    setSearchParams(prev => {
+      const next = new URLSearchParams(prev);
+      if (nueva === 1) next.delete("page");
+      else next.set("page", String(nueva));
+      return next;
+    }, { replace: false });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   // Valor del input (se actualiza en cada tecla)
   const [inputBusqueda, setInputBusqueda] = useState("");
@@ -41,11 +52,16 @@ function ShopWatch() {
   // Limpia el timer al desmontar el componente para evitar memory leaks
   useEffect(() => () => clearTimeout(timerRef.current), []);
 
-  // Al cambiar de categoría limpiamos la búsqueda para no mezclar filtros
+  // Al cambiar de categoría limpiamos la búsqueda y reseteamos la página
   useEffect(() => {
     setInputBusqueda("");
     setBusqueda("");
-  }, [categoria]);
+    setSearchParams(prev => {
+      const next = new URLSearchParams(prev);
+      next.delete("page");
+      return next;
+    }, { replace: true });
+  }, [categoria]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Título dinámico según si hay categoría activa
   const nombreCategoria = categoria
@@ -107,7 +123,9 @@ function ShopWatch() {
         <ListaProductos
           categoria={categoria}
           busqueda={busqueda}
-          paginado  // activa los controles de paginación en el shop
+          paginado
+          paginaExterna={pageParam}
+          onPaginaChange={handlePageChange}
         />
 
       </div>

@@ -97,21 +97,23 @@ function Paginador({ paginaActual, totalPaginas, onChange }) {
 // ─────────────────────────────────────────────────────────
 const PER_PAGE = 12; // productos por página en el shop
 
-function ListaProductos({ limit, categoria, busqueda = "", paginado = false }) {
+function ListaProductos({ limit, categoria, busqueda = "", paginado = false, paginaExterna, onPaginaChange }) {
   const [productos, setProductos]       = useState([]);
   const [cargando, setCargando]         = useState(true);
   const [error, setError]               = useState(false);
-  const [paginaActual, setPaginaActual] = useState(1);
+  const [paginaInterna, setPaginaInterna] = useState(1);
   const [totalPaginas, setTotalPaginas] = useState(1);
 
-  // Contador de reintentos: al incrementarlo el useEffect de fetch se vuelve a ejecutar.
-  // Esto evita duplicar la lógica de carga en un handler separado.
   const [reintento, setReintento] = useState(0);
 
-  // Al cambiar la búsqueda o la categoría volvemos siempre a la página 1
+  // Si hay control externo de página (shop), usamos esa; si no, la interna
+  const paginaActual = paginaExterna ?? paginaInterna;
+  const setPaginaActual = onPaginaChange ?? setPaginaInterna;
+
+  // Al cambiar la búsqueda o la categoría volvemos siempre a la página 1 (solo modo interno)
   useEffect(() => {
-    setPaginaActual(1);
-  }, [busqueda, categoria]);
+    if (!onPaginaChange) setPaginaInterna(1);
+  }, [busqueda, categoria]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     // `activo` previene actualizaciones de estado sobre un componente ya
@@ -143,10 +145,9 @@ function ListaProductos({ limit, categoria, busqueda = "", paginado = false }) {
     return () => { activo = false; };
   }, [paginaActual, limit, categoria, busqueda, paginado, reintento]);
 
-  // Scroll suave hacia arriba al cambiar de página
   const handlePaginaChange = (nueva) => {
     setPaginaActual(nueva);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (!onPaginaChange) window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   // ── Error de API ───────────────────────────────────────────
