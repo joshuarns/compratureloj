@@ -12,7 +12,7 @@
 // ─────────────────────────────────────────────────────────
 
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 // Funciones compartidas para procesar datos de WooCommerce
 import {
@@ -458,8 +458,9 @@ function MisResenas({ usuario }) {
 function Dashboard() {
   const { usuario, logout } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
-  const [tabActivo, setTabActivo] = useState("relojes");
+  const [tabActivo, setTabActivo] = useState(searchParams.get("tab") || "relojes");
 
   useSEO({ titulo: "Mi Dashboard" });
 

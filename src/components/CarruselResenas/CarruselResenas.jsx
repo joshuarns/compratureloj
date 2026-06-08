@@ -1,5 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { obtenerResenas } from '../../api';
+import { useAuth } from '../../context/AuthContext';
 import { REVIEWS_PRODUCT_ID } from '../../config/constants';
 import './CarruselResenas.css';
 
@@ -21,6 +23,13 @@ function CarruselResenas() {
   const [resenas, setResenas] = useState([]);
   const [actual, setActual]   = useState(0);
   const intervalRef           = useRef(null);
+  const { usuario }           = useAuth();
+  const navigate              = useNavigate();
+
+  const handleDejarResena = () => {
+    if (usuario) navigate('/dashboard?tab=resenas');
+    else navigate('/login');
+  };
 
   const cargar = () => {
     obtenerResenas(REVIEWS_PRODUCT_ID).then(data => {
@@ -54,6 +63,9 @@ function CarruselResenas() {
             <h2 className="resenasTitle">Lo que dicen nuestros clientes</h2>
             <p className="resenasSubtitle">Experiencias reales de personas que confían en nosotros.</p>
           </div>
+          <button className="resenasBtn" onClick={handleDejarResena}>
+            + Dejar reseña
+          </button>
         </div>
 
         {resenas.length === 0 ? (
