@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import FormSellWatch from '../components/FormSellWatch/FormSellWatch';
 import CalculadoraVenta from '../components/CalculadoraVenta/CalculadoraVenta';
+import GuiaFotos from '../components/GuiaFotos/GuiaFotos';
 import { useAuth } from '../context/AuthContext';
 import { useSEO } from '../hooks/useSEO';
 import '../components/FormSellWatch/FormSellWatch.css';
@@ -27,6 +29,7 @@ function SellWatch() {
   // usuario viene del contexto global de autenticación
   // null → no hay sesión activa
   const { usuario } = useAuth();
+  const [guiaAbierta, setGuiaAbierta] = useState(false);
 
   return (
     <div className={usuario ? "sellPage" : "sellPageCentered"}>
@@ -39,10 +42,16 @@ function SellWatch() {
              ══════════════════════════════════════════════ */
           <>
             <div className="sellPageHeader">
-              <h1>Vender mi reloj</h1>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
+                <h1 style={{ margin: 0 }}>Vender mi reloj</h1>
+                <button className="guiaBtn" onClick={() => setGuiaAbierta(true)}>
+                  📷 Consultar Guía Fácil
+                </button>
+              </div>
               <p>Completa el formulario y nuestro equipo revisará tu reloj antes de publicarlo.</p>
             </div>
             <FormSellWatch />
+            {guiaAbierta && <GuiaFotos onClose={() => setGuiaAbierta(false)} />}
           </>
 
         ) : (

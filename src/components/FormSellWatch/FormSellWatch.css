@@ -301,3 +301,22 @@
   background-color: #b0b0b5;
   cursor: not-allowed;
 }
+
+.guiaBtn {
+  font-family: "Bai Jamjuree", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1c2946;
+  background: transparent;
+  border: 2px solid #1c2946;
+  border-radius: 30px;
+  padding: 9px 20px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s, color 0.2s;
+}
+
+.guiaBtn:hover {
+  background: #1c2946;
+  color: #fff;
+}
