@@ -15,14 +15,46 @@ import { axios, BASE_URL, BASE_URL_WP, auth } from './client';
 // El header x-wp-totalpages lo inyecta WooCommerce automáticamente
 // con el número total de páginas para los parámetros dados.
 export const obtenerProductos = async (page = 1, perPage = 12, busqueda = "") => {
-    const params = { status: 'publish', per_page: perPage, page };
+    // Con búsqueda: traemos todos los publicados y filtramos en el cliente
+    // porque WooCommerce ?search= solo busca en título/descripción, no en
+    // meta_data (marca, modelo, referencia).
+    if (busqueda) {
+        const termino = busqueda.toLowerCase().trim();
 
-    // WooCommerce filtra por nombre y descripción cuando se envía el param search
-    if (busqueda) params.search = busqueda;
+        const respuesta = await axios.get(`${BASE_URL}/products`, {
+            params: { status: 'publish', per_page: 100, page: 1 },
+            auth,
+        });
 
-    const respuesta = await axios.get(`${BASE_URL}/products`, { params, auth });
+        const todos = Array.isArray(respuesta.data) ? respuesta.data : [];
 
-    // parseInt con radix 10 para evitar interpretaciones octales en strings con ceros
+        const getMeta = (metaData, key) =>
+            (metaData || []).find(m => m.key === key)?.value || '';
+
+        const filtrados = todos.filter(p => {
+            const campos = [
+                p.name,
+                getMeta(p.meta_data, 'marca'),
+                getMeta(p.meta_data, 'modelo'),
+                getMeta(p.meta_data, 'referencia'),
+            ].join(' ').toLowerCase();
+            return campos.includes(termino);
+        });
+
+        // Paginación client-side sobre los resultados filtrados
+        const totalPaginas = Math.max(1, Math.ceil(filtrados.length / perPage));
+        const inicio       = (page - 1) * perPage;
+        const productos    = filtrados.slice(inicio, inicio + perPage);
+
+        return { productos, totalPaginas };
+    }
+
+    // Sin búsqueda: paginación normal server-side
+    const respuesta = await axios.get(`${BASE_URL}/products`, {
+        params: { status: 'publish', per_page: perPage, page },
+        auth,
+    });
+
     const totalPaginas = parseInt(respuesta.headers['x-wp-totalpages'] || '1', 10);
     const productos    = Array.isArray(respuesta.data) ? respuesta.data : [];
 
