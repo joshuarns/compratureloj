@@ -140,9 +140,30 @@
   .footerBottom {
     flex-direction: column;
     align-items: flex-start;
+    gap: 8px;
   }
 
   .footerLogo {
     width: 140px;
+  }
+
+  .footerBrand p {
+    max-width: 100%;
+  }
+
+  .footerLegal {
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 576px) {
+  .footer {
+    padding: 40px 0 0;
+  }
+
+  /* Safe-area para el home indicator de iOS */
+  .footerBottom {
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
   }
 }

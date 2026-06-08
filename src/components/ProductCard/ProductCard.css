@@ -169,3 +169,22 @@
 .heartBtn.active {
   color: #ff3b5c;
 }
+
+@media (max-width: 576px) {
+  /* En mobile desactivamos el hover de zoom para no interferir con el tap */
+  .productCard:hover {
+    transform: none;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  }
+
+  .productCard:hover .productCardImg {
+    transform: none;
+  }
+
+  /* Área táctil del corazón más grande */
+  .heartBtn {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+  }
+}

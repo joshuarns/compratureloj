@@ -320,3 +320,23 @@
   background: #1c2946;
   color: #fff;
 }
+
+@media (max-width: 576px) {
+  .sellPageHeader h1 { font-size: 26px; }
+
+  .sellCard {
+    padding: 20px 16px;
+    border-radius: 14px;
+  }
+
+  /* El título y el botón de guía se apilan verticalmente */
+  .sellPageHeader > div {
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
+
+  .guiaBtn {
+    width: 100%;
+    text-align: center;
+  }
+}

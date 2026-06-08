@@ -201,4 +201,53 @@
     padding-left: 16px !important;
     padding-right: 16px !important;
   }
+
+  .sellPage,
+  .checkoutPage,
+  .shopPage,
+  .singlePage,
+  .registerPage {
+    padding: 72px 0 60px;
+  }
+
+  .bannerSingle {
+    padding: 32px 0;
+  }
+
+  .bannerSingle h1 {
+    font-size: 26px;
+  }
+}
+
+/* ── PWA / mobile native feel ── */
+
+/* Elimina el flash azul al tocar en Android */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Elimina el delay de 300ms en botones y links */
+button, a, [role="button"], input, textarea, select {
+  touch-action: manipulation;
+}
+
+/* Evita rebote del body en iOS cuando hay modales abiertos */
+body.modal-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
+/* Padding de safe-area para páginas completas (notch iPhone) */
+.sellPage,
+.checkoutPage,
+.shopPage,
+.singlePage,
+.registerPage {
+  padding-bottom: max(100px, calc(60px + env(safe-area-inset-bottom)));
+}
+
+/* Footer — respeta el home indicator de iOS */
+.footer {
+  padding-bottom: max(0px, env(safe-area-inset-bottom));
 }

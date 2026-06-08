@@ -21,13 +21,15 @@
   z-index: 1000;
   height: 52px;
 
-  /* Frosted glass: el fondo semitransparente permite ver el contenido
-     scrollado por debajo; backdrop-filter añade el desenfoque. */
   background: rgba(255, 255, 255, 0.82);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
 
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+
+  /* Safe-area para Dynamic Island / notch en iOS */
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
 }
 
 /* Fila horizontal que contiene logo + links + acciones.
@@ -354,7 +356,7 @@
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-    padding: 8px 0 20px;
+    padding: 8px 0 max(20px, env(safe-area-inset-bottom));
     z-index: 1000;
 
     /* Estado inicial: invisible y ligeramente desplazado hacia arriba */

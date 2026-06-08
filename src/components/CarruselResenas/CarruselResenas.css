@@ -160,7 +160,8 @@
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  padding: 16px;
+  padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+  overscroll-behavior: contain;
 }
 
 .resenaModal {
@@ -288,7 +289,11 @@
 }
 
 @media (max-width: 600px) {
-  .resenaTarjeta { padding: 28px 22px; }
-  .resenasTitle  { font-size: 24px; }
-  .resenaModal   { padding: 32px 20px 24px; }
+  .resenasSection { padding: 56px 0 64px; }
+  .resenasHeader  { flex-direction: column; align-items: flex-start; gap: 12px; margin-bottom: 32px; }
+  .resenasTitle   { font-size: 24px; }
+  .resenasBtn     { width: 100%; text-align: center; }
+  .resenaTarjeta  { padding: 28px 22px; }
+  .resenasArrow   { width: 36px; height: 36px; font-size: 18px; }
+  .resenaModal    { padding: 32px 20px 24px; }
 }

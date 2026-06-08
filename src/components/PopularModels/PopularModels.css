@@ -178,3 +178,13 @@
     font-size: 15px;
   }
 }
+
+@media (max-width: 380px) {
+  .brandGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .brandCard {
+    height: 200px;
+  }
+}
