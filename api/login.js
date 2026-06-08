@@ -43,7 +43,7 @@ export default async function handler(req, res) {
   const userAuth = Buffer.from(`${username}:${password}`).toString('base64');
 
   try {
-    const upstream = await fetch(`${wpBase}/users/me`, {
+    const upstream = await fetch(`${wpBase}/users/me?context=edit`, {
       headers: { Authorization: `Basic ${userAuth}` },
     });
 
