@@ -30,6 +30,8 @@ export {
     eliminarProducto,
     obtenerResenas,
     crearResena,
+    obtenerTodasResenas,
+    actualizarResena,
 } from './products';
 
 export {

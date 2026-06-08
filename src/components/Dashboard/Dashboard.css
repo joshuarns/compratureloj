@@ -514,3 +514,146 @@
 @media (max-width: 600px) {
     .resenasDashCard { padding: 24px 18px; }
 }
+
+/* ── Admin: Gestionar Reseñas ── */
+.adminResenasFiltros {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+}
+
+.adminResenasFiltroBtn {
+    font-family: "Bai Jamjuree", sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 7px 18px;
+    border-radius: 20px;
+    border: 1.5px solid #d1d1d6;
+    background: transparent;
+    color: #6e6e73;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.adminResenasFiltroBtn.activo,
+.adminResenasFiltroBtn:hover {
+    border-color: #1c2946;
+    color: #1c2946;
+    background: #f0f2f7;
+}
+
+.adminResenasLista {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.adminResenaCard {
+    background: #fff;
+    border-radius: 14px;
+    padding: 24px 28px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+
+.adminResenaHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.adminResenaAutor {
+    font-family: "Bai Jamjuree", sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: #1d1d1f;
+    margin: 0 0 2px;
+}
+
+.adminResenaEmail {
+    font-family: "Mulish", sans-serif;
+    font-size: 13px;
+    color: #6e6e73;
+    margin: 0;
+}
+
+.adminResenaEstrellas {
+    color: #f5a623;
+    font-size: 16px;
+    letter-spacing: 2px;
+}
+
+.adminResenaTexto {
+    font-family: "Mulish", sans-serif;
+    font-size: 14px;
+    color: #3d3d3f;
+    line-height: 1.65;
+    margin-bottom: 8px;
+}
+
+.adminResenaFecha {
+    font-family: "Mulish", sans-serif;
+    font-size: 12px;
+    color: #aeaeb2;
+    margin-bottom: 16px;
+}
+
+.adminResenaAcciones {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.adminResenaAprobar,
+.adminResenaSpam,
+.adminResenaEliminar {
+    font-family: "Bai Jamjuree", sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 7px 18px;
+    border-radius: 20px;
+    border: 1.5px solid;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.adminResenaAprobar {
+    border-color: #1a7a4a;
+    color: #1a7a4a;
+    background: transparent;
+}
+
+.adminResenaAprobar:hover:not(:disabled) {
+    background: #1a7a4a;
+    color: #fff;
+}
+
+.adminResenaSpam {
+    border-color: #b97500;
+    color: #b97500;
+    background: transparent;
+}
+
+.adminResenaSpam:hover:not(:disabled) {
+    background: #b97500;
+    color: #fff;
+}
+
+.adminResenaEliminar {
+    border-color: #c0392b;
+    color: #c0392b;
+    background: transparent;
+}
+
+.adminResenaEliminar:hover:not(:disabled) {
+    background: #c0392b;
+    color: #fff;
+}
+
+.adminResenaAprobar:disabled,
+.adminResenaSpam:disabled,
+.adminResenaEliminar:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}

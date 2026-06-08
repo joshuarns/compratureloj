@@ -160,7 +160,6 @@ export const obtenerResenas = async (productId, perPage = 20) => {
 };
 
 // ── crearResena ───────────────────────────────────────────────────────────────
-// Envía una reseña pública al producto ancla.
 export const crearResena = async (productId, { nombre, email, resena, calificacion }) => {
     const response = await axios.post(`${BASE_URL}/products/reviews`, {
         product_id:      productId,
@@ -169,5 +168,22 @@ export const crearResena = async (productId, { nombre, email, resena, calificaci
         review:          resena,
         rating:          calificacion,
     }, { auth });
+    return response.data;
+};
+
+// ── obtenerTodasResenas ───────────────────────────────────────────────────────
+// Admin: trae reseñas de cualquier estado (hold, approved, spam, trash).
+export const obtenerTodasResenas = async (productId, status = 'hold') => {
+    const response = await axios.get(`${BASE_URL}/products/reviews`, {
+        params: { product: productId, status, per_page: 50 },
+        auth,
+    });
+    return Array.isArray(response.data) ? response.data : [];
+};
+
+// ── actualizarResena ──────────────────────────────────────────────────────────
+// Admin: cambia el status de una reseña (approved / spam / trash).
+export const actualizarResena = async (id, status) => {
+    const response = await axios.put(`${BASE_URL}/products/reviews/${id}`, { status }, { auth });
     return response.data;
 };

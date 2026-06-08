@@ -24,7 +24,7 @@ import {
 } from "../../utils/woocommerce";
 
 import { useAuth } from "../../context/AuthContext";
-import { obtenerMisProductos, obtenerMisPedidos, actualizarProducto, eliminarProducto, crearResena } from "../../api";
+import { obtenerMisProductos, obtenerMisPedidos, actualizarProducto, eliminarProducto, crearResena, obtenerTodasResenas, actualizarResena } from "../../api";
 import { REVIEWS_PRODUCT_ID } from "../../config/constants";
 
 // MiCuenta vive en su propio archivo para mantener Dashboard.jsx manejable
@@ -453,6 +453,135 @@ function MisResenas({ usuario }) {
 }
 
 // ─────────────────────────────────────────────────────────
+// SUB-COMPONENTE: Tab "Gestionar Reseñas" (solo admin)
+// ─────────────────────────────────────────────────────────
+function AdminResenas() {
+  const [resenas, setResenas]     = useState([]);
+  const [cargando, setCargando]   = useState(true);
+  const [error, setError]         = useState(false);
+  const [filtro, setFiltro]       = useState('hold');
+  const [accionando, setAccionando] = useState(null);
+
+  useEffect(() => {
+    let activo = true;
+    setCargando(true);
+    setError(false);
+    obtenerTodasResenas(REVIEWS_PRODUCT_ID, filtro)
+      .then(data => { if (activo) setResenas(data); })
+      .catch(() => { if (activo) setError(true); })
+      .finally(() => { if (activo) setCargando(false); });
+    return () => { activo = false; };
+  }, [filtro]);
+
+  const cambiarEstado = async (id, nuevoEstado) => {
+    setAccionando(id);
+    try {
+      await actualizarResena(id, nuevoEstado);
+      setResenas(prev => prev.filter(r => r.id !== id));
+    } catch {
+      alert('No se pudo actualizar la reseña. Intenta de nuevo.');
+    } finally {
+      setAccionando(null);
+    }
+  };
+
+  const FILTROS = [
+    { value: 'hold',     label: 'Pendientes' },
+    { value: 'approved', label: 'Aprobadas' },
+    { value: 'spam',     label: 'Spam' },
+    { value: 'trash',    label: 'Eliminadas' },
+  ];
+
+  return (
+    <div>
+      {/* Filtros */}
+      <div className="adminResenasFiltros">
+        {FILTROS.map(f => (
+          <button
+            key={f.value}
+            className={`adminResenasFiltroBtn${filtro === f.value ? ' activo' : ''}`}
+            onClick={() => setFiltro(f.value)}
+          >
+            {f.label}
+          </button>
+        ))}
+      </div>
+
+      {error && (
+        <div className="apiErrorCard">
+          <div className="apiErrorIcon">⚠️</div>
+          <div className="apiErrorBody">
+            <p className="apiErrorTitle">No se pudieron cargar las reseñas</p>
+          </div>
+        </div>
+      )}
+
+      {cargando && (
+        <p style={{ fontFamily: "Mulish", color: "#6e6e73", paddingTop: 20 }}>Cargando reseñas...</p>
+      )}
+
+      {!cargando && !error && resenas.length === 0 && (
+        <div className="emptyDashboard">
+          <div style={{ fontSize: 48, marginBottom: 16 }}>⭐</div>
+          <p>No hay reseñas en esta categoría.</p>
+        </div>
+      )}
+
+      {!cargando && !error && resenas.length > 0 && (
+        <div className="adminResenasLista">
+          {resenas.map(r => (
+            <div key={r.id} className="adminResenaCard">
+              <div className="adminResenaHeader">
+                <div>
+                  <p className="adminResenaAutor">{r.reviewer}</p>
+                  <p className="adminResenaEmail">{r.reviewer_email}</p>
+                </div>
+                <div className="adminResenaEstrellas">
+                  {'★'.repeat(r.rating)}{'☆'.repeat(5 - r.rating)}
+                </div>
+              </div>
+              <p className="adminResenaTexto" dangerouslySetInnerHTML={{ __html: r.review }} />
+              <p className="adminResenaFecha">
+                {new Date(r.date_created).toLocaleDateString('es-MX', { year: 'numeric', month: 'short', day: 'numeric' })}
+              </p>
+              <div className="adminResenaAcciones">
+                {filtro !== 'approved' && (
+                  <button
+                    className="adminResenaAprobar"
+                    disabled={accionando === r.id}
+                    onClick={() => cambiarEstado(r.id, 'approved')}
+                  >
+                    {accionando === r.id ? '...' : '✓ Aprobar'}
+                  </button>
+                )}
+                {filtro !== 'spam' && (
+                  <button
+                    className="adminResenaSpam"
+                    disabled={accionando === r.id}
+                    onClick={() => cambiarEstado(r.id, 'spam')}
+                  >
+                    Marcar spam
+                  </button>
+                )}
+                {filtro !== 'trash' && (
+                  <button
+                    className="adminResenaEliminar"
+                    disabled={accionando === r.id}
+                    onClick={() => cambiarEstado(r.id, 'trash')}
+                  >
+                    Eliminar
+                  </button>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────
 // COMPONENTE PRINCIPAL: Dashboard
 // ─────────────────────────────────────────────────────────
 function Dashboard() {
@@ -520,6 +649,14 @@ function Dashboard() {
             >
               Reseñas
             </button>
+            {usuario.roles?.includes('administrator') && (
+              <button
+                className={`dashboardTab${tabActivo === "admin-resenas" ? " active" : ""}`}
+                onClick={() => setTabActivo("admin-resenas")}
+              >
+                Gestionar reseñas
+              </button>
+            )}
           </div>
 
           {/* ── Encabezado con botón de acción (solo en "Mis relojes") ── */}
@@ -535,7 +672,8 @@ function Dashboard() {
           {tabActivo === "relojes" && <MisRelojes  usuario={usuario} />}
           {tabActivo === "compras" && <MisCompras  usuario={usuario} />}
           {tabActivo === "cuenta"  && <MiCuenta    usuario={usuario} />}
-          {tabActivo === "resenas" && <MisResenas usuario={usuario} />}
+          {tabActivo === "resenas"       && <MisResenas usuario={usuario} />}
+          {tabActivo === "admin-resenas" && usuario.roles?.includes('administrator') && <AdminResenas />}
 
         </div>
       </div>
