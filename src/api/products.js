@@ -181,9 +181,26 @@ export const eliminarProducto = async (id) => {
     return response.data;
 };
 
+// ── _resolverProductoAncla ────────────────────────────────────────────────────
+// Obtiene el ID del primer producto publicado para anclar las reseñas.
+// Las reseñas en WooCommerce requieren un product_id válido; usamos el
+// primer producto existente para no depender de un ID hardcodeado.
+let _anclaCache = null;
+const _resolverProductoAncla = async () => {
+    if (_anclaCache) return _anclaCache;
+    const res = await axios.get(`${BASE_URL}/products`, {
+        params: { status: 'any', per_page: 1, page: 1 },
+        auth,
+    });
+    const lista = Array.isArray(res.data) ? res.data : [];
+    if (!lista.length) throw new Error('No hay productos en WooCommerce para anclar reseñas.');
+    _anclaCache = lista[0].id;
+    return _anclaCache;
+};
+
 // ── obtenerResenas ────────────────────────────────────────────────────────────
-// Trae las reseñas aprobadas del producto ancla (REVIEWS_PRODUCT_ID).
-export const obtenerResenas = async (productId, perPage = 20) => {
+export const obtenerResenas = async (_ignored, perPage = 20) => {
+    const productId = await _resolverProductoAncla();
     const response = await axios.get(`${BASE_URL}/products/reviews`, {
         params: { product: productId, status: 'approved', per_page: perPage },
         auth,
@@ -192,7 +209,8 @@ export const obtenerResenas = async (productId, perPage = 20) => {
 };
 
 // ── crearResena ───────────────────────────────────────────────────────────────
-export const crearResena = async (productId, { nombre, email, resena, calificacion }) => {
+export const crearResena = async (_ignored, { nombre, email, resena, calificacion }) => {
+    const productId = await _resolverProductoAncla();
     const response = await axios.post(`${BASE_URL}/products/reviews`, {
         product_id:      productId,
         reviewer:        nombre,
@@ -204,8 +222,8 @@ export const crearResena = async (productId, { nombre, email, resena, calificaci
 };
 
 // ── obtenerTodasResenas ───────────────────────────────────────────────────────
-// Admin: trae reseñas de cualquier estado (hold, approved, spam, trash).
-export const obtenerTodasResenas = async (productId, status = 'hold') => {
+export const obtenerTodasResenas = async (_ignored, status = 'hold') => {
+    const productId = await _resolverProductoAncla();
     const response = await axios.get(`${BASE_URL}/products/reviews`, {
         params: { product: productId, status, per_page: 50 },
         auth,
@@ -214,7 +232,6 @@ export const obtenerTodasResenas = async (productId, status = 'hold') => {
 };
 
 // ── actualizarResena ──────────────────────────────────────────────────────────
-// Admin: cambia el status de una reseña (approved / spam / trash).
 export const actualizarResena = async (id, status) => {
     const response = await axios.put(`${BASE_URL}/products/reviews/${id}`, { status }, { auth });
     return response.data;
