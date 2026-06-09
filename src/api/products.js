@@ -209,16 +209,15 @@ export const obtenerResenas = async (_ignored, perPage = 20) => {
 };
 
 // ── crearResena ───────────────────────────────────────────────────────────────
+// Usa el endpoint dedicado /api/reviews que fuerza status=hold
+// independientemente de las credenciales y configuración del sitio.
 export const crearResena = async (_ignored, { nombre, email, resena, calificacion }) => {
-    const productId = await _resolverProductoAncla();
-    const response = await axios.post(`${BASE_URL}/products/reviews`, {
-        product_id:      productId,
-        reviewer:        nombre,
-        reviewer_email:  email,
-        review:          resena,
-        rating:          calificacion,
-        status:          'hold', // pendiente de aprobación — evita auto-aprobación por credenciales admin
-    }, { auth });
+    const response = await axios.post('/api/reviews', {
+        nombre,
+        email,
+        resena,
+        calificacion,
+    });
     return response.data;
 };
 

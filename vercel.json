@@ -2,9 +2,10 @@
   "buildCommand": "npm run build",
   "outputDirectory": "build",
   "routes": [
-    { "src": "/api/wc/(.*)", "dest": "/api/wc?_path=$1" },
-    { "src": "/api/wp/(.*)", "dest": "/api/wp?_path=$1" },
+    { "src": "/api/wc/(.*)",  "dest": "/api/wc?_path=$1" },
+    { "src": "/api/wp/(.*)",  "dest": "/api/wp?_path=$1" },
+    { "src": "/api/reviews",  "dest": "/api/reviews" },
     { "handle": "filesystem" },
-    { "src": "/(.*)",        "dest": "/index.html" }
+    { "src": "/(.*)",         "dest": "/index.html" }
   ]
 }
