@@ -127,6 +127,21 @@ export function AuthProvider({ children }) {
     });
   }, []);
 
+  // ── Hidratación de roles ──────────────────────────────────────────────────
+  // Si la sesión guardada en localStorage no tiene `roles` (fue creada antes de
+  // que se añadiera ese campo), los obtenemos silenciosamente al arrancar la app.
+  // Así el tab "Gestionar reseñas" aparece sin que el admin tenga que cerrar sesión.
+  useEffect(() => {
+    if (!usuario || (usuario.roles && usuario.roles.length > 0)) return;
+    obtenerUsuario(usuario.id)
+      .then(data => {
+        if (data.roles?.length > 0) {
+          actualizarDatos({ roles: data.roles });
+        }
+      })
+      .catch(() => {}); // no crítico — si falla, el tab simplemente no aparece
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   // ── Revalidación en background ────────────────────────────────────────────
   // Referencia mutable para evitar que el efecto capture un closure viejo de `usuario`
   const usuarioRef = useRef(usuario);
