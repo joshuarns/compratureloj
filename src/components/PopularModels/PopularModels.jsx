@@ -6,6 +6,7 @@ import './PopularModels.css';
 import rolexImg        from '../../assets/images/rolex.avif';
 import audemarsPiguetImg from '../../assets/images/audemars-piguet.avif';
 import cartierImg      from '../../assets/images/cartier.png';
+import hublotImg       from '../../assets/images/hublot-cat.png';
 
 // ─────────────────────────────────────────────────────────
 // Lista de marcas populares
@@ -30,6 +31,12 @@ const MARCAS = [
     modelo: "Santos · Tank · Panthère",
     imagen: cartierImg,
     slug: "cartier",
+  },
+  {
+    nombre: "Hublot",
+    modelo: "Big Bang · Classic Fusion",
+    imagen: hublotImg,
+    slug: "hublot",
   },
 ];
 
