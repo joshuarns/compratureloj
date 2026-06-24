@@ -75,7 +75,7 @@ function Footer() {
               <li>
                 <span>💬</span>
                 <a
-                  href="https://wa.me/525545116894"
+                  href="https://wa.me/525579801088"
                   target="_blank"
                   rel="noreferrer"
                 >

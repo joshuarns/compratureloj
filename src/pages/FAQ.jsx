@@ -273,7 +273,7 @@ function FAQ() {
               Nuestro equipo está disponible 24/7 para atenderte.
             </p>
             <a
-              href="https://wa.me/525545116894"
+              href="https://wa.me/525579801088"
               target="_blank"
               rel="noreferrer"
               style={{
