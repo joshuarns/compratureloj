@@ -72,8 +72,8 @@ export default async function handler(req, res) {
   }
 
   // ── Paso 2: Crear Stripe Checkout Session ────────────────────────────────
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2024-06-20' });
-  const appUrl = (process.env.APP_URL || 'https://compratureloj.vercel.app').replace(/\/$/, '');
+  const stripe = new Stripe((process.env.STRIPE_SECRET_KEY || '').trim(), { apiVersion: '2026-06-24.dahlia' });
+  const appUrl = (process.env.APP_URL || 'https://compratureloj.com.mx').replace(/\/$/, '').trim();
 
   try {
     const session = await stripe.checkout.sessions.create({
@@ -100,6 +100,10 @@ export default async function handler(req, res) {
 
     return res.status(200).json({ url: session.url });
   } catch (err) {
-    return res.status(502).json({ error: `${err.message} | appUrl: ${appUrl}` });
+    return res.status(502).json({
+      error: err.message,
+      type: err.type,
+      successUrl: `${appUrl}/pago-exitoso`,
+    });
   }
 }

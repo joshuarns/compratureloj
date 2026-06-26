@@ -57,7 +57,7 @@ function Checkout() {
       const data = await res.json();
 
       if (!res.ok || !data.url) {
-        throw new Error(data.error || data.detail || "Error al crear la sesión de pago");
+        throw new Error(`${data.error || "Error"} | url: ${data.successUrl || '?'} | type: ${data.type || '?'}`);
       }
 
       // Redirigir a la página de pago de Stripe
