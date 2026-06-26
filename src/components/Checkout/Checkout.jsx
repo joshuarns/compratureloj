@@ -57,13 +57,13 @@ function Checkout() {
       const data = await res.json();
 
       if (!res.ok || !data.url) {
-        throw new Error(data.error || "Error al crear la sesión de pago");
+        throw new Error(data.error || data.detail || "Error al crear la sesión de pago");
       }
 
       // Redirigir a la página de pago de Stripe
       window.location.href = data.url;
     } catch (err) {
-      setError("Ocurrió un error al procesar tu pedido. Intenta de nuevo.");
+      setError(`Error: ${err.message}`);
       setEnviando(false);
     }
   };
