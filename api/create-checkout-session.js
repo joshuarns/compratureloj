@@ -72,7 +72,7 @@ export default async function handler(req, res) {
   }
 
   // ── Paso 2: Crear Stripe Checkout Session ────────────────────────────────
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2024-06-20' });
   const appUrl = (process.env.APP_URL || 'https://compratureloj.vercel.app').replace(/\/$/, '');
 
   try {
@@ -93,11 +93,9 @@ export default async function handler(req, res) {
       metadata: {
         wc_order_id: String(wcOrder.id),
       },
-      customer_email: datosCliente.email || undefined,
-      success_url: `${appUrl}/pago-exitoso?session_id={CHECKOUT_SESSION_ID}`,
+      customer_email: datosCliente?.email || undefined,
+      success_url: `${appUrl}/pago-exitoso`,
       cancel_url:  `${appUrl}/pago-cancelado`,
-      // Localización para compradores mexicanos
-      locale: 'es',
     });
 
     return res.status(200).json({ url: session.url });
