@@ -1,17 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-// crearPedido ya no se usa directamente — lo hace el serverless create-checkout-session
 import { useAuth } from "../../context/AuthContext";
-import PaymentConfirmation from "../PaymentConfirmation/PaymentConfirmation";
 import './Checkout.css';
 
 function Checkout() {
   const { usuario } = useAuth();
   const [carrito, setCarrito] = useState([]);
-  const [pedidoEnviado, setPedidoEnviado] = useState(false);
-  // Guardamos el objeto completo del pedido (no solo el ID) para mostrarlo
-  // en PaymentConfirmation sin necesidad de una segunda petición a la API
-  const [pedido, setPedido] = useState(null);
   const [enviando, setEnviando] = useState(false);
   const [error, setError] = useState("");
 
@@ -73,10 +67,6 @@ function Checkout() {
       setEnviando(false);
     }
   };
-
-  if (pedidoEnviado && pedido) {
-    return <PaymentConfirmation pedido={pedido} />;
-  }
 
   const total = carrito.reduce((sum, item) => sum + item.precio * item.cantidad, 0);
 
