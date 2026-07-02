@@ -41,11 +41,7 @@ const PASOS_MANUALES = {
     { icono: "➕", texto: 'Selecciona "Añadir a pantalla de inicio"'        },
     { icono: "✅", texto: 'Toca "Añadir" para confirmar'                    },
   ],
-  "ios-chrome": [
-    { icono: "⋯",  texto: 'Toca los tres puntos en la esquina inferior'     },
-    { icono: "➕", texto: 'Selecciona "Añadir a pantalla de inicio"'        },
-    { icono: "✅", texto: 'Toca "Añadir" para confirmar'                    },
-  ],
+  "ios-chrome": null, // Chrome en iOS no soporta instalación — mostrar aviso especial
   "android-firefox": [
     { icono: "⋮",  texto: 'Toca el menú en la esquina inferior'             },
     { icono: "📲", texto: 'Selecciona "Instalar"'                           },
@@ -96,7 +92,16 @@ function InstallPWA() {
       return () => window.removeEventListener("beforeinstallprompt", onBeforeInstall);
     }
 
-    // ── iOS / Firefox / otros: instrucciones manuales ─────────────────────────
+    // ── iOS Chrome: no soporta instalación, mostrar aviso para abrir Safari ──
+    if (plataforma === "ios-chrome") {
+      const timer = setTimeout(() => {
+        setFlujo({ tipo: "ios-chrome-aviso" });
+        setVisible(true);
+      }, 2500);
+      return () => clearTimeout(timer);
+    }
+
+    // ── iOS Safari / Firefox / otros: instrucciones manuales ──────────────────
     const pasos = PASOS_MANUALES[plataforma] || PASOS_MANUALES["ios-safari"];
     const timer = setTimeout(() => {
       setFlujo({ tipo: "manual", pasos });
@@ -142,7 +147,7 @@ function InstallPWA() {
           </button>
         )}
 
-        {/* ── Flujo manual (iOS / otros) ── */}
+        {/* ── Flujo manual (iOS Safari / Firefox / otros) ── */}
         {flujo?.tipo === "manual" && (
           <>
             <ol className="pwaPasos">
@@ -152,6 +157,36 @@ function InstallPWA() {
                   <span className="pwaPasoTexto">{paso.texto}</span>
                 </li>
               ))}
+            </ol>
+            <button className="pwaBtnEntendido" onClick={cerrar}>
+              Entendido
+            </button>
+          </>
+        )}
+
+        {/* ── iOS Chrome: redirigir a Safari ── */}
+        {flujo?.tipo === "ios-chrome-aviso" && (
+          <>
+            <p className="pwaAviso">
+              Chrome en iPhone no permite instalar apps. Para instalarla sigue estos pasos:
+            </p>
+            <ol className="pwaPasos">
+              <li className="pwaPaso">
+                <span className="pwaPasoIcono">🧭</span>
+                <span className="pwaPasoTexto">Abre <strong>Safari</strong> y entra a <strong>compratureloj.com.mx</strong></span>
+              </li>
+              <li className="pwaPaso">
+                <span className="pwaPasoIcono">⬆️</span>
+                <span className="pwaPasoTexto">Toca el botón <strong>"Compartir"</strong> en la barra inferior</span>
+              </li>
+              <li className="pwaPaso">
+                <span className="pwaPasoIcono">➕</span>
+                <span className="pwaPasoTexto">Selecciona <strong>"Añadir a pantalla de inicio"</strong></span>
+              </li>
+              <li className="pwaPaso">
+                <span className="pwaPasoIcono">✅</span>
+                <span className="pwaPasoTexto">Toca <strong>"Añadir"</strong> para confirmar</span>
+              </li>
             </ol>
             <button className="pwaBtnEntendido" onClick={cerrar}>
               Entendido

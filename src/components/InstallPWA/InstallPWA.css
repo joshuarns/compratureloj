@@ -74,6 +74,20 @@
   margin-bottom: 24px;
 }
 
+/* ── Aviso iOS Chrome ── */
+.pwaAviso {
+  font-family: "Mulish", sans-serif;
+  font-size: 13px;
+  color: #6e6e73;
+  background: #f5f5f7;
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  line-height: 1.5;
+  text-align: left;
+  width: 100%;
+}
+
 /* ── Pasos ── */
 .pwaPasos {
   list-style: none;
