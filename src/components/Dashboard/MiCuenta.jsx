@@ -32,7 +32,7 @@ import { useToast } from "../../context/ToastContext";
 
 // obtenerUsuario  → GET /wp/v2/users/:id → carga first_name, last_name, email…
 // actualizarUsuario → PUT /wp/v2/users/:id → guarda los cambios en WordPress
-import { obtenerUsuario, actualizarUsuario } from "../../api";
+import { actualizarUsuario } from "../../api";
 
 import "./MiCuenta.css";
 import "../../App.css"; // .apiErrorCard, .apiErrorIcon, etc.
@@ -76,24 +76,10 @@ function MiCuenta({ usuario }) {
   // `activo` previene setState si el componente se desmontó mientras la
   // petición estaba en vuelo — evita el warning de React y posibles leaks.
   useEffect(() => {
-    let activo = true;
-    setCargandoPerfil(true);
-
-    obtenerUsuario(usuario.id)
-      .then(data => {
-        if (!activo) return;
-        // avatar_urls["96"] → Gravatar en resolución 96×96 px
-        setFirstName(data.first_name      || "");
-        setLastName(data.last_name        || "");
-        setEmail(data.email               || "");
-        setDescripcion(data.description   || "");
-        setAvatarUrl(data.avatar_urls?.["96"] || "");
-      })
-      .catch(() => { /* Si falla la API el form igual se muestra con datos de sesión */ })
-      .finally(() => { if (activo) setCargandoPerfil(false); });
-
-    return () => { activo = false; };
-  }, [usuario.id]);
+    // Los valores iniciales ya vienen del contexto de sesión.
+    // Solo marcamos como listo para mostrar el formulario.
+    setCargandoPerfil(false);
+  }, []);
 
   // ── Handler: guardar datos personales ────────────────────────────────────
   const handleGuardarDatos = async (e) => {
