@@ -58,9 +58,6 @@ function MiCuenta({ usuario }) {
   // Estados de carga/error para la sección de datos personales.
   // exitoDatos ya no existe: el feedback de éxito lo maneja showToast().
   const [cargandoPerfil, setCargandoPerfil] = useState(true);
-  const [errorCarga,     setErrorCarga]     = useState(false);
-  // Incrementar este contador re-ejecuta el useEffect de carga (patrón de
-  // reintento sin duplicar código). Lo usa el botón "Reintentar".
   const [reintento,      setReintento]      = useState(0);
   const [guardandoDatos, setGuardandoDatos] = useState(false);
   const [errorDatos,     setErrorDatos]     = useState("");
@@ -94,11 +91,7 @@ function MiCuenta({ usuario }) {
         setDescripcion(data.description   || "");
         setAvatarUrl(data.avatar_urls?.["96"] || "");
       })
-      .catch(() => {
-        // Si falla la API, no bloqueamos — el formulario ya tiene los datos
-        // del contexto de sesión como valores iniciales.
-        if (activo) setErrorCarga(false);
-      })
+      .catch(() => { /* Si falla la API el form igual se muestra con datos de sesión */ })
       .finally(() => { if (activo) setCargandoPerfil(false); });
 
     return () => { activo = false; };
@@ -170,9 +163,6 @@ function MiCuenta({ usuario }) {
     }
   };
 
-  // reintentarCarga → simplemente incrementa el contador para re-disparar el
-  // useEffect de carga. No duplica lógica de fetch ni de protección activo.
-  const reintentarCarga = () => setReintento(r => r + 1);
 
   // ── Renderizado condicional: cargando ────────────────────────────────────
   if (cargandoPerfil) return (
