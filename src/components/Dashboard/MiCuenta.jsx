@@ -53,7 +53,7 @@ function MiCuenta({ usuario }) {
   const [lastName,    setLastName]    = useState(nombrePartes.slice(1).join(" ") || "");
   const [email,       setEmail]       = useState(usuario.email || "");
   const [descripcion, setDescripcion] = useState("");
-  const [avatarUrl,   setAvatarUrl]   = useState("");
+  const [avatarUrl]                   = useState("");
 
   // Estados de carga/error para la sección de datos personales.
   // exitoDatos ya no existe: el feedback de éxito lo maneja showToast().
