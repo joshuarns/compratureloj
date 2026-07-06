@@ -33,6 +33,7 @@ const TerminosCondiciones       = lazy(() => import("./pages/TerminosCondiciones
 const Contacto                  = lazy(() => import("./pages/Contacto"));
 const NotFound                  = lazy(() => import("./pages/NotFound"));
 const ForgotPassword            = lazy(() => import("./pages/ForgotPassword"));
+const ResetPassword             = lazy(() => import("./pages/ResetPassword"));
 const MiLista                   = lazy(() => import("./pages/MiLista"));
 const PagoExitoso               = lazy(() => import("./pages/PagoExitoso"));
 const PagoCancelado             = lazy(() => import("./pages/PagoCancelado"));
@@ -88,6 +89,7 @@ function App() {
                     <Route path="/register"               element={<Register />} />
                     <Route path="/login"                  element={<Login />} />
                     <Route path="/recuperar-contrasena"   element={<ForgotPassword />} />
+                    <Route path="/nueva-contrasena"       element={<ResetPassword />} />
                     <Route path="/mi-lista"               element={<MiLista />} />
                     <Route path="/faq"                    element={<FAQ />} />
                     <Route path="/aviso-de-privacidad"    element={<AvisoPrivacidad />} />

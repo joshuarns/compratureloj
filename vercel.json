@@ -5,6 +5,7 @@
     { "src": "/api/wc/(.*)",  "dest": "/api/wc?_path=$1" },
     { "src": "/api/wp/(.*)",  "dest": "/api/wp?_path=$1" },
     { "src": "/api/reviews",                  "dest": "/api/reviews" },
+    { "src": "/api/set-password",             "dest": "/api/set-password" },
     { "src": "/api/create-checkout-session",  "dest": "/api/create-checkout-session" },
     { "src": "/api/stripe-webhook",           "dest": "/api/stripe-webhook" },
     { "handle": "filesystem" },
