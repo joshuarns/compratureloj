@@ -264,7 +264,7 @@ function MisCompras({ usuario }) {
     setError(false);
     setPagina(1);
 
-    obtenerMisPedidos(usuario.id)
+    obtenerMisPedidos(usuario.id, usuario.email)
       .then(data  => { if (activo) setPedidos(data); })
       .catch(err  => {
         if (!activo) return;

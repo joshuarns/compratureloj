@@ -94,7 +94,7 @@ export default async function handler(req, res) {
         wc_order_id: String(wcOrder.id),
       },
       customer_email: datosCliente?.email || undefined,
-      success_url: `${appUrl}/pago-exitoso`,
+      success_url: `${appUrl}/pago-exitoso?session_id={CHECKOUT_SESSION_ID}&order_id=${wcOrder.id}`,
       cancel_url:  `${appUrl}/pago-cancelado`,
     });
 

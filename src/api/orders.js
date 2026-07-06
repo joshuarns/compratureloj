@@ -25,18 +25,35 @@ export const obtenerPedido = async (id) => {
 };
 
 // ── obtenerMisPedidos ─────────────────────────────────────────────────────────
-// Trae el historial de pedidos de un comprador filtrando por su ID de WordPress.
-// El parámetro ?customer= es el único filtro confiable en WC REST API v3 —
-// billing_email no es un parámetro válido y la API lo ignora silenciosamente.
-export const obtenerMisPedidos = async (customerId) => {
-    const response = await axios.get(`${BASE_URL}/orders`, {
+// Trae el historial de pedidos filtrando por customer_id.
+// Si no hay resultados, hace un segundo intento filtrando por email del usuario
+// en caso de que el pedido se creara sin customer_id asociado.
+export const obtenerMisPedidos = async (customerId, email = '') => {
+    // Intento 1: filtrar por customer_id (lo más preciso)
+    const porId = await axios.get(`${BASE_URL}/orders`, {
         params: {
             customer: customerId,
-            per_page: 20,
+            per_page: 50,
             orderby:  'date',
             order:    'desc',
         },
         auth,
     });
-    return Array.isArray(response.data) ? response.data : [];
+
+    const resultadosId = Array.isArray(porId.data) ? porId.data : [];
+    if (resultadosId.length > 0) return resultadosId;
+
+    // Intento 2: si no hay pedidos por ID, traer todos y filtrar por email
+    // (cubre pedidos creados sin customer_id, ej. cuando la sesión expiró)
+    if (!email) return [];
+
+    const todos = await axios.get(`${BASE_URL}/orders`, {
+        params: { per_page: 100, orderby: 'date', order: 'desc' },
+        auth,
+    });
+
+    const lista = Array.isArray(todos.data) ? todos.data : [];
+    return lista.filter(o =>
+        o.billing?.email?.toLowerCase() === email.toLowerCase()
+    );
 };
