@@ -51,16 +51,6 @@ export default async function handler(req, res) {
       if (value) res.setHeader(header, value);
     }
 
-    // Si WordPress devuelve error, incluir la URL y el body para depurar
-    if (!upstream.ok) {
-      const errBody = await upstream.text();
-      return res.status(upstream.status).json({
-        debug_url:  url,
-        debug_user: wpUser,
-        error_body: errBody.slice(0, 500),
-      });
-    }
-
     const data = await upstream.arrayBuffer();
     res.status(upstream.status).send(Buffer.from(data));
   } catch (err) {
