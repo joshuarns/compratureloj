@@ -88,18 +88,19 @@ const comprimirImagen = (file) => new Promise((resolve) => {
 export const uploadImage = async (file) => {
     if (!file) throw new Error('No hay archivo');
 
-    // Comprimir antes de subir para no superar el límite de Vercel (4.5 MB)
     const fileComprimido = await comprimirImagen(file);
 
-    const formData = new FormData();
-    formData.append('file', fileComprimido);
+    // Binary upload: más confiable a través de proxies que multipart/form-data.
+    // WordPress acepta el archivo como body binario cuando se envía Content-Type
+    // del archivo + Content-Disposition con el nombre.
+    const arrayBuffer = await fileComprimido.arrayBuffer();
 
     const response = await axios.post(
         `${BASE_URL_WP}/media`,
-        formData,
+        arrayBuffer,
         {
             headers: {
-                // Nombre entrecomillado → válido aunque tenga espacios (RFC 6266)
+                'Content-Type':        fileComprimido.type || 'image/jpeg',
                 'Content-Disposition': `attachment; filename="${fileComprimido.name}"`,
             },
             auth,
