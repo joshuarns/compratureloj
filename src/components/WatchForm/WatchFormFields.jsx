@@ -143,6 +143,7 @@ function WatchFormFields({ producto, onChange }) {
               <option value="titanio">Titanio</option>
               <option value="bronce">Bronce</option>
               <option value="carbotech">Carbotech</option>
+              <option value="carbono">Carbono</option>
             </select>
           </div>
           <div className="col-md-6">
@@ -159,6 +160,7 @@ function WatchFormFields({ producto, onChange }) {
               <option value="aluminio">Aluminio</option>
               <option value="titanio">Titanio</option>
               <option value="carbotech">Carbotech</option>
+              <option value="carbono">Carbono</option>
             </select>
           </div>
           <div className="col-md-6">
