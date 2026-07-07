@@ -35,7 +35,8 @@ function ShopWatch() {
 
   // inputBusqueda: valor del input mientras el usuario escribe
   const [inputBusqueda, setInputBusqueda] = useState(qParam);
-  const timerRef = useRef(null);
+  const timerRef          = useRef(null);
+  const categoriaInicialRef = useRef(true); // evita limpiar ?q= en el primer render
 
   // Mantener el input sincronizado cuando llega ?q= desde el navbar
   useEffect(() => {
@@ -61,8 +62,13 @@ function ShopWatch() {
   // Limpia el timer al desmontar
   useEffect(() => () => clearTimeout(timerRef.current), []);
 
-  // Al cambiar de categoría limpiar búsqueda y página
+  // Al cambiar de categoría limpiar búsqueda y página,
+  // pero NO en el primer render (para no borrar el ?q= que viene del navbar)
   useEffect(() => {
+    if (categoriaInicialRef.current) {
+      categoriaInicialRef.current = false;
+      return;
+    }
     setInputBusqueda("");
     setSearchParams(prev => {
       const next = new URLSearchParams(prev);
