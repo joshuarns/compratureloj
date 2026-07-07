@@ -181,7 +181,11 @@ function FormSellWatch() {
 
     } catch (error) {
       setPasoEnvio("");
-      setErrorEnvio(error.message || "Ocurrió un error al enviar tu reloj. Verifica tu conexión e intenta de nuevo.");
+      setErrorEnvio(
+        error.message === "Debes subir al menos una foto del reloj."
+          ? error.message
+          : "Ocurrió un error al enviar tu reloj. Verifica tu conexión e intenta de nuevo."
+      );
       setEnviando(false);
     }
   };
