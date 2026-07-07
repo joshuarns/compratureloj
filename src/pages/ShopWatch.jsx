@@ -38,6 +38,12 @@ function ShopWatch() {
   // Valor que se pasa a la API (solo se actualiza tras el debounce)
   const [busqueda, setBusqueda] = useState(qParam);
 
+  // Sincronizar con el parámetro ?q= cuando cambia (ej. búsqueda desde el navbar)
+  useEffect(() => {
+    setInputBusqueda(qParam);
+    setBusqueda(qParam);
+  }, [qParam]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const timerRef = useRef(null);
 
   // Aplica debounce: cancela el timer anterior y crea uno nuevo cada vez que
