@@ -142,6 +142,26 @@
 }
 
 /* ── Botón editar ── */
+.btnPreviewWatch {
+    display: inline-block;
+    padding: 6px 16px;
+    border: 1.5px solid #c4a03b;
+    border-radius: 8px;
+    background-color: transparent;
+    color: #c4a03b;
+    font-family: "Bai Jamjuree" !important;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.2s, color 0.2s;
+    white-space: nowrap;
+}
+
+.btnPreviewWatch:hover {
+    background-color: #c4a03b;
+    color: #fff;
+}
+
 .btnEditWatch {
     display: inline-block;
     padding: 6px 16px;

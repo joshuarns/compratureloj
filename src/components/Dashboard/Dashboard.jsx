@@ -209,6 +209,9 @@ function MisRelojes({ usuario }) {
                 </td>
                 <td>
                   <div className="dashAcciones">
+                    <Link to={`/producto/${reloj.id}`} className="btnPreviewWatch" target="_blank" rel="noopener noreferrer">
+                      Ver
+                    </Link>
                     <Link to={`/editar-reloj/${reloj.id}`} className="btnEditWatch">
                       Editar
                     </Link>
