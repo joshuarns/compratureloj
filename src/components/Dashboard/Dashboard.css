@@ -327,19 +327,84 @@
 }
 
 @media (max-width: 576px) {
-    /* Tabla con scroll horizontal para no romper el layout */
+    /* Convertir tabla en tarjetas apiladas */
     .watchTableCard {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
+        overflow: visible;
+        background: transparent;
+        box-shadow: none;
+        border-radius: 0;
+        padding: 0;
     }
 
-    .watchTable {
-        min-width: 420px;
+    .watchTable,
+    .watchTable tbody {
+        display: block;
+        width: 100%;
     }
 
-    .dashAcciones {
+    .watchTable thead { display: none; }
+
+    /* Cada fila → tarjeta */
+    .watchTable tbody tr {
+        display: flex;
         flex-direction: column;
-        gap: 6px;
+        gap: 10px;
+        background: #fff;
+        border: 1px solid #e5e5ea;
+        border-radius: 14px;
+        padding: 14px;
+        margin-bottom: 12px;
+        box-shadow: 0 1px 4px rgba(0,0,0,.06);
+    }
+
+    .watchTable tbody tr:hover {
+        background: #fff;
+    }
+
+    /* Ocultar celda de precio en móvil (ya se ve con el badge de estado) */
+    .watchTable tbody td.colPrecio { display: none; }
+
+    .watchTable tbody td {
+        display: block;
+        padding: 0;
+        border: none;
+    }
+
+    /* Fila superior: imagen + nombre + estado en línea */
+    .watchTable tbody td:first-child {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .watchThumb {
+        width: 60px;
+        height: 60px;
+        border-radius: 10px;
+        flex-shrink: 0;
+    }
+
+    .watchThumbPlaceholder {
+        width: 60px;
+        height: 60px;
+        flex-shrink: 0;
+    }
+
+    .watchTableName {
+        font-size: 14px;
+        margin-bottom: 2px;
+    }
+
+    /* Botones de acción en fila horizontal con wrap */
+    .dashAcciones {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .dashAcciones > * {
+        text-align: center;
+        justify-content: center;
     }
 
     .resenasDashCard {
