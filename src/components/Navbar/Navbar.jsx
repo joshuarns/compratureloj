@@ -137,7 +137,7 @@ function NavbarV2() {
               <button type="button" className="navBar__searchClose" onClick={cerrarSearch} aria-label="Cerrar">✕</button>
             </form>
           ) : (
-            <button className="navBar__iconBtn" onClick={abrirSearch} aria-label="Buscar">
+            <button className="navBar__searchToggle" onClick={abrirSearch} aria-label="Buscar">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             </button>
           )}
