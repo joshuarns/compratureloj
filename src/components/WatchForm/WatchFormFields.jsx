@@ -219,6 +219,7 @@ function WatchFormFields({ producto, onChange }) {
             <select name="estado_del_reloj" value={producto.estado_del_reloj} onChange={onChange} required>
               <option value="">Selecciona</option>
               <option value="nuevo">Nuevo</option>
+              <option value="como_nuevo">Como nuevo</option>
               <option value="poco_uso">Poco uso</option>
               <option value="con_uso">Con uso</option>
               <option value="mucho_uso">Mucho uso</option>
