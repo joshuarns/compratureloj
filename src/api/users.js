@@ -65,6 +65,7 @@ export const createUser = async (userData) => {
 // Devuelve: first_name, last_name, email, description, avatar_urls, etc.
 // Usado en MiCuenta para pre-rellenar el formulario de edición.
 export const obtenerUsuario = async (id) => {
+    if (!id) return Promise.reject(new Error('ID de usuario no definido'));
     // context=edit hace que WordPress devuelva los campos protegidos
     // (email, first_name, last_name) que el contexto "view" omite por defecto.
     const response = await axios.get(`${BASE_URL_WP}/users/${id}`, {

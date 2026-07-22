@@ -30,9 +30,11 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Faltan credenciales' });
   }
 
-  const wpBase  = process.env.WP_BASE_URL
-    || (process.env.WC_BASE_URL || '').replace('/wc/v3', '/wp/v2');
-  const wpRoot  = wpBase.replace('/wp/v2', '');
+  // Normalizar WP_BASE_URL al root del sitio (sin /wp-json ni /wp/v2)
+  const wpSite  = (process.env.WP_BASE_URL || (process.env.WC_BASE_URL || '').replace('/wc/v3', ''))
+    .replace('/wp/v2', '').replace('/wp-json', '').replace(/\/$/, '');
+  const wpBase  = `${wpSite}/wp-json/wp/v2`;
+  const wpRoot  = `${wpSite}/wp-json`;
 
   // Credenciales de admin para consultas internas (check-approval)
   const wpUser  = process.env.WP_USER || '';
