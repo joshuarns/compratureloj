@@ -246,6 +246,7 @@ function WatchFormFields({ producto, onChange }) {
               <option value="estuche_y_manuales">Estuche y manuales</option>
               <option value="full_set">Full set</option>
               <option value="tarjeta_de_verificacion">Tarjeta de verificación</option>
+              <option value="archivos">Archivos</option>
             </select>
           </div>
         </div>
