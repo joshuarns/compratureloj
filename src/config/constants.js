@@ -27,7 +27,7 @@ export const EMAILJS_PUBLIC_KEY = "roG_GmR36UKJmh2Mz";
 
 // Template que se envía al admin cuando un vendedor sube un reloj nuevo
 // Incluye: nombre del reloj, precio, fotos, datos de contacto del vendedor
-export const EMAILJS_TEMPLATE_RELOJ_NUEVO = "PENDIENTE";
+export const EMAILJS_TEMPLATE_RELOJ_NUEVO = "template_e55l96i";
 
 // Template que se envía al vendedor cuando un comprador hace una oferta
 export const EMAILJS_TEMPLATE_OFERTA = "template_tv0t4ud";
