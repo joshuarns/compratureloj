@@ -5,6 +5,8 @@
 // /wp-json/ctr/v1/reset-password que valida la clave y cambia la contraseña.
 // ─────────────────────────────────────────────────────────────────────────────
 
+import { enviarCorreo, templateCambioContrasena } from './mailer.js';
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -65,6 +67,13 @@ export default async function handler(req, res) {
     } catch {
       // Si la re-aprobación falla no bloqueamos el flujo
     }
+
+    // Enviar correo de confirmación de cambio de contraseña
+    enviarCorreo({
+      to:      login,
+      subject: 'Tu contraseña ha sido actualizada',
+      html:    templateCambioContrasena({ nombre: login }),
+    }).catch(() => {});
 
     return res.status(200).json({ success: true });
   } catch (err) {
