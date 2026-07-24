@@ -85,15 +85,22 @@ const comprimirImagen = (file) => new Promise((resolve) => {
 // Content-Disposition es requerido por la WP REST API para nombrar el archivo.
 // Sin este header WordPress rechaza la petición con 400.
 // El nombre debe ir entrecomillado (RFC 6266) para soportar espacios.
+// FileReader como alternativa a file.arrayBuffer() para compatibilidad con Safari
+const fileToArrayBuffer = (file) => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload  = () => resolve(reader.result);
+    reader.onerror = () => reject(reader.error);
+    reader.readAsArrayBuffer(file);
+});
+
 export const uploadImage = async (file) => {
     if (!file) throw new Error('No hay archivo');
 
     const fileComprimido = await comprimirImagen(file);
 
-    // Binary upload: más confiable a través de proxies que multipart/form-data.
-    // WordPress acepta el archivo como body binario cuando se envía Content-Type
-    // del archivo + Content-Disposition con el nombre.
-    const arrayBuffer = await fileComprimido.arrayBuffer();
+    const arrayBuffer = typeof fileComprimido.arrayBuffer === 'function'
+        ? await fileComprimido.arrayBuffer()
+        : await fileToArrayBuffer(fileComprimido);
 
     try {
         const response = await axios.post(
