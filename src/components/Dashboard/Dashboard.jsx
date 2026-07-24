@@ -108,7 +108,7 @@ function MisRelojes({ usuario }) {
         const vendedorEmail = reloj.meta_data?.find(m => m.key === 'vendedor_email')?.value;
         const vendedorNombre = reloj.meta_data?.find(m => m.key === 'vendedor_nombre')?.value;
         if (vendedorEmail) {
-          fetch('/api/notify-watch', {
+          fetch('/api/email', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -507,10 +507,10 @@ function AdminUsuarios() {
   const aprobar = async (u) => {
     setAprobando(u.id);
     try {
-      const res = await fetch('/api/approve-user', {
+      const res = await fetch('/api/email', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ userId: u.id, userEmail: u.email, userName: u.name }),
+        body:    JSON.stringify({ tipo: 'approve-user', userId: u.id, userEmail: u.email, userName: u.name }),
       });
       if (!res.ok) throw new Error();
       setUsuarios(prev => prev.filter(x => x.id !== u.id));

@@ -192,7 +192,7 @@ function EditWatch() {
 
       // Notificar al vendedor por correo
       if (usuario?.email) {
-        fetch('/api/notify-watch', {
+        fetch('/api/email', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

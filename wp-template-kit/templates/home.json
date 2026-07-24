@@ -1,0 +1,1962 @@
+{
+  "version": "0.4",
+  "title": "ToboWater - Página Principal",
+  "type": "page",
+  "content": [
+
+    {
+      "id": "s_header",
+      "elType": "section",
+      "isInner": false,
+      "settings": {
+        "layout": "full_width",
+        "content_width": {
+          "unit": "px",
+          "size": 1280
+        },
+        "gap": "no",
+        "padding": {
+          "unit": "px",
+          "top": "15",
+          "right": "40",
+          "bottom": "15",
+          "left": "40",
+          "isLinked": false
+        },
+        "background_background": "classic",
+        "background_color": "#FFFFFF",
+        "position": "fixed",
+        "z_index": 999,
+        "box_shadow_box_shadow_type": "yes",
+        "box_shadow_box_shadow": {
+          "horizontal": 0,
+          "vertical": 2,
+          "blur": 12,
+          "spread": 0,
+          "color": "rgba(0,0,0,0.10)"
+        }
+      },
+      "elements": [
+        {
+          "id": "s_header_c1",
+          "elType": "column",
+          "settings": {
+            "_column_size": 25,
+            "content_position": "middle"
+          },
+          "elements": [
+            {
+              "id": "w_logo",
+              "elType": "widget",
+              "widgetType": "image",
+              "settings": {
+                "image": {
+                  "url": "{{TOBOWATER_LOGO_URL}}",
+                  "alt": "ToboWater"
+                },
+                "image_size": "custom",
+                "image_custom_dimension": {
+                  "width": 160,
+                  "height": 65
+                },
+                "align": "left",
+                "_margin": {
+                  "unit": "px",
+                  "top": "0",
+                  "right": "0",
+                  "bottom": "0",
+                  "left": "0",
+                  "isLinked": true
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "s_header_c2",
+          "elType": "column",
+          "settings": {
+            "_column_size": 50,
+            "content_position": "middle"
+          },
+          "elements": [
+            {
+              "id": "w_nav_menu",
+              "elType": "widget",
+              "widgetType": "nav-menu",
+              "settings": {
+                "menu": "0",
+                "layout": "horizontal",
+                "submenu_indicator": "classic",
+                "toggle": "burger",
+                "full_width": "no",
+                "align_items": "center",
+                "typography_typography": "custom",
+                "typography_font_family": "Montserrat",
+                "typography_font_size": {
+                  "unit": "px",
+                  "size": 13
+                },
+                "typography_font_weight": "600",
+                "typography_text_transform": "uppercase",
+                "typography_letter_spacing": {
+                  "unit": "px",
+                  "size": 1
+                },
+                "color": "#333333",
+                "color_hover": "#1565C0",
+                "color_active": "#1565C0",
+                "padding_horizontal_menu_item": {
+                  "unit": "px",
+                  "size": 15
+                },
+                "pointer": "underline",
+                "animation_duration": 150
+              }
+            }
+          ]
+        },
+        {
+          "id": "s_header_c3",
+          "elType": "column",
+          "settings": {
+            "_column_size": 25,
+            "content_position": "middle"
+          },
+          "elements": [
+            {
+              "id": "w_header_cta",
+              "elType": "widget",
+              "widgetType": "button",
+              "settings": {
+                "text": "&#128222; Cotizar",
+                "link": {
+                  "url": "#cotizar",
+                  "is_external": false
+                },
+                "align": "right",
+                "background_color": "#FFD700",
+                "button_text_color": "#0A2351",
+                "border_radius": {
+                  "unit": "px",
+                  "top": "30",
+                  "right": "30",
+                  "bottom": "30",
+                  "left": "30",
+                  "isLinked": true
+                },
+                "typography_typography": "custom",
+                "typography_font_family": "Montserrat",
+                "typography_font_weight": "700",
+                "typography_font_size": {
+                  "unit": "px",
+                  "size": 14
+                },
+                "text_padding": {
+                  "unit": "px",
+                  "top": "12",
+                  "right": "24",
+                  "bottom": "12",
+                  "left": "24",
+                  "isLinked": false
+                },
+                "hover_background_color": "#e6c200",
+                "hover_color": "#0A2351"
+              }
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "s_hero",
+      "elType": "section",
+      "isInner": false,
+      "settings": {
+        "layout": "full_width",
+        "height": "min-height",
+        "min_height": {
+          "unit": "vh",
+          "size": 90
+        },
+        "content_position": "middle",
+        "padding": {
+          "unit": "px",
+          "top": "130",
+          "right": "60",
+          "bottom": "100",
+          "left": "60",
+          "isLinked": false
+        },
+        "background_background": "classic",
+        "background_image": {
+          "url": "{{HERO_BACKGROUND_IMAGE_URL}}",
+          "alt": "Tobogán acuático en alberca residencial"
+        },
+        "background_size": "cover",
+        "background_position": "center center",
+        "background_repeat": "no-repeat",
+        "background_overlay_background": "classic",
+        "background_overlay_color": "rgba(0, 30, 80, 0.55)",
+        "shape_divider_bottom": "waves",
+        "shape_divider_bottom_color": "#FFFFFF",
+        "shape_divider_bottom_height": {
+          "unit": "px",
+          "size": 80
+        },
+        "shape_divider_bottom_flip": false,
+        "shape_divider_bottom_negative": false
+      },
+      "elements": [
+        {
+          "id": "s_hero_c1",
+          "elType": "column",
+          "settings": {
+            "_column_size": 55,
+            "content_position": "middle"
+          },
+          "elements": [
+            {
+              "id": "w_hero_h1",
+              "elType": "widget",
+              "widgetType": "heading",
+              "settings": {
+                "title": "Transforma<br>Tu Alberca",
+                "header_size": "h1",
+                "align": "left",
+                "typography_typography": "custom",
+                "typography_font_family": "Montserrat",
+                "typography_font_size": {
+                  "unit": "px",
+                  "size": 72
+                },
+                "typography_font_size_tablet": {
+                  "unit": "px",
+                  "size": 50
+                },
+                "typography_font_size_mobile": {
+                  "unit": "px",
+                  "size": 38
+                },
+                "typography_font_weight": "800",
+                "typography_line_height": {
+                  "unit": "em",
+                  "size": 1.05
+                },
+                "title_color": "#FFFFFF",
+                "text_shadow_text_shadow_type": "yes",
+                "text_shadow_text_shadow": {
+                  "horizontal": 2,
+                  "vertical": 3,
+                  "blur": 12,
+                  "color": "rgba(0,0,0,0.45)"
+                }
+              }
+            },
+            {
+              "id": "w_hero_h2",
+              "elType": "widget",
+              "widgetType": "heading",
+              "settings": {
+                "title": "en una Experiencia Única",
+                "header_size": "h2",
+                "align": "left",
+                "typography_typography": "custom",
+                "typography_font_family": "Dancing Script",
+                "typography_font_size": {
+                  "unit": "px",
+                  "size": 44
+                },
+                "typography_font_size_tablet": {
+                  "unit": "px",
+                  "size": 34
+                },
+                "typography_font_size_mobile": {
+                  "unit": "px",
+                  "size": 26
+                },
+                "typography_font_weight": "700",
+                "title_color": "#FFFFFF",
+                "_margin": {
+                  "unit": "px",
+                  "top": "-5",
+                  "right": "0",
+                  "bottom": "20",
+                  "left": "0",
+                  "isLinked": false
+                }
+              }
+            },
+            {
+              "id": "w_hero_desc",
+              "elType": "widget",
+              "widgetType": "text-editor",
+              "settings": {
+                "editor": "<p>Diseñamos e instalamos toboganes acuáticos<br>para residencias, quintas, ranchos y más.</p>",
+                "typography_typography": "custom",
+                "typography_font_family": "Open Sans",
+                "typography_font_size": {
+                  "unit": "px",
+                  "size": 17
+                },
+                "typography_line_height": {
+                  "unit": "em",
+                  "size": 1.6
+                },
+                "text_color": "rgba(255,255,255,0.90)",
+                "_margin": {
+                  "unit": "px",
+                  "top": "0",
+                  "right": "0",
+                  "bottom": "35",
+                  "left": "0",
+                  "isLinked": false
+                }
+              }
+            },
+            {
+              "id": "s_hero_btns",
+              "elType": "section",
+              "isInner": true,
+              "settings": {
+                "layout": "full_width",
+                "gap": "no",
+                "padding": {
+                  "unit": "px",
+                  "top": "0",
+                  "right": "0",
+                  "bottom": "0",
+                  "left": "0",
+                  "isLinked": true
+                }
+              },
+              "elements": [
+                {
+                  "id": "s_hero_btns_c1",
+                  "elType": "column",
+                  "settings": {
+                    "_column_size": 50,
+                    "content_position": "middle"
+                  },
+                  "elements": [
+                    {
+                      "id": "w_hero_btn_wa",
+                      "elType": "widget",
+                      "widgetType": "button",
+                      "settings": {
+                        "text": "&#128222; Cotizar Mi Tobogán",
+                        "link": {
+                          "url": "https://wa.me/521XXXXXXXXXX?text=Hola%2C%20quiero%20cotizar%20un%20tobog%C3%A1n",
+                          "is_external": true
+                        },
+                        "align": "left",
+                        "background_color": "#FFD700",
+                        "button_text_color": "#0A2351",
+                        "border_radius": {
+                          "unit": "px",
+                          "top": "50",
+                          "right": "50",
+                          "bottom": "50",
+                          "left": "50",
+                          "isLinked": true
+                        },
+                        "typography_typography": "custom",
+                        "typography_font_family": "Montserrat",
+                        "typography_font_weight": "700",
+                        "typography_font_size": {
+                          "unit": "px",
+                          "size": 15
+                        },
+                        "text_padding": {
+                          "unit": "px",
+                          "top": "15",
+                          "right": "30",
+                          "bottom": "15",
+                          "left": "30",
+                          "isLinked": false
+                        },
+                        "hover_background_color": "#e6c200",
+                        "hover_color": "#0A2351"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "s_hero_btns_c2",
+                  "elType": "column",
+                  "settings": {
+                    "_column_size": 50,
+                    "content_position": "middle"
+                  },
+                  "elements": [
+                    {
+                      "id": "w_hero_btn_gallery",
+                      "elType": "widget",
+                      "widgetType": "button",
+                      "settings": {
+                        "text": "Ver Galería",
+                        "link": {
+                          "url": "#galeria",
+                          "is_external": false
+                        },
+                        "align": "left",
+                        "background_color": "rgba(0,0,0,0)",
+                        "button_text_color": "#FFFFFF",
+                        "border_border": "solid",
+                        "border_width": {
+                          "unit": "px",
+                          "top": "2",
+                          "right": "2",
+                          "bottom": "2",
+                          "left": "2",
+                          "isLinked": true
+                        },
+                        "border_color": "#FFFFFF",
+                        "border_radius": {
+                          "unit": "px",
+                          "top": "50",
+                          "right": "50",
+                          "bottom": "50",
+                          "left": "50",
+                          "isLinked": true
+                        },
+                        "typography_typography": "custom",
+                        "typography_font_family": "Montserrat",
+                        "typography_font_weight": "600",
+                        "typography_font_size": {
+                          "unit": "px",
+                          "size": 15
+                        },
+                        "text_padding": {
+                          "unit": "px",
+                          "top": "15",
+                          "right": "30",
+                          "bottom": "15",
+                          "left": "30",
+                          "isLinked": false
+                        },
+                        "hover_background_color": "rgba(255,255,255,0.15)",
+                        "hover_color": "#FFFFFF",
+                        "hover_border_color": "#FFFFFF"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "s_hero_c2",
+          "elType": "column",
+          "settings": {
+            "_column_size": 45
+          },
+          "elements": []
+        }
+      ]
+    },
+
+    {
+      "id": "s_services",
+      "elType": "section",
+      "isInner": false,
+      "settings": {
+        "layout": "boxed",
+        "content_width": {
+          "unit": "px",
+          "size": 1200
+        },
+        "padding": {
+          "unit": "px",
+          "top": "75",
+          "right": "20",
+          "bottom": "60",
+          "left": "20",
+          "isLinked": false
+        },
+        "background_background": "classic",
+        "background_color": "#FFFFFF",
+        "css_classes": "section-services"
+      },
+      "elements": [
+        {
+          "id": "s_services_c1",
+          "elType": "column",
+          "settings": {
+            "_column_size": 100
+          },
+          "elements": [
+            {
+              "id": "w_serv_title",
+              "elType": "widget",
+              "widgetType": "heading",
+              "settings": {
+                "title": "DISEÑADOS PARA TU ESPACIO",
+                "header_size": "h2",
+                "align": "center",
+                "typography_typography": "custom",
+                "typography_font_family": "Montserrat",
+                "typography_font_size": {
+                  "unit": "px",
+                  "size": 28
+                },
+                "typography_font_size_mobile": {
+                  "unit": "px",
+                  "size": 22
+                },
+                "typography_font_weight": "700",
+                "typography_letter_spacing": {
+                  "unit": "px",
+                  "size": 2
+                },
+                "title_color": "#1565C0"
+              }
+            },
+            {
+              "id": "w_serv_sub",
+              "elType": "widget",
+              "widgetType": "heading",
+              "settings": {
+                "title": "Toboganes acuáticos para:",
+                "header_size": "h6",
+                "align": "center",
+                "typography_typography": "custom",
+                "typography_font_family": "Open Sans",
+                "typography_font_size": {
+                  "unit": "px",
+                  "size": 16
+                },
+                "typography_font_weight": "400",
+                "title_color": "#666666",
+                "_margin": {
+                  "unit": "px",
+                  "top": "5",
+                  "bottom": "50",
+                  "isLinked": false
+                }
+              }
+            },
+            {
+              "id": "s_serv_icons",
+              "elType": "section",
+              "isInner": true,
+              "settings": {
+                "layout": "full_width",
+                "gap": "no",
+                "padding": {
+                  "unit": "px",
+                  "top": "0",
+                  "right": "0",
+                  "bottom": "0",
+                  "left": "0",
+                  "isLinked": true
+                }
+              },
+              "elements": [
+                {
+                  "id": "s_serv_c1",
+                  "elType": "column",
+                  "settings": {
+                    "_column_size": 16.667,
+                    "content_position": "top"
+                  },
+                  "elements": [
+                    {
+                      "id": "w_icon1",
+                      "elType": "widget",
+                      "widgetType": "icon-box",
+                      "settings": {
+                        "icon": {
+                          "library": "fa-solid",
+                          "value": "fas fa-home"
+                        },
+                        "icon_size": {
+                          "unit": "px",
+                          "size": 55
+                        },
+                        "primary_color": "#1565C0",
+                        "hover_primary_color": "#FFD700",
+                        "title_text": "RESIDENCIAS",
+                        "title_size": "h6",
+                        "description_text": "",
+                        "position": "top",
+                        "align": "center",
+                        "typography_typography": "custom",
+                        "typography_font_family": "Montserrat",
+                        "typography_font_size": {
+                          "unit": "px",
+                          "size": 12
+                        },
+                        "typography_font_weight": "700",
+                        "typography_letter_spacing": {
+                          "unit": "px",
+                          "size": 1
+                        },
+                        "title_color": "#333333",
+                        "_padding": {
+                          "unit": "px",
+                          "top": "0",
+                          "right": "10",
+                          "bottom": "0",
+                          "left": "10",
+                          "isLinked": false
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "s_serv_c2",
+                  "elType": "column",
+                  "settings": {
+                    "_column_size": 16.667,
+                    "content_position": "top"
+                  },
+                  "elements": [
+                    {
+                      "id": "w_icon2",
+                      "elType": "widget",
+                      "widgetType": "icon-box",
+                      "settings": {
+                        "icon": {
+                          "library": "fa-solid",
+                          "value": "fas fa-umbrella-beach"
+                        },
+                        "icon_size": {
+                          "unit": "px",
+                          "size": 55
+                        },
+                        "primary_color": "#1565C0",
+                        "hover_primary_color": "#FFD700",
+                        "title_text": "QUINTAS",
+                        "title_size": "h6",
+                        "description_text": "",
+                        "position": "top",
+                        "align": "center",
+                        "typography_typography": "custom",
+                        "typography_font_family": "Montserrat",
+                        "typography_font_size": {
+                          "unit": "px",
+                          "size": 12
+                        },
+                        "typography_font_weight": "700",
+                        "typography_letter_spacing": {
+                          "unit": "px",
+                          "size": 1
+                        },
+                        "title_color": "#333333"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "s_serv_c3",
+                  "elType": "column",
+                  "settings": {
+                    "_column_size": 16.667,
+                    "content_position": "top"
+                  },
+                  "elements": [
+                    {
+                      "id": "w_icon3",
+                      "elType": "widget",
+                      "widgetType": "icon-box",
+                      "settings": {
+                        "icon": {
+                          "library": "fa-solid",
+                          "value": "fas fa-tractor"
+                        },
+                        "icon_size": {
+                          "unit": "px",
+                          "size": 55
+                        },
+                        "primary_color": "#1565C0",
+                        "hover_primary_color": "#FFD700",
+                        "title_text": "RANCHOS",
+                        "title_size": "h6",
+                        "description_text": "",
+                        "position": "top",
+                        "align": "center",
+                        "typography_typography": "custom",
+                        "typography_font_family": "Montserrat",
+                        "typography_font_size": {
+                          "unit": "px",
+                          "size": 12
+                        },
+                        "typography_font_weight": "700",
+                        "typography_letter_spacing": {
+                          "unit": "px",
+                          "size": 1
+                        },
+                        "title_color": "#333333"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "s_serv_c4",
+                  "elType": "column",
+                  "settings": {
+                    "_column_size": 16.667,
+                    "content_position": "top"
+                  },
+                  "elements": [
+                    {
+                      "id": "w_icon4",
+                      "elType": "widget",
+                      "widgetType": "icon-box",
+                      "settings": {
+                        "icon": {
+                          "library": "fa-solid",
+                          "value": "fas fa-building"
+                        },
+                        "icon_size": {
+                          "unit": "px",
+                          "size": 55
+                        },
+                        "primary_color": "#1565C0",
+                        "hover_primary_color": "#FFD700",
+                        "title_text": "HOTELES",
+                        "title_size": "h6",
+                        "description_text": "",
+                        "position": "top",
+                        "align": "center",
+                        "typography_typography": "custom",
+                        "typography_font_family": "Montserrat",
+                        "typography_font_size": {
+                          "unit": "px",
+                          "size": 12
+                        },
+                        "typography_font_weight": "700",
+                        "typography_letter_spacing": {
+                          "unit": "px",
+                          "size": 1
+                        },
+                        "title_color": "#333333"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "s_serv_c5",
+                  "elType": "column",
+                  "settings": {
+                    "_column_size": 16.667,
+                    "content_position": "top"
+                  },
+                  "elements": [
+                    {
+                      "id": "w_icon5",
+                      "elType": "widget",
+                      "widgetType": "icon-box",
+                      "settings": {
+                        "icon": {
+                          "library": "fa-solid",
+                          "value": "fas fa-swimming-pool"
+                        },
+                        "icon_size": {
+                          "unit": "px",
+                          "size": 55
+                        },
+                        "primary_color": "#1565C0",
+                        "hover_primary_color": "#FFD700",
+                        "title_text": "ALBERCAS<br>RECREATIVAS",
+                        "title_size": "h6",
+                        "description_text": "",
+                        "position": "top",
+                        "align": "center",
+                        "typography_typography": "custom",
+                        "typography_font_family": "Montserrat",
+                        "typography_font_size": {
+                          "unit": "px",
+                          "size": 12
+                        },
+                        "typography_font_weight": "700",
+                        "typography_letter_spacing": {
+                          "unit": "px",
+                          "size": 1
+                        },
+                        "title_color": "#333333"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "s_serv_c6",
+                  "elType": "column",
+                  "settings": {
+                    "_column_size": 16.666,
+                    "content_position": "top"
+                  },
+                  "elements": [
+                    {
+                      "id": "w_icon6",
+                      "elType": "widget",
+                      "widgetType": "icon-box",
+                      "settings": {
+                        "icon": {
+                          "library": "fa-solid",
+                          "value": "fas fa-globe-americas"
+                        },
+                        "icon_size": {
+                          "unit": "px",
+                          "size": 55
+                        },
+                        "primary_color": "#1565C0",
+                        "hover_primary_color": "#FFD700",
+                        "title_text": "DESARROLLOS<br>TURÍSTICOS",
+                        "title_size": "h6",
+                        "description_text": "",
+                        "position": "top",
+                        "align": "center",
+                        "typography_typography": "custom",
+                        "typography_font_family": "Montserrat",
+                        "typography_font_size": {
+                          "unit": "px",
+                          "size": 12
+                        },
+                        "typography_font_weight": "700",
+                        "typography_letter_spacing": {
+                          "unit": "px",
+                          "size": 1
+                        },
+                        "title_color": "#333333"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "s_gallery",
+      "elType": "section",
+      "isInner": false,
+      "settings": {
+        "layout": "boxed",
+        "content_width": {
+          "unit": "px",
+          "size": 1200
+        },
+        "padding": {
+          "unit": "px",
+          "top": "70",
+          "right": "20",
+          "bottom": "70",
+          "left": "20",
+          "isLinked": false
+        },
+        "background_background": "classic",
+        "background_color": "#F8FBFF",
+        "css_classes": "section-gallery",
+        "attributes": "id=\"galeria\""
+      },
+      "elements": [
+        {
+          "id": "s_gallery_c1",
+          "elType": "column",
+          "settings": {
+            "_column_size": 100
+          },
+          "elements": [
+            {
+              "id": "w_gallery_title",
+              "elType": "widget",
+              "widgetType": "heading",
+              "settings": {
+                "title": "GALERÍA DE PROYECTOS",
+                "header_size": "h2",
+                "align": "center",
+                "typography_typography": "custom",
+                "typography_font_family": "Montserrat",
+                "typography_font_size": {
+                  "unit": "px",
+                  "size": 28
+                },
+                "typography_font_weight": "700",
+                "typography_letter_spacing": {
+                  "unit": "px",
+                  "size": 2
+                },
+                "title_color": "#1565C0",
+                "_margin": {
+                  "unit": "px",
+                  "bottom": "40",
+                  "isLinked": false
+                }
+              }
+            },
+            {
+              "id": "w_gallery_grid",
+              "elType": "widget",
+              "widgetType": "image-gallery",
+              "settings": {
+                "gallery": [
+                  {"id": 101, "url": "{{GALLERY_IMAGE_01}}", "caption": "Proyecto residencial 1"},
+                  {"id": 102, "url": "{{GALLERY_IMAGE_02}}", "caption": "Proyecto residencial 2"},
+                  {"id": 103, "url": "{{GALLERY_IMAGE_03}}", "caption": "Proyecto quinta"},
+                  {"id": 104, "url": "{{GALLERY_IMAGE_04}}", "caption": "Proyecto hotel"},
+                  {"id": 105, "url": "{{GALLERY_IMAGE_05}}", "caption": "Tobogán espiral azul"},
+                  {"id": 106, "url": "{{GALLERY_IMAGE_06}}", "caption": "Tobogán múltiple"},
+                  {"id": 107, "url": "{{GALLERY_IMAGE_07}}", "caption": "Tobogán residencial"},
+                  {"id": 108, "url": "{{GALLERY_IMAGE_08}}", "caption": "Parque acuático"},
+                  {"id": 109, "url": "{{GALLERY_IMAGE_09}}", "caption": "Tobogán colorido"},
+                  {"id": 110, "url": "{{GALLERY_IMAGE_10}}", "caption": "Proyecto rancho"},
+                  {"id": 111, "url": "{{GALLERY_IMAGE_11}}", "caption": "Instalación profesional"},
+                  {"id": 112, "url": "{{GALLERY_IMAGE_12}}", "caption": "Tobogán familiar"}
+                ],
+                "gallery_layout": "grid",
+                "gallery_columns": "4",
+                "gallery_columns_tablet": "2",
+                "gallery_columns_mobile": "2",
+                "gallery_gap": {
+                  "unit": "px",
+                  "size": 8
+                },
+                "open_lightbox": "yes",
+                "lightbox_id": "tobowater_gallery"
+              }
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "s_before_after",
+      "elType": "section",
+      "isInner": false,
+      "settings": {
+        "layout": "boxed",
+        "content_width": {
+          "unit": "px",
+          "size": 1200
+        },
+        "padding": {
+          "unit": "px",
+          "top": "70",
+          "right": "20",
+          "bottom": "70",
+          "left": "20",
+          "isLinked": false
+        },
+        "background_background": "classic",
+        "background_color": "#EBF5FF",
+        "css_classes": "section-before-after"
+      },
+      "elements": [
+        {
+          "id": "s_ba_c1",
+          "elType": "column",
+          "settings": {
+            "_column_size": 40,
+            "content_position": "middle"
+          },
+          "elements": [
+            {
+              "id": "w_ba_title",
+              "elType": "widget",
+              "widgetType": "heading",
+              "settings": {
+                "title": "CONVIERTE<br>TU ALBERCA",
+                "header_size": "h2",
+                "align": "left",
+                "typography_typography": "custom",
+                "typography_font_family": "Montserrat",
+                "typography_font_size": {
+                  "unit": "px",
+                  "size": 36
+                },
+                "typography_font_size_mobile": {
+                  "unit": "px",
+                  "size": 28
+                },
+                "typography_font_weight": "800",
+                "title_color": "#1565C0"
+              }
+            },
+            {
+              "id": "w_ba_subtitle",
+              "elType": "widget",
+              "widgetType": "heading",
+              "settings": {
+                "title": "en el centro de diversión",
+                "header_size": "h3",
+                "align": "left",
+                "typography_typography": "custom",
+                "typography_font_family": "Dancing Script",
+                "typography_font_size": {
+                  "unit": "px",
+                  "size": 34
+                },
+                "typography_font_weight": "700",
+                "title_color": "#1565C0",
+                "_margin": {
+                  "unit": "px",
+                  "top": "-10",
+                  "bottom": "30",
+                  "isLinked": false
+                }
+              }
+            },
+            {
+              "id": "w_ba_text",
+              "elType": "widget",
+              "widgetType": "text-editor",
+              "settings": {
+                "editor": "<p>Transformamos albercas ordinarias en experiencias acuáticas únicas. Diseño personalizado, instalación profesional y materiales de la más alta calidad.</p>",
+                "typography_typography": "custom",
+                "typography_font_family": "Open Sans",
+                "typography_font_size": {
+                  "unit": "px",
+                  "size": 16
+                },
+                "text_color": "#555555"
+              }
+            }
+          ]
+        },
+        {
+          "id": "s_ba_c2",
+          "elType": "column",
+          "settings": {
+            "_column_size": 60,
+            "content_position": "middle"
+          },
+          "elements": [
+            {
+              "id": "s_ba_images",
+              "elType": "section",
+              "isInner": true,
+              "settings": {
+                "layout": "full_width",
+                "gap": "no",
+                "padding": {
+                  "unit": "px",
+                  "top": "0",
+                  "right": "0",
+                  "bottom": "0",
+                  "left": "0",
+                  "isLinked": true
+                }
+              },
+              "elements": [
+                {
+                  "id": "s_ba_img_c1",
+                  "elType": "column",
+                  "settings": {
+                    "_column_size": 45,
+                    "content_position": "middle"
+                  },
+                  "elements": [
+                    {
+                      "id": "w_ba_label_before",
+                      "elType": "widget",
+                      "widgetType": "heading",
+                      "settings": {
+                        "title": "ANTES",
+                        "header_size": "h6",
+                        "align": "left",
+                        "typography_typography": "custom",
+                        "typography_font_family": "Montserrat",
+                        "typography_font_size": {
+                          "unit": "px",
+                          "size": 12
+                        },
+                        "typography_font_weight": "700",
+                        "title_color": "#FFFFFF",
+                        "_background_background": "classic",
+                        "_background_color": "#0A2351",
+                        "_padding": {
+                          "unit": "px",
+                          "top": "6",
+                          "right": "14",
+                          "bottom": "6",
+                          "left": "14",
+                          "isLinked": false
+                        },
+                        "_margin": {
+                          "unit": "px",
+                          "bottom": "8",
+                          "isLinked": false
+                        }
+                      }
+                    },
+                    {
+                      "id": "w_ba_before",
+                      "elType": "widget",
+                      "widgetType": "image",
+                      "settings": {
+                        "image": {
+                          "url": "{{BEFORE_IMAGE_URL}}",
+                          "alt": "Alberca antes del tobogán"
+                        },
+                        "image_size": "full",
+                        "align": "center",
+                        "border_border": "solid",
+                        "border_width": {
+                          "unit": "px",
+                          "top": "3",
+                          "right": "3",
+                          "bottom": "3",
+                          "left": "3",
+                          "isLinked": true
+                        },
+                        "border_color": "#CCCCCC",
+                        "border_radius": {
+                          "unit": "px",
+                          "size": 10
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "s_ba_img_c2",
+                  "elType": "column",
+                  "settings": {
+                    "_column_size": 10,
+                    "content_position": "middle"
+                  },
+                  "elements": [
+                    {
+                      "id": "w_ba_arrow",
+                      "elType": "widget",
+                      "widgetType": "icon",
+                      "settings": {
+                        "icon": {
+                          "library": "fa-solid",
+                          "value": "fas fa-arrow-right"
+                        },
+                        "icon_size": {
+                          "unit": "px",
+                          "size": 24
+                        },
+                        "align": "center",
+                        "primary_color": "#FFFFFF",
+                        "_background_background": "classic",
+                        "_background_color": "#1565C0",
+                        "_border_radius": {
+                          "unit": "px",
+                          "top": "50",
+                          "right": "50",
+                          "bottom": "50",
+                          "left": "50",
+                          "isLinked": true
+                        },
+                        "_padding": {
+                          "unit": "px",
+                          "top": "16",
+                          "right": "16",
+                          "bottom": "16",
+                          "left": "16",
+                          "isLinked": true
+                        }
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "s_ba_img_c3",
+                  "elType": "column",
+                  "settings": {
+                    "_column_size": 45,
+                    "content_position": "middle"
+                  },
+                  "elements": [
+                    {
+                      "id": "w_ba_label_after",
+                      "elType": "widget",
+                      "widgetType": "heading",
+                      "settings": {
+                        "title": "DESPUÉS",
+                        "header_size": "h6",
+                        "align": "left",
+                        "typography_typography": "custom",
+                        "typography_font_family": "Montserrat",
+                        "typography_font_size": {
+                          "unit": "px",
+                          "size": 12
+                        },
+                        "typography_font_weight": "700",
+                        "title_color": "#0A2351",
+                        "_background_background": "classic",
+                        "_background_color": "#FFD700",
+                        "_padding": {
+                          "unit": "px",
+                          "top": "6",
+                          "right": "14",
+                          "bottom": "6",
+                          "left": "14",
+                          "isLinked": false
+                        },
+                        "_margin": {
+                          "unit": "px",
+                          "bottom": "8",
+                          "isLinked": false
+                        }
+                      }
+                    },
+                    {
+                      "id": "w_ba_after",
+                      "elType": "widget",
+                      "widgetType": "image",
+                      "settings": {
+                        "image": {
+                          "url": "{{AFTER_IMAGE_URL}}",
+                          "alt": "Alberca con tobogán instalado"
+                        },
+                        "image_size": "full",
+                        "align": "center",
+                        "border_border": "solid",
+                        "border_width": {
+                          "unit": "px",
+                          "top": "3",
+                          "right": "3",
+                          "bottom": "3",
+                          "left": "3",
+                          "isLinked": true
+                        },
+                        "border_color": "#FFD700",
+                        "border_radius": {
+                          "unit": "px",
+                          "size": 10
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "s_why_us",
+      "elType": "section",
+      "isInner": false,
+      "settings": {
+        "layout": "boxed",
+        "content_width": {
+          "unit": "px",
+          "size": 1200
+        },
+        "padding": {
+          "unit": "px",
+          "top": "75",
+          "right": "20",
+          "bottom": "75",
+          "left": "20",
+          "isLinked": false
+        },
+        "background_background": "classic",
+        "background_color": "#FFFFFF",
+        "css_classes": "section-why-us"
+      },
+      "elements": [
+        {
+          "id": "s_why_c1",
+          "elType": "column",
+          "settings": {
+            "_column_size": 100
+          },
+          "elements": [
+            {
+              "id": "w_why_label",
+              "elType": "widget",
+              "widgetType": "heading",
+              "settings": {
+                "title": "¿POR QUÉ ELEGIR",
+                "header_size": "h2",
+                "align": "center",
+                "typography_typography": "custom",
+                "typography_font_family": "Montserrat",
+                "typography_font_size": {
+                  "unit": "px",
+                  "size": 28
+                },
+                "typography_font_weight": "700",
+                "typography_letter_spacing": {
+                  "unit": "px",
+                  "size": 2
+                },
+                "title_color": "#1565C0"
+              }
+            },
+            {
+              "id": "w_why_brand",
+              "elType": "widget",
+              "widgetType": "heading",
+              "settings": {
+                "title": "TOBOWATER?",
+                "header_size": "h2",
+                "align": "center",
+                "typography_typography": "custom",
+                "typography_font_family": "Montserrat",
+                "typography_font_size": {
+                  "unit": "px",
+                  "size": 28
+                },
+                "typography_font_weight": "700",
+                "typography_letter_spacing": {
+                  "unit": "px",
+                  "size": 2
+                },
+                "title_color": "#1565C0",
+                "_margin": {
+                  "unit": "px",
+                  "top": "-8",
+                  "bottom": "55",
+                  "isLinked": false
+                }
+              }
+            },
+            {
+              "id": "s_why_icons",
+              "elType": "section",
+              "isInner": true,
+              "settings": {
+                "layout": "full_width",
+                "gap": "no",
+                "padding": {
+                  "unit": "px",
+                  "top": "0",
+                  "right": "0",
+                  "bottom": "0",
+                  "left": "0",
+                  "isLinked": true
+                }
+              },
+              "elements": [
+                {
+                  "id": "s_why_ic1",
+                  "elType": "column",
+                  "settings": {
+                    "_column_size": 20,
+                    "content_position": "top"
+                  },
+                  "elements": [
+                    {
+                      "id": "w_why_icon1",
+                      "elType": "widget",
+                      "widgetType": "icon-box",
+                      "settings": {
+                        "icon": {
+                          "library": "fa-solid",
+                          "value": "fas fa-drafting-compass"
+                        },
+                        "icon_size": {
+                          "unit": "px",
+                          "size": 50
+                        },
+                        "primary_color": "#1565C0",
+                        "hover_primary_color": "#FFD700",
+                        "title_text": "DISEÑO<br>PERSONALIZADO",
+                        "title_size": "h6",
+                        "description_text": "Adaptamos cada proyecto a tu espacio y estilo.",
+                        "position": "top",
+                        "align": "center",
+                        "typography_typography": "custom",
+                        "typography_font_family": "Montserrat",
+                        "typography_font_size": {
+                          "unit": "px",
+                          "size": 12
+                        },
+                        "typography_font_weight": "700",
+                        "title_color": "#333333",
+                        "description_color": "#666666"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "s_why_ic2",
+                  "elType": "column",
+                  "settings": {
+                    "_column_size": 20,
+                    "content_position": "top"
+                  },
+                  "elements": [
+                    {
+                      "id": "w_why_icon2",
+                      "elType": "widget",
+                      "widgetType": "icon-box",
+                      "settings": {
+                        "icon": {
+                          "library": "fa-solid",
+                          "value": "fas fa-shield-alt"
+                        },
+                        "icon_size": {
+                          "unit": "px",
+                          "size": 50
+                        },
+                        "primary_color": "#1565C0",
+                        "hover_primary_color": "#FFD700",
+                        "title_text": "MATERIALES DE<br>ALTA CALIDAD",
+                        "title_size": "h6",
+                        "description_text": "Resistentes al clima, humedad y uso constante.",
+                        "position": "top",
+                        "align": "center",
+                        "typography_typography": "custom",
+                        "typography_font_family": "Montserrat",
+                        "typography_font_size": {
+                          "unit": "px",
+                          "size": 12
+                        },
+                        "typography_font_weight": "700",
+                        "title_color": "#333333",
+                        "description_color": "#666666"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "s_why_ic3",
+                  "elType": "column",
+                  "settings": {
+                    "_column_size": 20,
+                    "content_position": "top"
+                  },
+                  "elements": [
+                    {
+                      "id": "w_why_icon3",
+                      "elType": "widget",
+                      "widgetType": "icon-box",
+                      "settings": {
+                        "icon": {
+                          "library": "fa-solid",
+                          "value": "fas fa-cogs"
+                        },
+                        "icon_size": {
+                          "unit": "px",
+                          "size": 50
+                        },
+                        "primary_color": "#1565C0",
+                        "hover_primary_color": "#FFD700",
+                        "title_text": "INSTALACIÓN<br>PROFESIONAL",
+                        "title_size": "h6",
+                        "description_text": "Equipo experto para una instalación segura.",
+                        "position": "top",
+                        "align": "center",
+                        "typography_typography": "custom",
+                        "typography_font_family": "Montserrat",
+                        "typography_font_size": {
+                          "unit": "px",
+                          "size": 12
+                        },
+                        "typography_font_weight": "700",
+                        "title_color": "#333333",
+                        "description_color": "#666666"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "s_why_ic4",
+                  "elType": "column",
+                  "settings": {
+                    "_column_size": 20,
+                    "content_position": "top"
+                  },
+                  "elements": [
+                    {
+                      "id": "w_why_icon4",
+                      "elType": "widget",
+                      "widgetType": "icon-box",
+                      "settings": {
+                        "icon": {
+                          "library": "fa-solid",
+                          "value": "fas fa-check-circle"
+                        },
+                        "icon_size": {
+                          "unit": "px",
+                          "size": 50
+                        },
+                        "primary_color": "#1565C0",
+                        "hover_primary_color": "#FFD700",
+                        "title_text": "GARANTÍA<br>Y RESPALDO",
+                        "title_size": "h6",
+                        "description_text": "Trabajamos con estándares de calidad.",
+                        "position": "top",
+                        "align": "center",
+                        "typography_typography": "custom",
+                        "typography_font_family": "Montserrat",
+                        "typography_font_size": {
+                          "unit": "px",
+                          "size": 12
+                        },
+                        "typography_font_weight": "700",
+                        "title_color": "#333333",
+                        "description_color": "#666666"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "id": "s_why_ic5",
+                  "elType": "column",
+                  "settings": {
+                    "_column_size": 20,
+                    "content_position": "top"
+                  },
+                  "elements": [
+                    {
+                      "id": "w_why_icon5",
+                      "elType": "widget",
+                      "widgetType": "icon-box",
+                      "settings": {
+                        "icon": {
+                          "library": "fa-solid",
+                          "value": "fas fa-map-marker-alt"
+                        },
+                        "icon_size": {
+                          "unit": "px",
+                          "size": 50
+                        },
+                        "primary_color": "#1565C0",
+                        "hover_primary_color": "#FFD700",
+                        "title_text": "COBERTURA EN<br>TODO MÉXICO",
+                        "title_size": "h6",
+                        "description_text": "Llevamos diversión acuática a donde la necesites.",
+                        "position": "top",
+                        "align": "center",
+                        "typography_typography": "custom",
+                        "typography_font_family": "Montserrat",
+                        "typography_font_size": {
+                          "unit": "px",
+                          "size": 12
+                        },
+                        "typography_font_weight": "700",
+                        "title_color": "#333333",
+                        "description_color": "#666666"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "s_cta_form",
+      "elType": "section",
+      "isInner": false,
+      "settings": {
+        "layout": "full_width",
+        "content_width": {
+          "unit": "px",
+          "size": 1200
+        },
+        "gap": "no",
+        "padding": {
+          "unit": "px",
+          "top": "0",
+          "right": "0",
+          "bottom": "0",
+          "left": "0",
+          "isLinked": true
+        },
+        "background_background": "classic",
+        "background_image": {
+          "url": "{{CTA_BACKGROUND_IMAGE_URL}}",
+          "alt": "Tobogán acuático en alberca"
+        },
+        "background_size": "cover",
+        "background_position": "center center",
+        "background_overlay_background": "classic",
+        "background_overlay_color": "rgba(10, 35, 81, 0.85)",
+        "css_classes": "section-cta-form",
+        "attributes": "id=\"cotizar\""
+      },
+      "elements": [
+        {
+          "id": "s_cta_c1",
+          "elType": "column",
+          "settings": {
+            "_column_size": 50,
+            "content_position": "middle",
+            "padding": {
+              "unit": "px",
+              "top": "80",
+              "right": "60",
+              "bottom": "80",
+              "left": "60",
+              "isLinked": false
+            }
+          },
+          "elements": [
+            {
+              "id": "w_cta_h1",
+              "elType": "widget",
+              "widgetType": "heading",
+              "settings": {
+                "title": "¡HAZ DE TU ALBERCA<br>EL LUGAR FAVORITO",
+                "header_size": "h2",
+                "align": "left",
+                "typography_typography": "custom",
+                "typography_font_family": "Montserrat",
+                "typography_font_size": {
+                  "unit": "px",
+                  "size": 34
+                },
+                "typography_font_size_mobile": {
+                  "unit": "px",
+                  "size": 26
+                },
+                "typography_font_weight": "800",
+                "title_color": "#FFFFFF"
+              }
+            },
+            {
+              "id": "w_cta_h2",
+              "elType": "widget",
+              "widgetType": "heading",
+              "settings": {
+                "title": "de todos!",
+                "header_size": "h2",
+                "align": "left",
+                "typography_typography": "custom",
+                "typography_font_family": "Dancing Script",
+                "typography_font_size": {
+                  "unit": "px",
+                  "size": 44
+                },
+                "typography_font_weight": "700",
+                "title_color": "#FFD700",
+                "_margin": {
+                  "unit": "px",
+                  "top": "-10",
+                  "bottom": "25",
+                  "isLinked": false
+                }
+              }
+            },
+            {
+              "id": "w_cta_desc",
+              "elType": "widget",
+              "widgetType": "text-editor",
+              "settings": {
+                "editor": "<p>Cuéntanos tu proyecto y recibe una cotización sin compromiso.</p>",
+                "typography_typography": "custom",
+                "typography_font_family": "Open Sans",
+                "typography_font_size": {
+                  "unit": "px",
+                  "size": 16
+                },
+                "text_color": "rgba(255,255,255,0.85)"
+              }
+            }
+          ]
+        },
+        {
+          "id": "s_cta_c2",
+          "elType": "column",
+          "settings": {
+            "_column_size": 50,
+            "content_position": "middle",
+            "padding": {
+              "unit": "px",
+              "top": "60",
+              "right": "50",
+              "bottom": "60",
+              "left": "30",
+              "isLinked": false
+            }
+          },
+          "elements": [
+            {
+              "id": "w_form_card",
+              "elType": "widget",
+              "widgetType": "html",
+              "settings": {
+                "html": "<div class=\"tobowater-form-card\">\n  <h3 class=\"form-title\">SOLICITA TU COTIZACIÓN</h3>\n  <form class=\"tobowater-form\" action=\"#\" method=\"post\" id=\"form-cotizacion\">\n    <div class=\"form-row\">\n      <div class=\"form-group\">\n        <input type=\"text\" name=\"nombre\" placeholder=\"Nombre completo\" required />\n      </div>\n      <div class=\"form-group\">\n        <input type=\"tel\" name=\"whatsapp\" placeholder=\"WhatsApp\" required />\n      </div>\n    </div>\n    <div class=\"form-row\">\n      <div class=\"form-group\">\n        <select name=\"tipo_propiedad\">\n          <option value=\"\" disabled selected>Tipo de propiedad</option>\n          <option value=\"residencia\">Residencia</option>\n          <option value=\"quinta\">Quinta</option>\n          <option value=\"rancho\">Rancho</option>\n          <option value=\"hotel\">Hotel</option>\n          <option value=\"alberca_recreativa\">Alberca Recreativa</option>\n          <option value=\"desarrollo_turistico\">Desarrollo Turístico</option>\n        </select>\n      </div>\n      <div class=\"form-group\">\n        <input type=\"text\" name=\"ciudad\" placeholder=\"Ciudad\" />\n      </div>\n    </div>\n    <div class=\"form-group full-width\">\n      <textarea name=\"mensaje\" placeholder=\"Cuéntanos sobre tu proyecto...\" rows=\"4\"></textarea>\n    </div>\n    <button type=\"submit\" class=\"btn-submit\">&#128222; ENVIAR MENSAJE</button>\n  </form>\n</div>\n<style>\n.tobowater-form-card {\n  background: #FFFFFF;\n  border-radius: 16px;\n  padding: 40px;\n  box-shadow: 0 10px 40px rgba(0,0,0,0.25);\n}\n.tobowater-form-card .form-title {\n  font-family: 'Montserrat', sans-serif;\n  font-size: 18px;\n  font-weight: 700;\n  color: #1565C0;\n  text-align: center;\n  letter-spacing: 1px;\n  margin-bottom: 28px;\n  border-bottom: 2px solid #FFD700;\n  padding-bottom: 16px;\n}\n.tobowater-form .form-row {\n  display: flex;\n  gap: 12px;\n  margin-bottom: 12px;\n}\n.tobowater-form .form-group {\n  flex: 1;\n}\n.tobowater-form .full-width {\n  width: 100%;\n  margin-bottom: 20px;\n}\n.tobowater-form input,\n.tobowater-form select,\n.tobowater-form textarea {\n  width: 100%;\n  padding: 12px 16px;\n  border: 1px solid #DDDDDD;\n  border-radius: 8px;\n  font-family: 'Open Sans', sans-serif;\n  font-size: 14px;\n  color: #333333;\n  background: #FAFAFA;\n  box-sizing: border-box;\n  transition: border-color 0.2s;\n}\n.tobowater-form input:focus,\n.tobowater-form select:focus,\n.tobowater-form textarea:focus {\n  outline: none;\n  border-color: #1565C0;\n  background: #FFFFFF;\n}\n.tobowater-form textarea {\n  resize: vertical;\n  min-height: 100px;\n}\n.tobowater-form .btn-submit {\n  width: 100%;\n  padding: 16px;\n  background: #FFD700;\n  color: #0A2351;\n  border: none;\n  border-radius: 50px;\n  font-family: 'Montserrat', sans-serif;\n  font-size: 16px;\n  font-weight: 700;\n  letter-spacing: 1px;\n  cursor: pointer;\n  transition: background 0.2s, transform 0.1s;\n}\n.tobowater-form .btn-submit:hover {\n  background: #e6c200;\n  transform: translateY(-1px);\n}\n@media (max-width: 600px) {\n  .tobowater-form .form-row {\n    flex-direction: column;\n  }\n  .tobowater-form-card {\n    padding: 24px;\n  }\n}\n</style>"
+              }
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "s_footer",
+      "elType": "section",
+      "isInner": false,
+      "settings": {
+        "layout": "full_width",
+        "content_width": {
+          "unit": "px",
+          "size": 1200
+        },
+        "padding": {
+          "unit": "px",
+          "top": "50",
+          "right": "60",
+          "bottom": "30",
+          "left": "60",
+          "isLinked": false
+        },
+        "background_background": "classic",
+        "background_color": "#0A2351",
+        "css_classes": "site-footer"
+      },
+      "elements": [
+        {
+          "id": "s_footer_c1",
+          "elType": "column",
+          "settings": {
+            "_column_size": 40,
+            "content_position": "top"
+          },
+          "elements": [
+            {
+              "id": "w_footer_logo",
+              "elType": "widget",
+              "widgetType": "image",
+              "settings": {
+                "image": {
+                  "url": "{{TOBOWATER_LOGO_WHITE_URL}}",
+                  "alt": "ToboWater"
+                },
+                "image_size": "custom",
+                "image_custom_dimension": {
+                  "width": 140,
+                  "height": 56
+                },
+                "align": "left",
+                "_margin": {
+                  "unit": "px",
+                  "bottom": "16",
+                  "isLinked": false
+                }
+              }
+            },
+            {
+              "id": "w_footer_tagline",
+              "elType": "widget",
+              "widgetType": "text-editor",
+              "settings": {
+                "editor": "<p>Toboganes acuáticos residenciales<br>para momentos inolvidables.</p>",
+                "typography_typography": "custom",
+                "typography_font_family": "Open Sans",
+                "typography_font_size": {
+                  "unit": "px",
+                  "size": 14
+                },
+                "text_color": "rgba(255,255,255,0.65)"
+              }
+            }
+          ]
+        },
+        {
+          "id": "s_footer_c2",
+          "elType": "column",
+          "settings": {
+            "_column_size": 30,
+            "content_position": "top"
+          },
+          "elements": [
+            {
+              "id": "w_footer_social_label",
+              "elType": "widget",
+              "widgetType": "heading",
+              "settings": {
+                "title": "SÍGUENOS",
+                "header_size": "h6",
+                "align": "center",
+                "typography_typography": "custom",
+                "typography_font_family": "Montserrat",
+                "typography_font_size": {
+                  "unit": "px",
+                  "size": 13
+                },
+                "typography_font_weight": "700",
+                "typography_letter_spacing": {
+                  "unit": "px",
+                  "size": 2
+                },
+                "title_color": "#FFFFFF",
+                "_margin": {
+                  "unit": "px",
+                  "bottom": "16",
+                  "isLinked": false
+                }
+              }
+            },
+            {
+              "id": "w_footer_social",
+              "elType": "widget",
+              "widgetType": "social-icons",
+              "settings": {
+                "social_icon_list": [
+                  {
+                    "_id": "fb",
+                    "social_icon": {
+                      "library": "fa-brands",
+                      "value": "fab fa-facebook-f"
+                    },
+                    "social_icon_color": "official",
+                    "link": {
+                      "url": "https://facebook.com/{{FACEBOOK_PAGE}}",
+                      "is_external": true
+                    }
+                  },
+                  {
+                    "_id": "ig",
+                    "social_icon": {
+                      "library": "fa-brands",
+                      "value": "fab fa-instagram"
+                    },
+                    "social_icon_color": "official",
+                    "link": {
+                      "url": "https://instagram.com/{{INSTAGRAM_HANDLE}}",
+                      "is_external": true
+                    }
+                  },
+                  {
+                    "_id": "yt",
+                    "social_icon": {
+                      "library": "fa-brands",
+                      "value": "fab fa-youtube"
+                    },
+                    "social_icon_color": "official",
+                    "link": {
+                      "url": "https://youtube.com/{{YOUTUBE_CHANNEL}}",
+                      "is_external": true
+                    }
+                  }
+                ],
+                "icon_size": {
+                  "unit": "px",
+                  "size": 18
+                },
+                "icon_spacing": {
+                  "unit": "px",
+                  "size": 8
+                },
+                "align": "center"
+              }
+            }
+          ]
+        },
+        {
+          "id": "s_footer_c3",
+          "elType": "column",
+          "settings": {
+            "_column_size": 30,
+            "content_position": "top"
+          },
+          "elements": [
+            {
+              "id": "w_footer_coverage_label",
+              "elType": "widget",
+              "widgetType": "heading",
+              "settings": {
+                "title": "COBERTURA",
+                "header_size": "h6",
+                "align": "left",
+                "typography_typography": "custom",
+                "typography_font_family": "Montserrat",
+                "typography_font_size": {
+                  "unit": "px",
+                  "size": 13
+                },
+                "typography_font_weight": "700",
+                "typography_letter_spacing": {
+                  "unit": "px",
+                  "size": 2
+                },
+                "title_color": "#FFFFFF",
+                "_margin": {
+                  "unit": "px",
+                  "bottom": "8",
+                  "isLinked": false
+                }
+              }
+            },
+            {
+              "id": "w_footer_coverage",
+              "elType": "widget",
+              "widgetType": "text-editor",
+              "settings": {
+                "editor": "<p>&#127757; Todo México</p>",
+                "typography_typography": "custom",
+                "typography_font_family": "Montserrat",
+                "typography_font_size": {
+                  "unit": "px",
+                  "size": 15
+                },
+                "typography_font_weight": "700",
+                "text_color": "#FFD700",
+                "_margin": {
+                  "unit": "px",
+                  "bottom": "30",
+                  "isLinked": false
+                }
+              }
+            }
+          ]
+        },
+        {
+          "id": "s_footer_divider_col",
+          "elType": "column",
+          "settings": {
+            "_column_size": 100
+          },
+          "elements": [
+            {
+              "id": "w_footer_divider",
+              "elType": "widget",
+              "widgetType": "divider",
+              "settings": {
+                "style": "solid",
+                "color": "rgba(255,255,255,0.15)",
+                "weight": {
+                  "unit": "px",
+                  "size": 1
+                },
+                "_margin": {
+                  "unit": "px",
+                  "top": "20",
+                  "bottom": "20",
+                  "isLinked": false
+                }
+              }
+            },
+            {
+              "id": "w_footer_copyright",
+              "elType": "widget",
+              "widgetType": "text-editor",
+              "settings": {
+                "editor": "<p style=\"text-align:center;\">© 2024 ToboWater. Todos los derechos reservados.</p>",
+                "typography_typography": "custom",
+                "typography_font_family": "Open Sans",
+                "typography_font_size": {
+                  "unit": "px",
+                  "size": 13
+                },
+                "text_color": "rgba(255,255,255,0.45)"
+              }
+            }
+          ]
+        }
+      ]
+    }
+
+  ],
+  "page_settings": {
+    "hide_title": "yes",
+    "template": "elementor_canvas",
+    "elementor_page_title": "ToboWater - Toboganes Acuáticos Residenciales"
+  }
+}
