@@ -5,7 +5,7 @@
 // /wp-json/ctr/v1/reset-password que valida la clave y cambia la contraseña.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { enviarCorreo, templateCambioContrasena } from '../lib/mailer.js';
+import { enviarCorreo, templateCambioContrasena } from './mailer.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {

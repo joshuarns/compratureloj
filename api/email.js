@@ -11,7 +11,7 @@ import {
   templateCuentaAprobada,
   templateRelojPublicado,
   templateRelojModificado,
-} from '../lib/mailer.js';
+} from './mailer.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {

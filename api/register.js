@@ -6,7 +6,7 @@
 // Usa credenciales WP (no WC) porque la ruta es de la WP REST API.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { enviarCorreo, templateRegistro } from '../lib/mailer.js';
+import { enviarCorreo, templateRegistro } from './mailer.js';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
