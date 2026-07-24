@@ -7,6 +7,17 @@
 
 import { axios, BASE_URL, BASE_URL_WP, auth } from './client';
 
+// Retry automático cuando WooCommerce/SiteGround devuelve 202 u otro
+// status no-200 sin datos (ocurre por caché de hosting intermitente).
+const wcGet = async (url, config, intentos = 3) => {
+    for (let i = 0; i < intentos; i++) {
+        const res = await axios.get(url, config);
+        if (Array.isArray(res.data) && res.data.length > 0) return res;
+        if (i < intentos - 1) await new Promise(r => setTimeout(r, 300));
+    }
+    return axios.get(url, config); // último intento sin guardia
+};
+
 // ── obtenerProductos ──────────────────────────────────────────────────────────
 // Trae el catálogo público con paginación y búsqueda opcional.
 // Devuelve { productos, totalPaginas } para que el componente pueda
@@ -21,7 +32,7 @@ export const obtenerProductos = async (page = 1, perPage = 12, busqueda = "") =>
     if (busqueda) {
         const termino = busqueda.toLowerCase().trim();
 
-        const respuesta = await axios.get(`${BASE_URL}/products`, {
+        const respuesta = await wcGet(`${BASE_URL}/products`, {
             params: { status: 'publish', per_page: 100, page: 1 },
             auth,
         });
@@ -50,7 +61,7 @@ export const obtenerProductos = async (page = 1, perPage = 12, busqueda = "") =>
     }
 
     // Sin búsqueda: paginación normal server-side
-    const respuesta = await axios.get(`${BASE_URL}/products`, {
+    const respuesta = await wcGet(`${BASE_URL}/products`, {
         params: { status: 'publish', per_page: perPage, page },
         auth,
     });
@@ -108,7 +119,7 @@ export const obtenerProductosPorCategoria = async (slug, page = 1, perPage = 12,
     if (busqueda) {
         const termino = busqueda.toLowerCase().trim();
 
-        const productosRespuesta = await axios.get(`${BASE_URL}/products`, {
+        const productosRespuesta = await wcGet(`${BASE_URL}/products`, {
             params: { status: 'publish', category: categoriaId, per_page: 100, page: 1 },
             auth,
         });
@@ -136,7 +147,7 @@ export const obtenerProductosPorCategoria = async (slug, page = 1, perPage = 12,
     }
 
     // Sin búsqueda: paginación server-side normal
-    const productosRespuesta = await axios.get(`${BASE_URL}/products`, {
+    const productosRespuesta = await wcGet(`${BASE_URL}/products`, {
         params: { status: 'publish', category: categoriaId, per_page: perPage, page },
         auth,
     });
