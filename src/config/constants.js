@@ -19,22 +19,29 @@
 // Cada template tiene su propio ID según su propósito.
 
 // ID del servicio configurado en EmailJS (pestaña "Email Services")
-export const EMAILJS_SERVICE_ID = "service_8xr63wz";
+export const EMAILJS_SERVICE_ID = "service_feqp5lh";
 
 // Clave pública de la cuenta EmailJS (pestaña "Account" → "Public Key")
 // No es un secreto — se incluye en el bundle del cliente intencionalmente
-export const EMAILJS_PUBLIC_KEY = "E6qXZekoSfxIjUHMI";
+export const EMAILJS_PUBLIC_KEY = "roG_GmR36UKJmh2Mz";
 
 // Template que se envía al admin cuando un vendedor sube un reloj nuevo
 // Incluye: nombre del reloj, precio, fotos, datos de contacto del vendedor
-export const EMAILJS_TEMPLATE_RELOJ_NUEVO = "template_m75y91m";
+export const EMAILJS_TEMPLATE_RELOJ_NUEVO = "PENDIENTE";
 
 // Template que se envía al vendedor cuando un comprador hace una oferta
-export const EMAILJS_TEMPLATE_OFERTA = "template_87kx3st";
+export const EMAILJS_TEMPLATE_OFERTA = "template_tv0t4ud";
 
 // Template para mensajes del formulario de contacto
 // Variables esperadas: {{nombre}}, {{email}}, {{telefono}}, {{mensaje}}
-export const EMAILJS_TEMPLATE_CONTACTO = "template_contacto";
+export const EMAILJS_TEMPLATE_CONTACTO = "PENDIENTE";
+
+// Templates de notificación (crear en EmailJS dashboard)
+export const EMAILJS_TEMPLATE_REGISTRO          = "PENDIENTE";
+export const EMAILJS_TEMPLATE_CUENTA_APROBADA   = "PENDIENTE";
+export const EMAILJS_TEMPLATE_CAMBIO_CONTRASENA = "PENDIENTE";
+export const EMAILJS_TEMPLATE_RELOJ_PUBLICADO   = "PENDIENTE";
+export const EMAILJS_TEMPLATE_RELOJ_MODIFICADO  = "PENDIENTE";
 
 
 // ── 5. RESEÑAS ────────────────────────────────────────────────────────────────
