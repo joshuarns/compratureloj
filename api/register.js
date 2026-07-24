@@ -6,8 +6,6 @@
 // Usa credenciales WP (no WC) porque la ruta es de la WP REST API.
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { enviarCorreo, templateRegistro } from './mailer.js';
-
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -23,6 +21,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Body inválido' });
   }
 
+  // Derivar la base de la WP REST API quitando /wp/v2 del WP_BASE_URL
   const wpBase = process.env.WP_BASE_URL
     || (process.env.WC_BASE_URL || '').replace('/wc/v3', '/wp/v2');
 
@@ -46,15 +45,6 @@ export default async function handler(req, res) {
     const text = await upstream.text();
     let data;
     try { data = JSON.parse(text); } catch { data = { raw: text.slice(0, 300) }; }
-
-    // Enviar correo de bienvenida si el registro fue exitoso
-    if (upstream.ok && body.email && body.username) {
-      enviarCorreo({
-        to:      body.email,
-        subject: '¡Bienvenido a Compra Tu Reloj!',
-        html:    templateRegistro({ nombre: body.username }),
-      }).catch(() => {}); // No bloqueamos la respuesta si el correo falla
-    }
 
     res.status(upstream.status).json(data);
   } catch (err) {

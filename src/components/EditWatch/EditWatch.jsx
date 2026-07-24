@@ -190,21 +190,6 @@ function EditWatch() {
       });
       setExito(true);
 
-      // Notificar al vendedor por correo
-      if (usuario?.email) {
-        fetch('/api/email', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            tipo: 'modificado',
-            relojNombre: producto.name,
-            relojId: id,
-            vendedorEmail: usuario.email,
-            vendedorNombre: usuario.nombre || usuario.email,
-          }),
-        }).catch(() => {});
-      }
-
     } catch (err) {
       setErrorMsg("No se pudieron guardar los cambios. Intenta de nuevo.");
     } finally {

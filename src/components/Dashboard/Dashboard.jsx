@@ -99,28 +99,10 @@ function MisRelojes({ usuario }) {
     setPublicando(reloj.id);
     try {
       await actualizarProducto(reloj.id, { status: nuevoStatus });
+      // Actualizar el estado local sin recargar toda la lista
       setRelojes(prev => prev.map(r =>
         r.id === reloj.id ? { ...r, status: nuevoStatus } : r
       ));
-
-      // Notificar al vendedor cuando su reloj es publicado
-      if (nuevoStatus === 'publish') {
-        const vendedorEmail = reloj.meta_data?.find(m => m.key === 'vendedor_email')?.value;
-        const vendedorNombre = reloj.meta_data?.find(m => m.key === 'vendedor_nombre')?.value;
-        if (vendedorEmail) {
-          fetch('/api/email', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              tipo: 'publicado',
-              relojNombre: reloj.name,
-              relojId: reloj.id,
-              vendedorEmail,
-              vendedorNombre: vendedorNombre || vendedorEmail,
-            }),
-          }).catch(() => {});
-        }
-      }
     } catch {
       alert('No se pudo cambiar el estado. Intenta de nuevo.');
     } finally {
@@ -474,112 +456,6 @@ function MisResenas({ usuario }) {
 }
 
 // ─────────────────────────────────────────────────────────
-// SUB-COMPONENTE: Tab "Usuarios pendientes" (solo admin)
-// Lista usuarios con wp_user_is_approved=0 y permite aprobarlos.
-// ─────────────────────────────────────────────────────────
-function AdminUsuarios() {
-  const [usuarios, setUsuarios]   = useState([]);
-  const [cargando, setCargando]   = useState(true);
-  const [error, setError]         = useState(false);
-  const [aprobando, setAprobando] = useState(null);
-
-  useEffect(() => {
-    let activo = true;
-    setCargando(true);
-    setError(false);
-
-    fetch('/api/wp/users?per_page=100&context=edit', { headers: { 'x-proxy-path': 'users' } })
-      .then(r => r.json())
-      .then(data => {
-        if (!activo) return;
-        const pendientes = (Array.isArray(data) ? data : []).filter(u => {
-          const aprobado = u.meta?.wp_user_is_approved;
-          return aprobado === '0' || aprobado === 0 || aprobado === false || aprobado === '';
-        });
-        setUsuarios(pendientes);
-      })
-      .catch(() => { if (activo) setError(true); })
-      .finally(() => { if (activo) setCargando(false); });
-
-    return () => { activo = false; };
-  }, []);
-
-  const aprobar = async (u) => {
-    setAprobando(u.id);
-    try {
-      const res = await fetch('/api/email', {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ tipo: 'approve-user', userId: u.id, userEmail: u.email, userName: u.name }),
-      });
-      if (!res.ok) throw new Error();
-      setUsuarios(prev => prev.filter(x => x.id !== u.id));
-    } catch {
-      alert('No se pudo aprobar el usuario. Intenta de nuevo.');
-    } finally {
-      setAprobando(null);
-    }
-  };
-
-  if (error) return (
-    <div className="apiErrorCard">
-      <div className="apiErrorIcon">⚠️</div>
-      <div className="apiErrorBody">
-        <p className="apiErrorTitle">No se pudieron cargar los usuarios</p>
-      </div>
-    </div>
-  );
-
-  if (cargando) return (
-    <p style={{ fontFamily: "Mulish", color: "#6e6e73", paddingTop: 20 }}>Cargando usuarios...</p>
-  );
-
-  if (usuarios.length === 0) return (
-    <div className="emptyDashboard">
-      <div style={{ fontSize: 48, marginBottom: 16 }}>✅</div>
-      <p>No hay usuarios pendientes de aprobación.</p>
-    </div>
-  );
-
-  return (
-    <div className="watchTableCard">
-      <table className="watchTable">
-        <thead>
-          <tr>
-            <th>Usuario</th>
-            <th>Email</th>
-            <th>Registro</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {usuarios.map(u => (
-            <tr key={u.id}>
-              <td><p className="watchTableName">{u.name}</p></td>
-              <td><p className="watchTableMarca">{u.email}</p></td>
-              <td>
-                <span style={{ fontFamily: "Mulish", fontSize: 13, color: "#6e6e73" }}>
-                  {u.registered_date ? new Date(u.registered_date).toLocaleDateString('es-MX', { year: 'numeric', month: 'short', day: 'numeric' }) : '—'}
-                </span>
-              </td>
-              <td>
-                <button
-                  className="btnPublicar"
-                  disabled={aprobando === u.id}
-                  onClick={() => aprobar(u)}
-                >
-                  {aprobando === u.id ? '...' : 'Aprobar'}
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
-
-// ─────────────────────────────────────────────────────────
 // SUB-COMPONENTE: Tab "Gestionar Reseñas" (solo admin)
 // ─────────────────────────────────────────────────────────
 function AdminResenas() {
@@ -784,14 +660,6 @@ function Dashboard() {
                 Gestionar reseñas
               </button>
             )}
-            {usuario.roles?.includes('administrator') && (
-              <button
-                className={`dashboardTab${tabActivo === "admin-usuarios" ? " active" : ""}`}
-                onClick={() => setTabActivo("admin-usuarios")}
-              >
-                Usuarios pendientes
-              </button>
-            )}
           </div>
 
           {/* ── Encabezado con botón de acción (solo en "Mis relojes") ── */}
@@ -808,8 +676,7 @@ function Dashboard() {
           {tabActivo === "compras" && <MisCompras  usuario={usuario} />}
           {tabActivo === "cuenta"  && <MiCuenta    usuario={usuario} />}
           {tabActivo === "resenas"       && <MisResenas usuario={usuario} />}
-          {tabActivo === "admin-resenas"  && usuario.roles?.includes('administrator') && <AdminResenas />}
-          {tabActivo === "admin-usuarios" && usuario.roles?.includes('administrator') && <AdminUsuarios />}
+          {tabActivo === "admin-resenas" && usuario.roles?.includes('administrator') && <AdminResenas />}
 
         </div>
       </div>
