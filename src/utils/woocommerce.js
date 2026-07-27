@@ -20,11 +20,15 @@
 // Usada en FormSellWatch y EditWatch para validar imágenes antes de subirlas.
 import { MAX_MB, MAX_BYTES } from "../config/constants";
 
+const EXTENSIONES_IMAGEN = /\.(jpe?g|png|webp|heic|heif|gif|bmp|tiff?)$/i;
+
 export const validarArchivos = (archivos) => {
   const validas    = [];
   const rechazadas = [];
   for (const archivo of archivos) {
-    if (!archivo.type.startsWith("image/")) {
+    const esImagen = archivo.type.startsWith("image/") ||
+                     EXTENSIONES_IMAGEN.test(archivo.name);
+    if (!esImagen) {
       rechazadas.push({ nombre: archivo.name, razon: "no es una imagen" });
     } else if (archivo.size > MAX_BYTES) {
       const mb = (archivo.size / 1024 / 1024).toFixed(1);
