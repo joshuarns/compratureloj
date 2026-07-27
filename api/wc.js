@@ -49,6 +49,11 @@ export default async function handler(req, res) {
       if (value) res.setHeader(header, value);
     }
 
+    // Safari cachea respuestas de error agresivamente — forzar revalidación
+    if (!res.getHeader('cache-control')) {
+      res.setHeader('Cache-Control', 'no-store');
+    }
+
     const data = await upstream.arrayBuffer();
     res.status(upstream.status).send(Buffer.from(data));
   } catch (err) {

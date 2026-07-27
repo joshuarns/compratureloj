@@ -7,15 +7,21 @@
 
 import { axios, BASE_URL, BASE_URL_WP, auth } from './client';
 
-// Retry automático cuando WooCommerce/SiteGround devuelve 202 u otro
-// status no-200 sin datos (ocurre por caché de hosting intermitente).
+// Retry automático cuando SiteGround/WooCommerce devuelve 202, 400 u otro
+// status inesperado en lugar de datos reales (caché intermitente del hosting).
 const wcGet = async (url, config, intentos = 3) => {
+    let lastErr;
     for (let i = 0; i < intentos; i++) {
-        const res = await axios.get(url, config);
-        if (Array.isArray(res.data) && res.data.length > 0) return res;
-        if (i < intentos - 1) await new Promise(r => setTimeout(r, 300));
+        try {
+            const res = await axios.get(url, config);
+            if (Array.isArray(res.data) && res.data.length > 0) return res;
+        } catch (err) {
+            lastErr = err;
+        }
+        if (i < intentos - 1) await new Promise(r => setTimeout(r, 400));
     }
-    return axios.get(url, config); // último intento sin guardia
+    if (lastErr) throw lastErr;
+    return axios.get(url, config);
 };
 
 // ── obtenerProductos ──────────────────────────────────────────────────────────
