@@ -29,9 +29,32 @@ add_action( 'rest_api_init', function () {
 function ctr_registrar_usuario( WP_REST_Request $request ) {
     $data = $request->get_json_params();
 
+    $username = sanitize_user( $data['username'] ?? '' );
+    $email    = sanitize_email( $data['email']   ?? '' );
+
+    // Validaciones en español antes de intentar insertar
+    if ( empty( $username ) ) {
+        return new WP_Error( 'register_failed', 'El nombre de usuario es requerido.', [ 'status' => 400 ] );
+    }
+    if ( empty( $email ) || ! is_email( $email ) ) {
+        return new WP_Error( 'register_failed', 'El email no es válido.', [ 'status' => 400 ] );
+    }
+    if ( username_exists( $username ) ) {
+        return new WP_Error( 'register_failed', 'Ese nombre de usuario ya está en uso. Elige otro.', [ 'status' => 400 ] );
+    }
+    if ( email_exists( $email ) ) {
+        // Verificar si es un usuario pendiente (puede ser un doble registro)
+        $existing = get_user_by( 'email', $email );
+        $aprobado = $existing ? (int) get_user_meta( $existing->ID, CTR_META_KEY, true ) : -1;
+        if ( $aprobado === 0 ) {
+            return new WP_Error( 'register_failed', 'Ya existe una cuenta con ese email pendiente de aprobación.', [ 'status' => 400 ] );
+        }
+        return new WP_Error( 'register_failed', 'Ya existe una cuenta registrada con ese email.', [ 'status' => 400 ] );
+    }
+
     $user_id = wp_insert_user( [
-        'user_login' => sanitize_user( $data['username'] ?? '' ),
-        'user_email' => sanitize_email( $data['email']    ?? '' ),
+        'user_login' => $username,
+        'user_email' => $email,
         'user_pass'  => $data['password']   ?? '',
         'first_name' => sanitize_text_field( $data['first_name'] ?? '' ),
         'last_name'  => sanitize_text_field( $data['last_name']  ?? '' ),
@@ -39,7 +62,7 @@ function ctr_registrar_usuario( WP_REST_Request $request ) {
     ] );
 
     if ( is_wp_error( $user_id ) ) {
-        return new WP_Error( 'register_failed', $user_id->get_error_message(), [ 'status' => 400 ] );
+        return new WP_Error( 'register_failed', 'No se pudo crear la cuenta. Intenta de nuevo.', [ 'status' => 400 ] );
     }
 
     // Marcar como pendiente de aprobación
