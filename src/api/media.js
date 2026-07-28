@@ -28,9 +28,15 @@ const MAX_DIM = 2000;                             // px — suficiente para cual
 const sanitizarNombre = (nombre) =>
   (nombre || 'foto.jpg').replace(/[^\w.-]/g, '_');
 
+const HEIC_TYPES = ['image/heic', 'image/heif', 'image/heic-sequence', 'image/heif-sequence'];
+const esHeic = (file) =>
+  HEIC_TYPES.includes(file.type) || /\.heic?$/i.test(file.name) || /\.heif$/i.test(file.name);
+
 const comprimirImagen = (file) => new Promise((resolve) => {
-  // Ya entra dentro del límite → sin tocar
-  if (file.size <= MAX_UPLOAD_BYTES) {
+  // HEIC/HEIF siempre pasan por Canvas para convertirlos a JPEG —
+  // WordPress no acepta esos MIME types directamente.
+  // Archivos pequeños no-HEIC se devuelven sin tocar.
+  if (file.size <= MAX_UPLOAD_BYTES && !esHeic(file)) {
     resolve(new File([file], sanitizarNombre(file.name), { type: file.type }));
     return;
   }
