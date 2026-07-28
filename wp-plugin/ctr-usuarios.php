@@ -14,6 +14,18 @@ define( 'CTR_META_KEY',  'wp_user_is_approved' );
 
 
 // ════════════════════════════════════════════════════════════════════════════
+// 0. LIMPIEZA DE CACHÉ AL BORRAR USUARIO
+//    SiteGround y otros hostings con object cache (Redis/Memcached) pueden
+//    retener el email del usuario borrado, bloqueando un nuevo registro con
+//    el mismo correo. Este hook limpia la caché de usuario al eliminar.
+// ════════════════════════════════════════════════════════════════════════════
+add_action( 'deleted_user', function ( $user_id ) {
+    clean_user_cache( $user_id );
+    wp_cache_flush();
+} );
+
+
+// ════════════════════════════════════════════════════════════════════════════
 // 1. ENDPOINT DE REGISTRO  /wp-json/ctr/v1/register
 //    Crea el usuario, lo marca como pendiente y notifica al admin.
 //    React llama a este endpoint en lugar del nativo /wp/v2/users.
