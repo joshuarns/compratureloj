@@ -13,9 +13,10 @@ define( 'CTR_LOGIN_URL', 'https://compratureloj.com.mx/login' );
 define( 'CTR_META_KEY',  'wp_user_is_approved' );
 
 // EmailJS
-define( 'CTR_EMAILJS_SERVICE_ID',       'service_feqp5lh' );
-define( 'CTR_EMAILJS_PUBLIC_KEY',       'roG_GmR36UKJmh2Mz' );
-define( 'CTR_EMAILJS_TPL_APROBACION',   'template_lrkundk' );
+define( 'CTR_EMAILJS_SERVICE_ID',     'service_feqp5lh' );
+define( 'CTR_EMAILJS_PUBLIC_KEY',     'roG_GmR36UKJmh2Mz' );
+define( 'CTR_EMAILJS_TPL_PUBLICADO',  'template_lrkundk' );
+define( 'CTR_SITE_URL',               'https://compratureloj.com.mx' );
 
 function ctr_emailjs_send( $template_id, $params ) {
     wp_remote_post( 'https://api.emailjs.com/api/v1.0/email/send', [
@@ -29,6 +30,38 @@ function ctr_emailjs_send( $template_id, $params ) {
         'timeout' => 10,
     ] );
 }
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// NOTIFICACIÓN AL VENDEDOR CUANDO SU RELOJ ES PUBLICADO
+// Se dispara cuando el admin cambia el estado del producto a "publish".
+// ════════════════════════════════════════════════════════════════════════════
+add_action( 'transition_post_status', function ( $new_status, $old_status, $post ) {
+    if ( $post->post_type !== 'product' ) return;
+    if ( $new_status !== 'publish' || $old_status === 'publish' ) return;
+
+    $vendedor_id = get_post_meta( $post->ID, 'vendedor_id', true );
+    if ( ! $vendedor_id ) return;
+
+    $vendedor = get_userdata( (int) $vendedor_id );
+    if ( ! $vendedor ) return;
+
+    $nombre = trim( $vendedor->first_name . ' ' . $vendedor->last_name ) ?: $vendedor->user_login;
+
+    $precio_raw = get_post_meta( $post->ID, '_regular_price', true );
+    $precio     = $precio_raw ? '$' . number_format( (float) $precio_raw, 0, '.', ',' ) : '—';
+
+    ctr_emailjs_send( CTR_EMAILJS_TPL_PUBLICADO, [
+        'to_email'        => $vendedor->user_email,
+        'vendedor_nombre' => $nombre,
+        'reloj_nombre'    => $post->post_title,
+        'marca'           => get_post_meta( $post->ID, 'marca',  true ) ?: '—',
+        'modelo'          => get_post_meta( $post->ID, 'modelo', true ) ?: '—',
+        'precio'          => $precio,
+        'fecha'           => wp_date( 'd/m/Y H:i' ),
+        'reloj_url'       => CTR_SITE_URL . '/producto/' . $post->ID,
+    ] );
+}, 10, 3 );
 
 
 // ════════════════════════════════════════════════════════════════════════════
@@ -182,17 +215,6 @@ function ctr_procesar_aprobacion() {
 
     if ( $action === 'ctr_aprobar' ) {
         update_user_meta( $user_id, CTR_META_KEY, 1 );
-
-        $user   = get_userdata( $user_id );
-        $nombre = trim( $user->first_name . ' ' . $user->last_name ) ?: $user->user_login;
-
-        ctr_emailjs_send( CTR_EMAILJS_TPL_APROBACION, [
-            'to_email'        => $user->user_email,
-            'vendedor_nombre' => $nombre,
-            'login_url'       => CTR_LOGIN_URL,
-            'fecha'           => wp_date( 'd/m/Y H:i' ),
-        ] );
-
     } elseif ( $action === 'ctr_desaprobar' ) {
         update_user_meta( $user_id, CTR_META_KEY, 0 );
     }
