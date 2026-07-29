@@ -13,6 +13,18 @@
 
 import { axios, BASE_URL_WP, auth } from './client';
 
+// ── obtenerUsuariosPorIds ─────────────────────────────────────────────────────
+// Trae varios usuarios en una sola petición usando ?include=
+// Usado en RelojesPendientes para mostrar el nombre del vendedor.
+export const obtenerUsuariosPorIds = async (ids) => {
+    if (!ids.length) return [];
+    const response = await axios.get(`${BASE_URL_WP}/users`, {
+        params: { include: ids.join(','), per_page: ids.length, context: 'edit' },
+        auth,
+    });
+    return Array.isArray(response.data) ? response.data : [];
+};
+
 const USE_PROXY = process.env.REACT_APP_USE_PROXY === 'true';
 
 // ── loginUsuario ──────────────────────────────────────────────────────────────

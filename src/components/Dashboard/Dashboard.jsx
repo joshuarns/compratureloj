@@ -25,7 +25,7 @@ import {
 
 import { useAuth } from "../../context/AuthContext";
 import emailjs from "@emailjs/browser";
-import { obtenerMisProductos, obtenerTodosProductos, obtenerMisPedidos, obtenerProductosPendientes, actualizarProducto, eliminarProducto, crearResena, obtenerTodasResenas, actualizarResena } from "../../api";
+import { obtenerMisProductos, obtenerTodosProductos, obtenerMisPedidos, obtenerProductosPendientes, actualizarProducto, eliminarProducto, crearResena, obtenerTodasResenas, actualizarResena, obtenerUsuariosPorIds } from "../../api";
 import {
   REVIEWS_PRODUCT_ID,
   EMAILJS_SERVICE_ID,
@@ -609,7 +609,34 @@ function RelojesPendientes() {
     setError(false);
 
     obtenerProductosPendientes()
-      .then(data  => { if (activo) setRelojes(data); })
+      .then(async (data) => {
+        if (!activo) return;
+        const getMeta = (meta, key) => (meta || []).find(m => m.key === key)?.value || '';
+
+        // Enriquecer productos que no tienen vendedor_nombre/email pero sí vendedor_id
+        const sinDatos = data.filter(p => !getMeta(p.meta_data, 'vendedor_nombre') && getMeta(p.meta_data, 'vendedor_id'));
+        if (sinDatos.length > 0) {
+          const ids = [...new Set(sinDatos.map(p => getMeta(p.meta_data, 'vendedor_id')))];
+          const usuarios = await obtenerUsuariosPorIds(ids).catch(() => []);
+          const mapaUsuarios = Object.fromEntries(usuarios.map(u => [String(u.id), u]));
+          data = data.map(p => {
+            const vid = getMeta(p.meta_data, 'vendedor_id');
+            if (!getMeta(p.meta_data, 'vendedor_nombre') && vid && mapaUsuarios[vid]) {
+              const u = mapaUsuarios[vid];
+              return {
+                ...p,
+                meta_data: [
+                  ...p.meta_data,
+                  { key: 'vendedor_nombre', value: u.name  || u.username || '' },
+                  { key: 'vendedor_email',  value: u.email || '' },
+                ],
+              };
+            }
+            return p;
+          });
+        }
+        if (activo) setRelojes(data);
+      })
       .catch(()   => { if (activo) setError(true); })
       .finally(() => { if (activo) setCargando(false); });
 

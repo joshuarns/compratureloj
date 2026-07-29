@@ -46,6 +46,7 @@ export {
     loginUsuario,
     createUser,
     obtenerUsuario,
+    obtenerUsuariosPorIds,
     actualizarUsuario,
     solicitarResetPassword,
 } from './users';
