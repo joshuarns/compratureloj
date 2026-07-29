@@ -181,6 +181,17 @@ export const obtenerProductosPorCategoria = async (slug, page = 1, perPage = 12,
     return { productos, totalPaginas };
 };
 
+// ── obtenerProductosPendientes ────────────────────────────────────────────────
+// Trae todos los productos en estado draft (pendientes de publicar).
+// Solo lo usa el admin desde el Dashboard.
+export const obtenerProductosPendientes = async () => {
+    const response = await axios.get(`${BASE_URL}/products`, {
+        params: { status: 'draft', per_page: 100 },
+        auth,
+    });
+    return Array.isArray(response.data) ? response.data : [];
+};
+
 // ── obtenerMisProductos ───────────────────────────────────────────────────────
 // Filtra por el meta campo `vendedor_id` que FormSellWatch y EditWatch
 // guardan con el ID real del vendedor. Es el único filtro confiable porque

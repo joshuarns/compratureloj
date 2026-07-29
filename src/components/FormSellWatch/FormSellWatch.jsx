@@ -160,6 +160,8 @@ function FormSellWatch() {
           { key: "estetica_del_reloj",      value: producto.estetica_del_reloj },
           { key: "estado_del_reloj",        value: producto.estado_del_reloj },
           { key: "vendedor_id",             value: String(usuario?.id || "") },
+          { key: "vendedor_nombre",         value: usuario?.nombre || "" },
+          { key: "vendedor_email",          value: usuario?.email  || "" },
           { key: "foto_muneca",             value: munecaData.source_url },
           { key: "foto_identificacion",     value: identificacionData.source_url },
         ],
