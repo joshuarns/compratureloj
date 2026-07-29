@@ -25,7 +25,7 @@ import {
 
 import { useAuth } from "../../context/AuthContext";
 import emailjs from "@emailjs/browser";
-import { obtenerMisProductos, obtenerTodosProductos, obtenerMisPedidos, obtenerProductosPendientes, actualizarProducto, eliminarProducto, crearResena, obtenerTodasResenas, actualizarResena, obtenerUsuariosPorIds } from "../../api";
+import { obtenerMisProductos, obtenerMisPedidos, obtenerProductosPendientes, actualizarProducto, eliminarProducto, crearResena, obtenerTodasResenas, actualizarResena, obtenerUsuariosPorIds } from "../../api";
 import {
   REVIEWS_PRODUCT_ID,
   EMAILJS_SERVICE_ID,
