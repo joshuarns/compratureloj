@@ -196,7 +196,45 @@ function ctr_enviar_email_aprobacion( $user_id ) {
 
 
 // ════════════════════════════════════════════════════════════════════════════
-// 6. ENDPOINT DE VERIFICACIÓN DE APROBACIÓN  /wp-json/ctr/v1/check-approval/{id}
+// 6. ENDPOINT PARA SOLICITAR RESTABLECIMIENTO DE CONTRASEÑA
+//    POST /wp-json/ctr/v1/forgot-password  { "user_login": "..." }
+//    Genera la clave y envía el correo usando el filtro retrieve_password_message.
+// ════════════════════════════════════════════════════════════════════════════
+add_action( 'rest_api_init', function () {
+    register_rest_route( 'ctr/v1', '/forgot-password', [
+        'methods'             => 'POST',
+        'permission_callback' => '__return_true',
+        'callback'            => function ( WP_REST_Request $request ) {
+            $user_login = sanitize_text_field( $request->get_param( 'user_login' ) ?? '' );
+
+            if ( empty( $user_login ) ) {
+                return new WP_Error( 'missing_field', 'El campo user_login es requerido.', [ 'status' => 400 ] );
+            }
+
+            // Buscar por email o por username
+            $user = is_email( $user_login )
+                ? get_user_by( 'email', $user_login )
+                : get_user_by( 'login', $user_login );
+
+            if ( ! $user ) {
+                // Respuesta genérica — no revelar si el usuario existe
+                return new WP_REST_Response( [ 'success' => true ], 200 );
+            }
+
+            $result = retrieve_password( $user->user_login );
+
+            if ( is_wp_error( $result ) ) {
+                return new WP_Error( 'reset_failed', $result->get_error_message(), [ 'status' => 500 ] );
+            }
+
+            return new WP_REST_Response( [ 'success' => true ], 200 );
+        },
+    ] );
+} );
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// 7. ENDPOINT DE VERIFICACIÓN DE APROBACIÓN  /wp-json/ctr/v1/check-approval/{id}
 //    Solo accesible con credenciales de admin. El proxy de login lo consulta
 //    tras autenticar al usuario para decidir si devuelve la sesión a React.
 // ════════════════════════════════════════════════════════════════════════════

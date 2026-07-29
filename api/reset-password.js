@@ -1,33 +1,39 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// api/reset-password.js — Proxy para wp-login.php (recuperación de contraseña)
+// api/reset-password.js — Proxy para solicitar restablecimiento de contraseña
 //
-// wp-login.php no es parte de la REST API de WordPress, necesita su propia ruta.
+// Llama al endpoint REST del plugin (ctr/v1/forgot-password) en lugar de
+// wp-login.php, que SiteGround puede bloquear al ser llamado server-side.
 // ─────────────────────────────────────────────────────────────────────────────
 
-export const config = {
-  api: { bodyParser: false },
-};
-
 export default async function handler(req, res) {
-  const base = process.env.WP_BASE_URL.replace('/wp-json/wp/v2', '');
-  const url  = `${base}/wp-login.php`;
+  if (req.method !== 'POST') return res.status(405).end();
 
-  const chunks = [];
-  for await (const chunk of req) chunks.push(chunk);
-  const body = Buffer.concat(chunks);
+  res.setHeader('Cache-Control', 'no-store');
 
-  const headers = {};
-  if (req.headers['content-type']) headers['Content-Type'] = req.headers['content-type'];
+  const { user_login } = req.body || {};
+
+  if (!user_login) return res.status(400).json({ message: 'user_login requerido' });
+
+  const base = process.env.WP_BASE_URL.replace('/wp/v2', '');
+  const url  = `${base}/ctr/v1/forgot-password`;
+
+  const creds = Buffer.from(
+    `${process.env.WP_USER}:${process.env.WP_APP_PASSWORD}`
+  ).toString('base64');
 
   try {
     const upstream = await fetch(url, {
-      method:  req.method,
-      headers,
-      body:    body.length > 0 ? body : undefined,
+      method:  'POST',
+      headers: {
+        'Content-Type':  'application/json',
+        'Authorization': `Basic ${creds}`,
+      },
+      body: JSON.stringify({ user_login }),
     });
 
-    res.status(upstream.status).end();
+    const data = await upstream.json().catch(() => ({}));
+    res.status(upstream.status).json(data);
   } catch {
-    res.status(502).end();
+    res.status(502).json({ message: 'Error al conectar con WordPress' });
   }
 }

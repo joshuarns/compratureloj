@@ -93,15 +93,14 @@ export const actualizarUsuario = async (id, datos) => {
 // pero WordPress procesa la solicitud y envía el email internamente.
 // El componente ForgotPassword asume siempre éxito y muestra un mensaje genérico.
 export const solicitarResetPassword = async (userLogin) => {
-    const body = new FormData();
-    body.append('action',     'lostpassword');
-    body.append('user_login', userLogin);
-
-    // En producción: el proxy expone /api/reset-password → wp-login.php (server-side).
-    // En desarrollo: construimos la URL directamente desde BASE_URL_WP.
+    const wpRoot = BASE_URL_WP.replace('/wp/v2', '');
     const url = USE_PROXY
         ? '/api/reset-password'
-        : `${BASE_URL_WP.replace('/wp-json/wp/v2', '')}/wp-login.php`;
+        : `${wpRoot}/ctr/v1/forgot-password`;
 
-    await fetch(url, { method: 'POST', body, mode: 'no-cors' });
+    await fetch(url, {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ user_login: userLogin }),
+    });
 };
