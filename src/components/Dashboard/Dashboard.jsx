@@ -25,7 +25,7 @@ import {
 
 import { useAuth } from "../../context/AuthContext";
 import emailjs from "@emailjs/browser";
-import { obtenerMisProductos, obtenerMisPedidos, obtenerProductosPendientes, actualizarProducto, eliminarProducto, crearResena, obtenerTodasResenas, actualizarResena } from "../../api";
+import { obtenerMisProductos, obtenerTodosProductos, obtenerMisPedidos, obtenerProductosPendientes, actualizarProducto, eliminarProducto, crearResena, obtenerTodasResenas, actualizarResena } from "../../api";
 import {
   REVIEWS_PRODUCT_ID,
   EMAILJS_SERVICE_ID,
@@ -78,7 +78,7 @@ function Paginacion({ paginaActual, totalPaginas, onChange }) {
 // SUB-COMPONENTE: Tab "Mis relojes"
 // Muestra la tabla de relojes publicados por el usuario actual.
 // ─────────────────────────────────────────────────────────
-function MisRelojes({ usuario }) {
+function MisRelojes({ usuario, esAdmin }) {
   const [relojes, setRelojes]   = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError]       = useState(false);
@@ -124,7 +124,8 @@ function MisRelojes({ usuario }) {
     setError(false);
     setPagina(1);
 
-    obtenerMisProductos(usuario.id)
+    const fetchFn = esAdmin ? obtenerTodosProductos : () => obtenerMisProductos(usuario.id);
+    fetchFn()
       .then(data  => { if (activo) setRelojes(data); })
       .catch(err  => {
         if (!activo) return;
@@ -852,7 +853,7 @@ function Dashboard() {
           )}
 
           {/* ── Contenido del tab activo ── */}
-          {tabActivo === "relojes" && <MisRelojes  usuario={usuario} />}
+          {tabActivo === "relojes" && <MisRelojes  usuario={usuario} esAdmin={usuario.roles?.includes('administrator')} />}
           {tabActivo === "compras" && <MisCompras  usuario={usuario} />}
           {tabActivo === "cuenta"  && <MiCuenta    usuario={usuario} />}
           {tabActivo === "resenas"       && <MisResenas usuario={usuario} />}

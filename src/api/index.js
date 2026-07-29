@@ -25,6 +25,7 @@ export {
     obtenerProductosPorIds,
     obtenerProductosPorCategoria,
     obtenerMisProductos,
+    obtenerTodosProductos,
     obtenerProductosPendientes,
     crearProducto,
     actualizarProducto,

@@ -181,6 +181,16 @@ export const obtenerProductosPorCategoria = async (slug, page = 1, perPage = 12,
     return { productos, totalPaginas };
 };
 
+// ── obtenerTodosProductos ─────────────────────────────────────────────────────
+// Trae todos los productos en cualquier estado. Solo lo usa el admin.
+export const obtenerTodosProductos = async () => {
+    const response = await axios.get(`${BASE_URL}/products`, {
+        params: { status: 'any', per_page: 100 },
+        auth,
+    });
+    return Array.isArray(response.data) ? response.data : [];
+};
+
 // ── obtenerProductosPendientes ────────────────────────────────────────────────
 // Trae todos los productos en estado draft (pendientes de publicar).
 // Solo lo usa el admin desde el Dashboard.
