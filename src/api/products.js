@@ -66,14 +66,23 @@ export const obtenerProductos = async (page = 1, perPage = 12, busqueda = "") =>
         return { productos, totalPaginas };
     }
 
-    // Sin búsqueda: paginación normal server-side
+    // Sin búsqueda: traemos todos, ordenamos instock primero y paginamos client-side
     const respuesta = await wcGet(`${BASE_URL}/products`, {
-        params: { status: 'publish', per_page: perPage, page },
+        params: { status: 'publish', per_page: 100, page: 1 },
         auth,
     });
 
-    const totalPaginas = parseInt(respuesta.headers['x-wp-totalpages'] || '1', 10);
-    const productos    = Array.isArray(respuesta.data) ? respuesta.data : [];
+    const todos = Array.isArray(respuesta.data) ? respuesta.data : [];
+
+    // instock primero, luego outofstock / onbackorder
+    todos.sort((a, b) => {
+        const enStock = p => p.stock_status === 'instock' ? 0 : 1;
+        return enStock(a) - enStock(b);
+    });
+
+    const totalPaginas = Math.max(1, Math.ceil(todos.length / perPage));
+    const inicio       = (page - 1) * perPage;
+    const productos    = todos.slice(inicio, inicio + perPage);
 
     return { productos, totalPaginas };
 };
@@ -152,14 +161,22 @@ export const obtenerProductosPorCategoria = async (slug, page = 1, perPage = 12,
         return { productos, totalPaginas };
     }
 
-    // Sin búsqueda: paginación server-side normal
+    // Sin búsqueda: traemos todos, ordenamos instock primero y paginamos client-side
     const productosRespuesta = await wcGet(`${BASE_URL}/products`, {
-        params: { status: 'publish', category: categoriaId, per_page: perPage, page },
+        params: { status: 'publish', category: categoriaId, per_page: 100, page: 1 },
         auth,
     });
 
-    const totalPaginas = parseInt(productosRespuesta.headers['x-wp-totalpages'] || '1', 10);
-    const productos    = Array.isArray(productosRespuesta.data) ? productosRespuesta.data : [];
+    const todosCategoria = Array.isArray(productosRespuesta.data) ? productosRespuesta.data : [];
+
+    todosCategoria.sort((a, b) => {
+        const enStock = p => p.stock_status === 'instock' ? 0 : 1;
+        return enStock(a) - enStock(b);
+    });
+
+    const totalPaginas = Math.max(1, Math.ceil(todosCategoria.length / perPage));
+    const inicio       = (page - 1) * perPage;
+    const productos    = todosCategoria.slice(inicio, inicio + perPage);
 
     return { productos, totalPaginas };
 };
