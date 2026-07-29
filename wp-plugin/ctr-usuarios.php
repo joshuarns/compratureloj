@@ -12,6 +12,24 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 define( 'CTR_LOGIN_URL', 'https://compratureloj.com.mx/login' );
 define( 'CTR_META_KEY',  'wp_user_is_approved' );
 
+// EmailJS
+define( 'CTR_EMAILJS_SERVICE_ID',       'service_feqp5lh' );
+define( 'CTR_EMAILJS_PUBLIC_KEY',       'roG_GmR36UKJmh2Mz' );
+define( 'CTR_EMAILJS_TPL_APROBACION',   'template_lrkundk' );
+
+function ctr_emailjs_send( $template_id, $params ) {
+    wp_remote_post( 'https://api.emailjs.com/api/v1.0/email/send', [
+        'headers' => [ 'Content-Type' => 'application/json' ],
+        'body'    => json_encode( [
+            'service_id'      => CTR_EMAILJS_SERVICE_ID,
+            'template_id'     => $template_id,
+            'user_id'         => CTR_EMAILJS_PUBLIC_KEY,
+            'template_params' => $params,
+        ] ),
+        'timeout' => 10,
+    ] );
+}
+
 
 // ════════════════════════════════════════════════════════════════════════════
 // 0. LIMPIEZA DE CACHÉ AL BORRAR USUARIO
@@ -164,6 +182,17 @@ function ctr_procesar_aprobacion() {
 
     if ( $action === 'ctr_aprobar' ) {
         update_user_meta( $user_id, CTR_META_KEY, 1 );
+
+        $user   = get_userdata( $user_id );
+        $nombre = trim( $user->first_name . ' ' . $user->last_name ) ?: $user->user_login;
+
+        ctr_emailjs_send( CTR_EMAILJS_TPL_APROBACION, [
+            'to_email'        => $user->user_email,
+            'vendedor_nombre' => $nombre,
+            'login_url'       => CTR_LOGIN_URL,
+            'fecha'           => wp_date( 'd/m/Y H:i' ),
+        ] );
+
     } elseif ( $action === 'ctr_desaprobar' ) {
         update_user_meta( $user_id, CTR_META_KEY, 0 );
     }
