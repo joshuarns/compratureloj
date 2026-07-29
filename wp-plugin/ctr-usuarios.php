@@ -14,73 +14,6 @@ define( 'CTR_META_KEY',  'wp_user_is_approved' );
 
 
 // ════════════════════════════════════════════════════════════════════════════
-// EMAILJS — configuración centralizada
-// ════════════════════════════════════════════════════════════════════════════
-define( 'CTR_EMAILJS_SERVICE_ID',  'service_feqp5lh' );
-define( 'CTR_EMAILJS_PUBLIC_KEY',  'roG_GmR36UKJmh2Mz' );
-define( 'CTR_EMAILJS_TPL_PUBLICADO', 'template_lrkundk' );
-define( 'CTR_SITE_URL', 'https://compratureloj.com.mx' );
-
-
-// ════════════════════════════════════════════════════════════════════════════
-// HELPER: enviar email vía EmailJS REST API
-// ════════════════════════════════════════════════════════════════════════════
-function ctr_emailjs_send( $template_id, $params ) {
-    wp_remote_post( 'https://api.emailjs.com/api/v1.0/email/send', [
-        'headers' => [ 'Content-Type' => 'application/json' ],
-        'body'    => json_encode( [
-            'service_id'      => CTR_EMAILJS_SERVICE_ID,
-            'template_id'     => $template_id,
-            'user_id'         => CTR_EMAILJS_PUBLIC_KEY,
-            'template_params' => $params,
-        ] ),
-        'timeout' => 10,
-    ] );
-}
-
-
-// ════════════════════════════════════════════════════════════════════════════
-// NOTIFICACIÓN AL VENDEDOR CUANDO SU RELOJ ES PUBLICADO
-// Se dispara cuando el admin cambia el estado del producto a "publish".
-// ════════════════════════════════════════════════════════════════════════════
-add_action( 'transition_post_status', function ( $new_status, $old_status, $post ) {
-    if ( $post->post_type !== 'product' ) return;
-    if ( $new_status !== 'publish' || $old_status === 'publish' ) return;
-
-    // Obtener datos del producto (meta guardados por React)
-    $marca  = get_post_meta( $post->ID, 'marca',         true ) ?: '—';
-    $modelo = get_post_meta( $post->ID, 'modelo',        true ) ?: '—';
-    $precio = get_post_meta( $post->ID, '_regular_price', true );
-    if ( $precio ) {
-        $precio = '$' . number_format( (float) $precio, 0, '.', ',' );
-    } else {
-        $precio = '—';
-    }
-
-    // Obtener datos del vendedor via meta vendedor_id
-    $vendedor_id = get_post_meta( $post->ID, 'vendedor_id', true );
-    if ( ! $vendedor_id ) return;
-
-    $vendedor = get_userdata( (int) $vendedor_id );
-    if ( ! $vendedor ) return;
-
-    $nombre = trim( $vendedor->first_name . ' ' . $vendedor->last_name );
-    if ( ! $nombre ) $nombre = $vendedor->user_login;
-
-    ctr_emailjs_send( CTR_EMAILJS_TPL_PUBLICADO, [
-        'vendedor_nombre' => $nombre,
-        'reloj_nombre'    => $post->post_title,
-        'marca'           => $marca,
-        'modelo'          => $modelo,
-        'precio'          => $precio,
-        'fecha'           => wp_date( 'd/m/Y H:i' ),
-        'reloj_url'       => CTR_SITE_URL . '/producto/' . $post->ID,
-        'to_email'        => $vendedor->user_email,
-    ] );
-}, 10, 3 );
-
-
-// ════════════════════════════════════════════════════════════════════════════
 // 0. LIMPIEZA DE CACHÉ AL BORRAR USUARIO
 //    SiteGround y otros hostings con object cache (Redis/Memcached) pueden
 //    retener el email del usuario borrado, bloqueando un nuevo registro con
@@ -122,7 +55,6 @@ function ctr_registrar_usuario( WP_REST_Request $request ) {
         return new WP_Error( 'register_failed', 'Ese nombre de usuario ya está en uso. Elige otro.', [ 'status' => 400 ] );
     }
     if ( email_exists( $email ) ) {
-        // Verificar si es un usuario pendiente (puede ser un doble registro)
         $existing = get_user_by( 'email', $email );
         $aprobado = $existing ? (int) get_user_meta( $existing->ID, CTR_META_KEY, true ) : -1;
         if ( $aprobado === 0 ) {
@@ -147,7 +79,7 @@ function ctr_registrar_usuario( WP_REST_Request $request ) {
     // Marcar como pendiente de aprobación
     update_user_meta( $user_id, CTR_META_KEY, 0 );
 
-    // Notificar al admin
+    // Notificar al admin por correo interno de WordPress
     $user  = get_userdata( $user_id );
     $admin = get_option( 'admin_email' );
     wp_mail(
@@ -170,13 +102,8 @@ function ctr_registrar_usuario( WP_REST_Request $request ) {
 }
 
 
-// NOTA: La verificación de aprobación se hace en el proxy de login (api/login.js)
-// que consulta /ctr/v1/check-approval antes de devolver la sesión a React.
-// No se necesita bloquear aquí a nivel de REST API.
-
-
 // ════════════════════════════════════════════════════════════════════════════
-// 3. COLUMNA "APROBACIÓN" EN LA LISTA DE USUARIOS DEL WP ADMIN
+// 2. COLUMNA "APROBACIÓN" EN LA LISTA DE USUARIOS DEL WP ADMIN
 // ════════════════════════════════════════════════════════════════════════════
 add_filter( 'manage_users_columns', function ( $columns ) {
     $columns['ctr_aprobado'] = 'Aprobación';
@@ -197,16 +124,14 @@ add_filter( 'manage_users_custom_column', function ( $output, $column, $user_id 
 
 
 // ════════════════════════════════════════════════════════════════════════════
-// 4. ACCIONES "APROBAR / DESAPROBAR" EN CADA FILA DE USUARIO
+// 3. ACCIONES "APROBAR / DESAPROBAR" EN CADA FILA DE USUARIO
 // ════════════════════════════════════════════════════════════════════════════
 add_filter( 'user_row_actions', function ( $actions, $user ) {
-    // No mostrar en el propio admin
     if ( in_array( 'administrator', (array) $user->roles, true ) ) return $actions;
 
     $aprobado = get_user_meta( $user->ID, CTR_META_KEY, true );
     $nonce    = wp_create_nonce( 'ctr_aprobar_' . $user->ID );
 
-    // Quitar botones de WP Approve User para evitar duplicados
     unset( $actions['approve'], $actions['unapprove'] );
 
     if ( (int) $aprobado === 1 ) {
@@ -222,7 +147,8 @@ add_filter( 'user_row_actions', function ( $actions, $user ) {
 
 
 // ════════════════════════════════════════════════════════════════════════════
-// 5. PROCESAR LAS ACCIONES APROBAR / DESAPROBAR
+// 4. PROCESAR LAS ACCIONES APROBAR / DESAPROBAR
+//    El email de aprobación lo envía EmailJS desde React, no wp_mail.
 // ════════════════════════════════════════════════════════════════════════════
 add_action( 'admin_action_ctr_aprobar',    'ctr_procesar_aprobacion' );
 add_action( 'admin_action_ctr_desaprobar', 'ctr_procesar_aprobacion' );
@@ -238,7 +164,6 @@ function ctr_procesar_aprobacion() {
 
     if ( $action === 'ctr_aprobar' ) {
         update_user_meta( $user_id, CTR_META_KEY, 1 );
-        ctr_enviar_email_aprobacion( $user_id );
     } elseif ( $action === 'ctr_desaprobar' ) {
         update_user_meta( $user_id, CTR_META_KEY, 0 );
     }
@@ -249,7 +174,7 @@ function ctr_procesar_aprobacion() {
 
 
 // ════════════════════════════════════════════════════════════════════════════
-// 6. ENDPOINT DE VERIFICACIÓN DE APROBACIÓN  /wp-json/ctr/v1/check-approval/{id}
+// 5. ENDPOINT DE VERIFICACIÓN DE APROBACIÓN  /wp-json/ctr/v1/check-approval/{id}
 //    Solo accesible con credenciales de admin. El proxy de login lo consulta
 //    tras autenticar al usuario para decidir si devuelve la sesión a React.
 // ════════════════════════════════════════════════════════════════════════════
@@ -268,26 +193,3 @@ add_action( 'rest_api_init', function () {
         },
     ] );
 } );
-
-
-// ════════════════════════════════════════════════════════════════════════════
-// 7. EMAIL DE APROBACIÓN — enlace al login de React, no de WordPress
-// ════════════════════════════════════════════════════════════════════════════
-function ctr_enviar_email_aprobacion( $user_id ) {
-    $user = get_userdata( $user_id );
-    if ( ! $user ) return;
-
-    $nombre = $user->first_name ?: $user->user_login;
-
-    $asunto  = '¡Tu cuenta en Compra Tu Reloj ha sido aprobada!';
-    $mensaje =
-        "Hola {$nombre},\n\n" .
-        "Tu cuenta ha sido aprobada. Ya puedes iniciar sesión en:\n\n" .
-        CTR_LOGIN_URL . "\n\n" .
-        "Usuario: {$user->user_login}\n\n" .
-        "Si olvidaste tu contraseña puedes restablecerla desde el mismo sitio.\n\n" .
-        "¡Bienvenido a Compra Tu Reloj!\n" .
-        "El equipo de Compra Tu Reloj";
-
-    wp_mail( $user->user_email, $asunto, $mensaje );
-}

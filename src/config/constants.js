@@ -38,7 +38,7 @@ export const EMAILJS_TEMPLATE_CONTACTO = "PENDIENTE";
 
 // Templates de notificación (crear en EmailJS dashboard)
 export const EMAILJS_TEMPLATE_REGISTRO          = "PENDIENTE";
-export const EMAILJS_TEMPLATE_CUENTA_APROBADA   = "PENDIENTE";
+export const EMAILJS_TEMPLATE_CUENTA_APROBADA   = "template_e55l96i";
 export const EMAILJS_TEMPLATE_CAMBIO_CONTRASENA = "PENDIENTE";
 export const EMAILJS_TEMPLATE_RELOJ_PUBLICADO   = "template_lrkundk";
 export const EMAILJS_TEMPLATE_RELOJ_MODIFICADO  = "PENDIENTE";
