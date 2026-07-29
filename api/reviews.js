@@ -40,7 +40,7 @@ export default async function handler(req, res) {
   // ── Paso 1: obtener el primer producto disponible ─────────────────────────
   let productId;
   try {
-    const prodRes = await fetch(`${wcBase}/products?status=any&per_page=1`, {
+    const prodRes = await fetch(`${wcBase}/products?status=any&per_page=1&orderby=id&order=asc`, {
       headers: { Authorization: adminAuth },
     });
     const productos = await prodRes.json();

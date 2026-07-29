@@ -274,7 +274,7 @@ let _anclaCache = null;
 const _resolverProductoAncla = async () => {
     if (_anclaCache) return _anclaCache;
     const res = await axios.get(`${BASE_URL}/products`, {
-        params: { status: 'any', per_page: 1, page: 1 },
+        params: { status: 'any', per_page: 1, page: 1, orderby: 'id', order: 'asc' },
         auth,
     });
     const lista = Array.isArray(res.data) ? res.data : [];
