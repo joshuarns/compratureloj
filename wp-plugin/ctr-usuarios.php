@@ -221,11 +221,26 @@ add_action( 'rest_api_init', function () {
                 return new WP_REST_Response( [ 'success' => true ], 200 );
             }
 
-            $result = retrieve_password( $user->user_login );
-
-            if ( is_wp_error( $result ) ) {
-                return new WP_Error( 'reset_failed', $result->get_error_message(), [ 'status' => 500 ] );
+            // Generar clave de reset (función disponible desde WP 4.4)
+            $key = get_password_reset_key( $user );
+            if ( is_wp_error( $key ) ) {
+                return new WP_Error( 'reset_failed', 'No se pudo generar el enlace.', [ 'status' => 500 ] );
             }
+
+            $reset_url = 'https://compratureloj.com.mx/nueva-contrasena?key=' . $key . '&login=' . rawurlencode( $user->user_login );
+            $nombre    = $user->first_name ?: $user->user_login;
+
+            $asunto  = 'Restablece tu contraseña — Compra Tu Reloj';
+            $mensaje =
+                "Se ha recibido una solicitud para restablecer la contraseña de su cuenta.\n\n" .
+                "Hemos recibido una solicitud para restablecer la contraseña asociada a la siguiente cuenta:\n\n" .
+                "Sitio: Compra tu Reloj\n" .
+                "Usuario: {$nombre}\n\n" .
+                "Si usted realizó esta solicitud, puede restablecer su contraseña de forma segura utilizando el siguiente enlace:\n\n" .
+                $reset_url . "\n\n" .
+                "Si usted no solicitó este cambio, puede ignorar este correo con total tranquilidad. Su contraseña permanecerá sin cambios y no será necesario realizar ninguna acción.\n";
+
+            wp_mail( $user->user_email, $asunto, $mensaje );
 
             return new WP_REST_Response( [ 'success' => true ], 200 );
         },
