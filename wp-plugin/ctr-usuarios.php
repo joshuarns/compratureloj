@@ -52,7 +52,7 @@ add_action( 'transition_post_status', function ( $new_status, $old_status, $post
     $precio     = $precio_raw ? '$' . number_format( (float) $precio_raw, 0, '.', ',' ) : '—';
 
     ctr_emailjs_send( CTR_EMAILJS_TPL_PUBLICADO, [
-        'to_email'        => $vendedor->user_email,
+        'vendedor_email'  => $vendedor->user_email,
         'vendedor_nombre' => $nombre,
         'reloj_nombre'    => $post->post_title,
         'marca'           => get_post_meta( $post->ID, 'marca',  true ) ?: '—',
