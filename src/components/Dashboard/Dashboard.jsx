@@ -134,7 +134,7 @@ function MisRelojes({ usuario, esAdmin }) {
       .finally(() => { if (activo) setCargando(false); });
 
     return () => { activo = false; };
-  }, [usuario.id, reintento]);
+  }, [usuario.id, reintento, esAdmin]);
 
   const totalPaginas  = Math.ceil(relojes.length / POR_PAGINA_RELOJES);
   const relojesPagina = relojes.slice((pagina - 1) * POR_PAGINA_RELOJES, pagina * POR_PAGINA_RELOJES);
