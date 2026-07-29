@@ -196,26 +196,7 @@ function ctr_enviar_email_aprobacion( $user_id ) {
 
 
 // ════════════════════════════════════════════════════════════════════════════
-// 6. EMAIL DE RESTABLECIMIENTO DE CONTRASEÑA — apunta al login de React
-// ════════════════════════════════════════════════════════════════════════════
-add_filter( 'retrieve_password_message', function ( $message, $key, $user_login, $user_data ) {
-    $react_url    = 'https://compratureloj.com.mx/nueva-contrasena?key=' . $key . '&login=' . rawurlencode( $user_login );
-    $display_name = $user_data->display_name ?: $user_login;
-
-    $message  = "Se ha recibido una solicitud para restablecer la contraseña de su cuenta.\n\n";
-    $message .= "Hemos recibido una solicitud para restablecer la contraseña asociada a la siguiente cuenta:\n\n";
-    $message .= "Sitio: Compra tu Reloj\n";
-    $message .= "Usuario: " . $display_name . "\n\n";
-    $message .= "Si usted realizó esta solicitud, puede restablecer su contraseña de forma segura utilizando el siguiente enlace:\n\n";
-    $message .= $react_url . "\n\n";
-    $message .= "Si usted no solicitó este cambio, puede ignorar este correo con total tranquilidad. Su contraseña permanecerá sin cambios y no será necesario realizar ninguna acción.\n";
-
-    return $message;
-}, 10, 4 );
-
-
-// ════════════════════════════════════════════════════════════════════════════
-// 7. ENDPOINT DE VERIFICACIÓN DE APROBACIÓN  /wp-json/ctr/v1/check-approval/{id}
+// 6. ENDPOINT DE VERIFICACIÓN DE APROBACIÓN  /wp-json/ctr/v1/check-approval/{id}
 //    Solo accesible con credenciales de admin. El proxy de login lo consulta
 //    tras autenticar al usuario para decidir si devuelve la sesión a React.
 // ════════════════════════════════════════════════════════════════════════════
