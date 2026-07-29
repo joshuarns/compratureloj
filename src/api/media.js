@@ -58,7 +58,9 @@ const comprimirImagen = (file) => new Promise((resolve) => {
     const canvas = document.createElement('canvas');
     canvas.width  = width;
     canvas.height = height;
-    canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+    const ctx = canvas.getContext('2d');
+    if (!ctx) { resolve(file); return; } // iOS Safari limita canvas simultáneos
+    ctx.drawImage(img, 0, 0, width, height);
 
     // Intentar con calidad decreciente hasta que quepa en MAX_UPLOAD_BYTES
     let quality = 0.82;

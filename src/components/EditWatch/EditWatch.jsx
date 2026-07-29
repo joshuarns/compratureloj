@@ -303,7 +303,7 @@ function EditWatch() {
                     (máx. {MAX_IMAGENES - totalImagenes} más, {MAX_MB} MB por foto)
                   </span>
                 </label>
-                <input type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.heic,.heif" multiple onChange={handleImagenesNuevas} />
+                <input type="file" accept="image/*,.heic,.heif" multiple onChange={handleImagenesNuevas} />
               </>
             )}
 
