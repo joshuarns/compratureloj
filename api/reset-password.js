@@ -1,5 +1,9 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// api/reset-password.js — Proxy para wp-login.php (recuperación de contraseña)
+// api/reset-password.js — Solicita restablecimiento de contraseña
+//
+// Llama al endpoint REST del plugin (ctr/v1/forgot-password) que genera
+// la clave y envía el correo vía wp_mail — evita llamar a wp-login.php
+// directamente, ya que SiteGround lo bloquea desde IPs de servidor.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default async function handler(req, res) {
@@ -10,21 +14,25 @@ export default async function handler(req, res) {
   const { user_login } = req.body || {};
   if (!user_login) return res.status(400).json({ message: 'user_login requerido' });
 
-  const base = process.env.WP_BASE_URL.replace('/wp-json/wp/v2', '');
-  const url  = `${base}/wp-login.php`;
+  const base    = process.env.WP_BASE_URL.replace('/wp/v2', '');
+  const url     = `${base}/ctr/v1/forgot-password`;
 
-  const body = `action=lostpassword&user_login=${encodeURIComponent(user_login)}`;
+  const wpUser  = (process.env.WP_USER || '').trim();
+  const wpPass  = (process.env.WP_PASS || '').trim().replace(/\s+/g, ' ');
+  const auth    = Buffer.from(`${wpUser}:${wpPass}`).toString('base64');
 
   try {
     const upstream = await fetch(url, {
       method:  'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body,
-      redirect: 'manual',
+      headers: {
+        'Content-Type':  'application/json',
+        'Authorization': `Basic ${auth}`,
+      },
+      body: JSON.stringify({ user_login }),
     });
 
-    // wp-login.php devuelve 302 redirect al completar — eso es éxito
-    res.status(200).json({ success: true });
+    const data = await upstream.json().catch(() => ({}));
+    res.status(upstream.status).json(data);
   } catch {
     res.status(502).json({ message: 'Error al conectar con WordPress' });
   }
