@@ -2,10 +2,8 @@
 // api/reviews.js — Crea reseñas en WooCommerce sin credenciales de admin.
 //
 // Flujo:
-//   1. Con credenciales admin, obtiene el primer producto disponible (ancla).
-//   2. Crea la reseña SIN auth → WooCommerce la pone en "hold" (pendiente)
-//      independientemente de la configuración del sitio.
-//   3. Devuelve la reseña creada o el error de WooCommerce.
+//   1. Crea la reseña en product_id=2470 (ancla fija) con status=hold.
+//   2. Devuelve la reseña creada o el error de WooCommerce.
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default async function handler(req, res) {
@@ -37,22 +35,9 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Faltan campos requeridos' });
   }
 
-  // ── Paso 1: obtener el primer producto disponible ─────────────────────────
-  let productId;
-  try {
-    const prodRes = await fetch(`${wcBase}/products?status=any&per_page=1&orderby=id&order=asc`, {
-      headers: { Authorization: adminAuth },
-    });
-    const productos = await prodRes.json();
-    if (!Array.isArray(productos) || !productos.length) {
-      return res.status(500).json({ error: 'No hay productos en WooCommerce' });
-    }
-    productId = productos[0].id;
-  } catch (err) {
-    return res.status(502).json({ error: 'No se pudo obtener producto ancla', detail: err.message });
-  }
+  const productId = 2470;
 
-  // ── Paso 2: crear reseña SIN auth → queda en hold ────────────────────────
+  // ── crear reseña → queda en hold ─────────────────────────────────────────
   try {
     const reviewRes = await fetch(`${wcBase}/products/reviews`, {
       method:  'POST',

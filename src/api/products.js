@@ -266,28 +266,12 @@ export const eliminarProducto = async (id) => {
     return response.data;
 };
 
-// ── _resolverProductoAncla ────────────────────────────────────────────────────
-// Obtiene el ID del primer producto publicado para anclar las reseñas.
-// Las reseñas en WooCommerce requieren un product_id válido; usamos el
-// primer producto existente para no depender de un ID hardcodeado.
-let _anclaCache = null;
-const _resolverProductoAncla = async () => {
-    if (_anclaCache) return _anclaCache;
-    const res = await axios.get(`${BASE_URL}/products`, {
-        params: { status: 'any', per_page: 1, page: 1, orderby: 'id', order: 'asc' },
-        auth,
-    });
-    const lista = Array.isArray(res.data) ? res.data : [];
-    if (!lista.length) throw new Error('No hay productos en WooCommerce para anclar reseñas.');
-    _anclaCache = lista[0].id;
-    return _anclaCache;
-};
+const REVIEWS_PRODUCT_ID = 2470;
 
 // ── obtenerResenas ────────────────────────────────────────────────────────────
 export const obtenerResenas = async (_ignored, perPage = 20) => {
-    const productId = await _resolverProductoAncla();
     const response = await axios.get(`${BASE_URL}/products/reviews`, {
-        params: { product: productId, status: 'approved', per_page: perPage },
+        params: { product: REVIEWS_PRODUCT_ID, status: 'approved', per_page: perPage },
         auth,
     });
     return Array.isArray(response.data) ? response.data : [];
@@ -308,9 +292,8 @@ export const crearResena = async (_ignored, { nombre, email, resena, calificacio
 
 // ── obtenerTodasResenas ───────────────────────────────────────────────────────
 export const obtenerTodasResenas = async (_ignored, status = 'hold') => {
-    const productId = await _resolverProductoAncla();
     const response = await axios.get(`${BASE_URL}/products/reviews`, {
-        params: { product: productId, status, per_page: 50 },
+        params: { product: REVIEWS_PRODUCT_ID, status, per_page: 50 },
         auth,
     });
     return Array.isArray(response.data) ? response.data : [];
