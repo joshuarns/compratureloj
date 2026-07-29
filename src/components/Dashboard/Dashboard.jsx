@@ -78,7 +78,7 @@ function Paginacion({ paginaActual, totalPaginas, onChange }) {
 // SUB-COMPONENTE: Tab "Mis relojes"
 // Muestra la tabla de relojes publicados por el usuario actual.
 // ─────────────────────────────────────────────────────────
-function MisRelojes({ usuario, esAdmin }) {
+function MisRelojes({ usuario }) {
   const [relojes, setRelojes]   = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError]       = useState(false);
@@ -124,8 +124,7 @@ function MisRelojes({ usuario, esAdmin }) {
     setError(false);
     setPagina(1);
 
-    const fetchFn = esAdmin ? obtenerTodosProductos : () => obtenerMisProductos(usuario.id);
-    fetchFn()
+    obtenerMisProductos(usuario.id)
       .then(data  => { if (activo) setRelojes(data); })
       .catch(err  => {
         if (!activo) return;
@@ -134,7 +133,7 @@ function MisRelojes({ usuario, esAdmin }) {
       .finally(() => { if (activo) setCargando(false); });
 
     return () => { activo = false; };
-  }, [usuario.id, reintento, esAdmin]);
+  }, [usuario.id, reintento]);
 
   const totalPaginas  = Math.ceil(relojes.length / POR_PAGINA_RELOJES);
   const relojesPagina = relojes.slice((pagina - 1) * POR_PAGINA_RELOJES, pagina * POR_PAGINA_RELOJES);
@@ -880,7 +879,7 @@ function Dashboard() {
           )}
 
           {/* ── Contenido del tab activo ── */}
-          {tabActivo === "relojes" && <MisRelojes  usuario={usuario} esAdmin={usuario.roles?.includes('administrator')} />}
+          {tabActivo === "relojes" && <MisRelojes  usuario={usuario} />}
           {tabActivo === "compras" && <MisCompras  usuario={usuario} />}
           {tabActivo === "cuenta"  && <MiCuenta    usuario={usuario} />}
           {tabActivo === "resenas"       && <MisResenas usuario={usuario} />}
