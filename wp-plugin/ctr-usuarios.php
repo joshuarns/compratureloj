@@ -147,7 +147,6 @@ add_filter( 'user_row_actions', function ( $actions, $user ) {
 
 // ════════════════════════════════════════════════════════════════════════════
 // 4. PROCESAR LAS ACCIONES APROBAR / DESAPROBAR
-//    El email de aprobación lo envía EmailJS desde React, no wp_mail.
 // ════════════════════════════════════════════════════════════════════════════
 add_action( 'admin_action_ctr_aprobar',    'ctr_procesar_aprobacion' );
 add_action( 'admin_action_ctr_desaprobar', 'ctr_procesar_aprobacion' );
@@ -163,6 +162,7 @@ function ctr_procesar_aprobacion() {
 
     if ( $action === 'ctr_aprobar' ) {
         update_user_meta( $user_id, CTR_META_KEY, 1 );
+        ctr_enviar_email_aprobacion( $user_id );
     } elseif ( $action === 'ctr_desaprobar' ) {
         update_user_meta( $user_id, CTR_META_KEY, 0 );
     }
@@ -173,7 +173,30 @@ function ctr_procesar_aprobacion() {
 
 
 // ════════════════════════════════════════════════════════════════════════════
-// 5. ENDPOINT DE VERIFICACIÓN DE APROBACIÓN  /wp-json/ctr/v1/check-approval/{id}
+// 5. EMAIL DE APROBACIÓN — enlace al login de React, no de WordPress
+// ════════════════════════════════════════════════════════════════════════════
+function ctr_enviar_email_aprobacion( $user_id ) {
+    $user = get_userdata( $user_id );
+    if ( ! $user ) return;
+
+    $nombre = $user->first_name ?: $user->user_login;
+
+    $asunto  = '¡Tu cuenta en Compra Tu Reloj ha sido aprobada!';
+    $mensaje =
+        "Hola {$nombre},\n\n" .
+        "Tu cuenta ha sido aprobada. Ya puedes iniciar sesión en:\n\n" .
+        CTR_LOGIN_URL . "\n\n" .
+        "Usuario: {$user->user_login}\n\n" .
+        "Si olvidaste tu contraseña puedes restablecerla desde el mismo sitio.\n\n" .
+        "¡Bienvenido a Compra Tu Reloj!\n" .
+        "El equipo de Compra Tu Reloj";
+
+    wp_mail( $user->user_email, $asunto, $mensaje );
+}
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// 6. ENDPOINT DE VERIFICACIÓN DE APROBACIÓN  /wp-json/ctr/v1/check-approval/{id}
 //    Solo accesible con credenciales de admin. El proxy de login lo consulta
 //    tras autenticar al usuario para decidir si devuelve la sesión a React.
 // ════════════════════════════════════════════════════════════════════════════
