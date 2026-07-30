@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { formatPeso, estadoPedidoTexto, estadoPedidoClase, decodeHtml } from "../../utils/woocommerce";
+import { formatPeso, estadoPedidoTexto, estadoPedidoClase } from "../../utils/woocommerce";
 import { obtenerMisPedidos } from "../../api";
 import { useAsyncData } from "../../hooks/useAsyncData";
 import Paginacion from "./Paginacion";
