@@ -94,8 +94,7 @@ export default function MisRelojes({ usuario }) {
                 </thead>
                 <tbody>
                     {relojesPagina.map((reloj) => {
-                        const marca  = getMeta(reloj.meta_data, "marca");
-                        const modelo = getMeta(reloj.meta_data, "modelo");
+                        const marca = getMeta(reloj.meta_data, "marca");
                         return (
                             <tr key={reloj.id}>
                                 <td>
@@ -106,7 +105,7 @@ export default function MisRelojes({ usuario }) {
                                             <div className="watchThumbPlaceholder">⌚</div>
                                         )}
                                         <div>
-                                            <p className="watchTableName">{modelo || decodeHtml(reloj.name)}</p>
+                                            <p className="watchTableName">{decodeHtml(reloj.name)}</p>
                                             {marca && <p className="watchTableMarca">{marca}</p>}
                                         </div>
                                     </div>
