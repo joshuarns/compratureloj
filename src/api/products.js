@@ -69,7 +69,7 @@ export const obtenerProductos = async (page = 1, perPage = 12, busqueda = "") =>
         // Paginación client-side sobre los resultados filtrados
         const totalPaginas = Math.max(1, Math.ceil(filtrados.length / perPage));
         const inicio       = (page - 1) * perPage;
-        const productos    = filtrados.slice(inicio, inicio + perPage);
+        const productos    = filtrados.slice(inicio, inicio + perPage).map(normalizeProduct);
 
         return { productos, totalPaginas };
     }
@@ -82,7 +82,6 @@ export const obtenerProductos = async (page = 1, perPage = 12, busqueda = "") =>
 
     const todos = Array.isArray(respuesta.data) ? respuesta.data : [];
 
-    // instock primero, luego outofstock / onbackorder
     todos.sort((a, b) => {
         const enStock = p => p.stock_status === 'instock' ? 0 : 1;
         return enStock(a) - enStock(b);
@@ -90,7 +89,7 @@ export const obtenerProductos = async (page = 1, perPage = 12, busqueda = "") =>
 
     const totalPaginas = Math.max(1, Math.ceil(todos.length / perPage));
     const inicio       = (page - 1) * perPage;
-    const productos    = todos.slice(inicio, inicio + perPage);
+    const productos    = todos.slice(inicio, inicio + perPage).map(normalizeProduct);
 
     return { productos, totalPaginas };
 };
@@ -100,7 +99,7 @@ export const obtenerProductos = async (page = 1, perPage = 12, busqueda = "") =>
 // Usado en la página de detalle (DetalleProducto) y en EditWatch.
 export const obtenerProducto = async (id) => {
     const response = await axios.get(`${BASE_URL}/products/${id}`, { auth });
-    return response.data;
+    return normalizeProduct(response.data);
 };
 
 // ── obtenerProductosPorIds ────────────────────────────────────────────────────
@@ -119,7 +118,7 @@ export const obtenerProductosPorIds = async (ids) => {
         auth,
     });
 
-    return response.data;
+    return Array.isArray(response.data) ? response.data.map(normalizeProduct) : [];
 };
 
 // ── obtenerProductosPorCategoria ──────────────────────────────────────────────
@@ -164,7 +163,7 @@ export const obtenerProductosPorCategoria = async (slug, page = 1, perPage = 12,
 
         const totalPaginas = Math.max(1, Math.ceil(filtrados.length / perPage));
         const inicio       = (page - 1) * perPage;
-        const productos    = filtrados.slice(inicio, inicio + perPage);
+        const productos    = filtrados.slice(inicio, inicio + perPage).map(normalizeProduct);
 
         return { productos, totalPaginas };
     }
@@ -184,7 +183,7 @@ export const obtenerProductosPorCategoria = async (slug, page = 1, perPage = 12,
 
     const totalPaginas = Math.max(1, Math.ceil(todosCategoria.length / perPage));
     const inicio       = (page - 1) * perPage;
-    const productos    = todosCategoria.slice(inicio, inicio + perPage);
+    const productos    = todosCategoria.slice(inicio, inicio + perPage).map(normalizeProduct);
 
     return { productos, totalPaginas };
 };
