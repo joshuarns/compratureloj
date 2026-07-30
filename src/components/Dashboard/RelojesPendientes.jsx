@@ -150,7 +150,7 @@ export default function RelojesPendientes() {
                                             <div className="watchThumbPlaceholder">⌚</div>
                                         )}
                                         <div>
-                                            <p className="watchTableName">{decodeHtml(reloj.name)}</p>
+                                            <p className="watchTableName" dangerouslySetInnerHTML={{ __html: reloj.name }} />
                                             {marca && <p className="watchTableMarca">{marca}</p>}
                                         </div>
                                     </div>

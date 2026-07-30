@@ -64,7 +64,7 @@ export default function MisCompras({ usuario }) {
                                 <td>
                                     <p className="watchTableName">Pedido #{pedido.id}</p>
                                     <p className="watchTableMarca">
-                                        {pedido.line_items.map(i => decodeHtml(i.name)).join(", ")}
+                                        {pedido.line_items.map(i => i.name.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')).join(", ")}
                                     </p>
                                 </td>
                                 <td>
