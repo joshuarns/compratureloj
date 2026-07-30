@@ -128,9 +128,13 @@ export const stripUnidad = (valor) => {
 // Esta función las convierte al carácter real usando el parser del propio navegador.
 export const decodeHtml = (str) => {
   if (!str) return str;
-  const txt = document.createElement('textarea');
-  txt.innerHTML = str;
-  return txt.value;
+  return str
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#039;/g, "'")
+    .replace(/&apos;/g, "'");
 };
 
 
