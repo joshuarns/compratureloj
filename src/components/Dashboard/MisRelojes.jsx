@@ -105,7 +105,7 @@ export default function MisRelojes({ usuario }) {
                                             <div className="watchThumbPlaceholder">⌚</div>
                                         )}
                                         <div>
-                                            <p className="watchTableName" dangerouslySetInnerHTML={{ __html: reloj.name }} />
+                                            <p className="watchTableName">{reloj.name}</p>
                                             {marca && <p className="watchTableMarca">{marca}</p>}
                                         </div>
                                     </div>

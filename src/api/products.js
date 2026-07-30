@@ -8,6 +8,13 @@
 import { axios, BASE_URL, BASE_URL_WP, auth } from './client';
 import { REVIEWS_PRODUCT_ID } from '../config/constants';
 
+const decodeEntities = (str) =>
+    typeof str === 'string'
+        ? str.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#039;/g, "'")
+        : str;
+
+const normalizeProduct = (p) => ({ ...p, name: decodeEntities(p.name) });
+
 // Retry automático cuando SiteGround/WooCommerce devuelve 202, 400 u otro
 // status inesperado en lugar de datos reales (caché intermitente del hosting).
 const wcGet = async (url, config, intentos = 3) => {
@@ -200,7 +207,7 @@ export const obtenerProductosPendientes = async () => {
         params: { status: 'draft', per_page: 100 },
         auth,
     });
-    return Array.isArray(response.data) ? response.data : [];
+    return Array.isArray(response.data) ? response.data.map(normalizeProduct) : [];
 };
 
 // ── obtenerMisProductos ───────────────────────────────────────────────────────
@@ -217,10 +224,12 @@ export const obtenerMisProductos = async (vendedorId) => {
     });
     const todos = Array.isArray(wcRespuesta.data) ? wcRespuesta.data : [];
 
-    return todos.filter(p => {
-        const meta = (p.meta_data || []).find(m => m.key === 'vendedor_id');
-        return meta?.value === idStr;
-    });
+    return todos
+        .filter(p => {
+            const meta = (p.meta_data || []).find(m => m.key === 'vendedor_id');
+            return meta?.value === idStr;
+        })
+        .map(normalizeProduct);
 };
 
 // ── crearProducto ─────────────────────────────────────────────────────────────
