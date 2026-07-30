@@ -29,19 +29,22 @@ export const obtenerPedido = async (id) => {
 // Si no hay resultados, hace un segundo intento filtrando por email del usuario
 // en caso de que el pedido se creara sin customer_id asociado.
 export const obtenerMisPedidos = async (customerId, email = '') => {
-    // Intento 1: filtrar por customer_id (lo más preciso)
-    const porId = await axios.get(`${BASE_URL}/orders`, {
-        params: {
-            customer: customerId,
-            per_page: 50,
-            orderby:  'date',
-            order:    'desc',
-        },
-        auth,
-    });
+    // Intento 1: filtrar por customer_id (lo más preciso).
+    // customer=0 en WooCommerce devuelve pedidos de invitados — lo saltamos.
+    if (customerId && Number(customerId) > 0) {
+        const porId = await axios.get(`${BASE_URL}/orders`, {
+            params: {
+                customer: customerId,
+                per_page: 50,
+                orderby:  'date',
+                order:    'desc',
+            },
+            auth,
+        });
 
-    const resultadosId = Array.isArray(porId.data) ? porId.data : [];
-    if (resultadosId.length > 0) return resultadosId;
+        const resultadosId = Array.isArray(porId.data) ? porId.data : [];
+        if (resultadosId.length > 0) return resultadosId;
+    }
 
     // Intento 2: si no hay pedidos por ID, traer todos y filtrar por email
     // (cubre pedidos creados sin customer_id, ej. cuando la sesión expiró)
