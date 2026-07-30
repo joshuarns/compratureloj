@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { getMeta, formatPeso, estadoProductoTexto } from "../../utils/woocommerce";
+import { getMeta, formatPeso, estadoProductoTexto, decodeHtml } from "../../utils/woocommerce";
 import { obtenerMisProductos, actualizarProducto, eliminarProducto } from "../../api";
 import { useToast } from "../../context/ToastContext";
 import { useAsyncData } from "../../hooks/useAsyncData";
@@ -105,7 +105,7 @@ export default function MisRelojes({ usuario }) {
                                             <div className="watchThumbPlaceholder">⌚</div>
                                         )}
                                         <div>
-                                            <p className="watchTableName">{reloj.name}</p>
+                                            <p className="watchTableName">{decodeHtml(reloj.name)}</p>
                                             {marca && <p className="watchTableMarca">{marca}</p>}
                                         </div>
                                     </div>

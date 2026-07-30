@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import emailjs from "@emailjs/browser";
-import { getMeta, formatPeso } from "../../utils/woocommerce";
+import { getMeta, formatPeso, decodeHtml } from "../../utils/woocommerce";
 import { obtenerProductosPendientes, actualizarProducto, eliminarProducto, obtenerUsuariosPorIds } from "../../api";
 import { EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_RELOJ_PUBLICADO, EMAILJS_PUBLIC_KEY } from "../../config/constants";
 import { useToast } from "../../context/ToastContext";
@@ -150,7 +150,7 @@ export default function RelojesPendientes() {
                                             <div className="watchThumbPlaceholder">⌚</div>
                                         )}
                                         <div>
-                                            <p className="watchTableName">{reloj.name}</p>
+                                            <p className="watchTableName">{decodeHtml(reloj.name)}</p>
                                             {marca && <p className="watchTableMarca">{marca}</p>}
                                         </div>
                                     </div>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { formatPeso, estadoPedidoTexto, estadoPedidoClase } from "../../utils/woocommerce";
+import { formatPeso, estadoPedidoTexto, estadoPedidoClase, decodeHtml } from "../../utils/woocommerce";
 import { obtenerMisPedidos } from "../../api";
 import { useAsyncData } from "../../hooks/useAsyncData";
 import Paginacion from "./Paginacion";
@@ -64,7 +64,7 @@ export default function MisCompras({ usuario }) {
                                 <td>
                                     <p className="watchTableName">Pedido #{pedido.id}</p>
                                     <p className="watchTableMarca">
-                                        {pedido.line_items.map(i => i.name).join(", ")}
+                                        {pedido.line_items.map(i => decodeHtml(i.name)).join(", ")}
                                     </p>
                                 </td>
                                 <td>

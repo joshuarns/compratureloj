@@ -123,6 +123,17 @@ export const stripUnidad = (valor) => {
   return valor.replace(/\s*(mm|cm|atm)\s*$/i, '').trim();
 };
 
+// ── decodeHtml ────────────────────────────────────────────────────────────────
+// WooCommerce guarda nombres con entidades HTML (ej. "A. Lange &amp; Söhne").
+// Esta función las convierte al carácter real usando el parser del propio navegador.
+export const decodeHtml = (str) => {
+  if (!str) return str;
+  const txt = document.createElement('textarea');
+  txt.innerHTML = str;
+  return txt.value;
+};
+
+
 // ── getMeta ───────────────────────────────────────────────────────────────────
 // WooCommerce guarda los campos personalizados (marca, movimiento, estado…)
 // como un array de objetos: [{ key: "marca", value: "Rolex" }, ...]
