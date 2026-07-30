@@ -138,6 +138,7 @@ export default function RelojesPendientes() {
                 <tbody>
                     {relojes.map((reloj) => {
                         const marca          = getMeta(reloj.meta_data, 'marca');
+                        const modelo         = getMeta(reloj.meta_data, 'modelo');
                         const vendedorNombre = getMeta(reloj.meta_data, 'vendedor_nombre');
                         const vendedorEmail  = getMeta(reloj.meta_data, 'vendedor_email');
                         return (
@@ -150,7 +151,7 @@ export default function RelojesPendientes() {
                                             <div className="watchThumbPlaceholder">⌚</div>
                                         )}
                                         <div>
-                                            <p className="watchTableName">{decodeHtml(reloj.name)}</p>
+                                            <p className="watchTableName">{modelo || decodeHtml(reloj.name)}</p>
                                             {marca && <p className="watchTableMarca">{marca}</p>}
                                         </div>
                                     </div>
