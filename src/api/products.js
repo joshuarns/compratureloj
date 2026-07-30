@@ -6,6 +6,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { axios, BASE_URL, BASE_URL_WP, auth } from './client';
+import { REVIEWS_PRODUCT_ID } from '../config/constants';
 
 // Retry automático cuando SiteGround/WooCommerce devuelve 202, 400 u otro
 // status inesperado en lugar de datos reales (caché intermitente del hosting).
@@ -266,7 +267,6 @@ export const eliminarProducto = async (id) => {
     return response.data;
 };
 
-const REVIEWS_PRODUCT_ID = 2470;
 
 // ── obtenerResenas ────────────────────────────────────────────────────────────
 export const obtenerResenas = async (_ignored, perPage = 20) => {

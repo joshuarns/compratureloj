@@ -47,7 +47,7 @@ export const EMAILJS_TEMPLATE_RELOJ_MODIFICADO  = "PENDIENTE";
 // ── 5. RESEÑAS ────────────────────────────────────────────────────────────────
 // ID del producto de WooCommerce usado como ancla para las reseñas del público.
 // Crea un producto oculto en WP y pon su ID aquí.
-export const REVIEWS_PRODUCT_ID = 1;
+export const REVIEWS_PRODUCT_ID = 2470;
 
 
 // ── 2. IMÁGENES ───────────────────────────────────────────────────────────────
