@@ -32,10 +32,12 @@ export default function Dashboard() {
     useSEO({ titulo: "Mi Dashboard" });
 
     useEffect(() => {
-        if (!usuario) navigate("/login");
-    }, [usuario, navigate]);
+        if (!usuario) { navigate("/login"); return; }
+        // Sesión corrupta: falta ID → no se pueden cargar datos. Forzar re-login.
+        if (!usuario.id) { logout(); navigate("/login"); }
+    }, [usuario, navigate, logout]);
 
-    if (!usuario) return null;
+    if (!usuario || !usuario.id) return null;
 
     const esAdmin   = usuario.roles?.includes('administrator');
     const tabsVis   = TABS.filter(t => !t.soloAdmin || esAdmin);
