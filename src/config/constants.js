@@ -41,7 +41,7 @@ export const EMAILJS_TEMPLATE_REGISTRO          = "PENDIENTE";
 export const EMAILJS_TEMPLATE_CUENTA_APROBADA   = "template_lrkundk";
 export const EMAILJS_TEMPLATE_CAMBIO_CONTRASENA = "PENDIENTE";
 export const EMAILJS_TEMPLATE_RELOJ_PUBLICADO   = "template_lrkundk";
-export const EMAILJS_TEMPLATE_RELOJ_MODIFICADO  = "PENDIENTE";
+export const EMAILJS_TEMPLATE_RELOJ_MODIFICADO  = "template_5h7o98s";
 
 
 // ── 5. RESEÑAS ────────────────────────────────────────────────────────────────
