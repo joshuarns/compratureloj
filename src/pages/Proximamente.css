@@ -1,0 +1,69 @@
+.proximamente {
+  min-height: 100vh;
+  background: #1c2946;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+}
+
+.proximamente__inner {
+  text-align: center;
+  max-width: 480px;
+}
+
+.proximamente__icon {
+  font-size: 56px;
+  margin-bottom: 24px;
+  opacity: 0.9;
+}
+
+.proximamente__brand {
+  font-family: 'Bai Jamjuree', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0 0 16px;
+}
+
+.proximamente__titulo {
+  font-family: 'Bai Jamjuree', sans-serif;
+  font-size: clamp(40px, 8vw, 64px);
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 20px;
+  line-height: 1.1;
+}
+
+.proximamente__sub {
+  font-family: 'Mulish', sans-serif;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.7;
+  margin: 0 0 40px;
+}
+
+.proximamente__contacto {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-family: 'Mulish', sans-serif;
+  font-size: 14px;
+}
+
+.proximamente__contacto a {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.proximamente__contacto a:hover {
+  color: #fff;
+}
+
+.proximamente__contacto span {
+  color: rgba(255, 255, 255, 0.3);
+}

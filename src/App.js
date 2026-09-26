@@ -1,6 +1,8 @@
 import { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
+import { MODO_PROXIMAMENTE } from "./config/constants";
+import Proximamente from "./pages/Proximamente";
 
 // ── Infraestructura — se carga SIEMPRE (forma la "carcasa" visible de la app) ──
 // Estos módulos deben estar disponibles desde el primer render:
@@ -54,6 +56,8 @@ function PageFallback() {
 
 // ── App principal ─────────────────────────────────────────────────────────────
 function App() {
+  if (MODO_PROXIMAMENTE) return <Proximamente />;
+
   return (
     <ErrorBoundary>
       <AuthProvider>

@@ -13,6 +13,12 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 
+// ── 0. MODO PROXIMAMENTE ──────────────────────────────────────────────────────
+// Cuando está en true, toda la app muestra la pantalla "Próximamente"
+// en lugar del contenido real. Cambia a false y haz deploy para lanzar el sitio.
+export const MODO_PROXIMAMENTE = true;
+
+
 // ── 1. EMAILJS ────────────────────────────────────────────────────────────────
 // Credenciales del servicio EmailJS (https://emailjs.com).
 // El SERVICE_ID y PUBLIC_KEY son compartidos por todos los templates.
