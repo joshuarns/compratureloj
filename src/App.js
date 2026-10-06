@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Analytics } from "@vercel/analytics/react";
 import "./App.css";
 import { MODO_PROXIMAMENTE } from "./config/constants";
 import Proximamente from "./pages/Proximamente";
@@ -117,6 +118,7 @@ function App() {
               <Footer />
               <InstallPWA />
             </Router>
+            <Analytics />
           </ToastProvider>
         </WatchlistProvider>
       </AuthProvider>
