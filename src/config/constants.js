@@ -16,7 +16,7 @@
 // ── 0. MODO PROXIMAMENTE ──────────────────────────────────────────────────────
 // Cuando está en true, toda la app muestra la pantalla "Próximamente"
 // en lugar del contenido real. Cambia a false y haz deploy para lanzar el sitio.
-export const MODO_PROXIMAMENTE = true;
+export const MODO_PROXIMAMENTE = false;
 
 
 // ── 1. EMAILJS ────────────────────────────────────────────────────────────────
