@@ -518,6 +518,12 @@
     cursor: default;
 }
 
+.btnEliminarReloj.confirmar {
+    background: #dc3545;
+    color: #fff;
+    border-color: #dc3545;
+}
+
 /* ── Tab Reseñas ── */
 .resenasDashCard {
     background: #fff;

@@ -1,33 +1,39 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// api/reset-password.js — Proxy para wp-login.php (recuperación de contraseña)
+// api/reset-password.js — Solicita restablecimiento de contraseña
 //
-// wp-login.php no es parte de la REST API de WordPress, necesita su propia ruta.
+// Llama al endpoint REST del plugin (ctr/v1/forgot-password) que genera
+// la clave y envía el correo vía wp_mail — evita llamar a wp-login.php
+// directamente, ya que SiteGround lo bloquea desde IPs de servidor.
 // ─────────────────────────────────────────────────────────────────────────────
 
-export const config = {
-  api: { bodyParser: false },
-};
-
 export default async function handler(req, res) {
-  const base = process.env.WP_BASE_URL.replace('/wp-json/wp/v2', '');
-  const url  = `${base}/wp-login.php`;
+  if (req.method !== 'POST') return res.status(405).end();
 
-  const chunks = [];
-  for await (const chunk of req) chunks.push(chunk);
-  const body = Buffer.concat(chunks);
+  res.setHeader('Cache-Control', 'no-store');
 
-  const headers = {};
-  if (req.headers['content-type']) headers['Content-Type'] = req.headers['content-type'];
+  const { user_login } = req.body || {};
+  if (!user_login) return res.status(400).json({ message: 'user_login requerido' });
+
+  const base    = process.env.WP_BASE_URL.replace('/wp/v2', '');
+  const url     = `${base}/ctr/v1/forgot-password`;
+
+  const wpUser  = (process.env.WP_USER || '').trim();
+  const wpPass  = (process.env.WP_PASS || '').trim().replace(/\s+/g, ' ');
+  const auth    = Buffer.from(`${wpUser}:${wpPass}`).toString('base64');
 
   try {
     const upstream = await fetch(url, {
-      method:  req.method,
-      headers,
-      body:    body.length > 0 ? body : undefined,
+      method:  'POST',
+      headers: {
+        'Content-Type':  'application/json',
+        'Authorization': `Basic ${auth}`,
+      },
+      body: JSON.stringify({ user_login }),
     });
 
-    res.status(upstream.status).end();
+    const data = await upstream.json().catch(() => ({}));
+    res.status(upstream.status).json(data);
   } catch {
-    res.status(502).end();
+    res.status(502).json({ message: 'Error al conectar con WordPress' });
   }
 }

@@ -160,6 +160,8 @@ function FormSellWatch() {
           { key: "estetica_del_reloj",      value: producto.estetica_del_reloj },
           { key: "estado_del_reloj",        value: producto.estado_del_reloj },
           { key: "vendedor_id",             value: String(usuario?.id || "") },
+          { key: "vendedor_nombre",         value: usuario?.nombre || "" },
+          { key: "vendedor_email",          value: usuario?.email  || "" },
           { key: "foto_muneca",             value: munecaData.source_url },
           { key: "foto_identificacion",     value: identificacionData.source_url },
         ],
@@ -216,7 +218,7 @@ function FormSellWatch() {
           type="file"
           onChange={handleImagenes}
           required={imagenesSeleccionadas.length === 0}
-          accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.heic,.heif"
+          accept="image/*,.heic,.heif"
           multiple
         />
         {errorGaleria && (
@@ -247,7 +249,7 @@ function FormSellWatch() {
           </p>
         </div>
         <label>Foto con el reloj puesto</label>
-        <input type="file" onChange={handleFotoMuneca} required={!fotoMuneca} accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.heic,.heif" />
+        <input type="file" onChange={handleFotoMuneca} required={!fotoMuneca} accept="image/*,.heic,.heif" />
         {errorMuneca && (
           <ErrorImagenes errores={errorMuneca} onClose={() => setErrorMuneca(null)} />
         )}
@@ -271,7 +273,7 @@ function FormSellWatch() {
           </p>
         </div>
         <label>INE o Pasaporte</label>
-        <input type="file" onChange={handleFotoIdentificacion} required={!fotoIdentificacion} accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.heic,.heif" />
+        <input type="file" onChange={handleFotoIdentificacion} required={!fotoIdentificacion} accept="image/*,.heic,.heif" />
         {errorIdentificacion && (
           <ErrorImagenes errores={errorIdentificacion} onClose={() => setErrorIdentificacion(null)} />
         )}

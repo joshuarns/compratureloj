@@ -12,7 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 define( 'CTR_LOGIN_URL', 'https://compratureloj.com.mx/login' );
 define( 'CTR_META_KEY',  'wp_user_is_approved' );
 
-
 // ════════════════════════════════════════════════════════════════════════════
 // 0. LIMPIEZA DE CACHÉ AL BORRAR USUARIO
 //    SiteGround y otros hostings con object cache (Redis/Memcached) pueden
@@ -55,7 +54,6 @@ function ctr_registrar_usuario( WP_REST_Request $request ) {
         return new WP_Error( 'register_failed', 'Ese nombre de usuario ya está en uso. Elige otro.', [ 'status' => 400 ] );
     }
     if ( email_exists( $email ) ) {
-        // Verificar si es un usuario pendiente (puede ser un doble registro)
         $existing = get_user_by( 'email', $email );
         $aprobado = $existing ? (int) get_user_meta( $existing->ID, CTR_META_KEY, true ) : -1;
         if ( $aprobado === 0 ) {
@@ -80,7 +78,7 @@ function ctr_registrar_usuario( WP_REST_Request $request ) {
     // Marcar como pendiente de aprobación
     update_user_meta( $user_id, CTR_META_KEY, 0 );
 
-    // Notificar al admin
+    // Notificar al admin por correo interno de WordPress
     $user  = get_userdata( $user_id );
     $admin = get_option( 'admin_email' );
     wp_mail(
@@ -103,13 +101,8 @@ function ctr_registrar_usuario( WP_REST_Request $request ) {
 }
 
 
-// NOTA: La verificación de aprobación se hace en el proxy de login (api/login.js)
-// que consulta /ctr/v1/check-approval antes de devolver la sesión a React.
-// No se necesita bloquear aquí a nivel de REST API.
-
-
 // ════════════════════════════════════════════════════════════════════════════
-// 3. COLUMNA "APROBACIÓN" EN LA LISTA DE USUARIOS DEL WP ADMIN
+// 2. COLUMNA "APROBACIÓN" EN LA LISTA DE USUARIOS DEL WP ADMIN
 // ════════════════════════════════════════════════════════════════════════════
 add_filter( 'manage_users_columns', function ( $columns ) {
     $columns['ctr_aprobado'] = 'Aprobación';
@@ -130,16 +123,14 @@ add_filter( 'manage_users_custom_column', function ( $output, $column, $user_id 
 
 
 // ════════════════════════════════════════════════════════════════════════════
-// 4. ACCIONES "APROBAR / DESAPROBAR" EN CADA FILA DE USUARIO
+// 3. ACCIONES "APROBAR / DESAPROBAR" EN CADA FILA DE USUARIO
 // ════════════════════════════════════════════════════════════════════════════
 add_filter( 'user_row_actions', function ( $actions, $user ) {
-    // No mostrar en el propio admin
     if ( in_array( 'administrator', (array) $user->roles, true ) ) return $actions;
 
     $aprobado = get_user_meta( $user->ID, CTR_META_KEY, true );
     $nonce    = wp_create_nonce( 'ctr_aprobar_' . $user->ID );
 
-    // Quitar botones de WP Approve User para evitar duplicados
     unset( $actions['approve'], $actions['unapprove'] );
 
     if ( (int) $aprobado === 1 ) {
@@ -155,7 +146,7 @@ add_filter( 'user_row_actions', function ( $actions, $user ) {
 
 
 // ════════════════════════════════════════════════════════════════════════════
-// 5. PROCESAR LAS ACCIONES APROBAR / DESAPROBAR
+// 4. PROCESAR LAS ACCIONES APROBAR / DESAPROBAR
 // ════════════════════════════════════════════════════════════════════════════
 add_action( 'admin_action_ctr_aprobar',    'ctr_procesar_aprobacion' );
 add_action( 'admin_action_ctr_desaprobar', 'ctr_procesar_aprobacion' );
@@ -182,29 +173,7 @@ function ctr_procesar_aprobacion() {
 
 
 // ════════════════════════════════════════════════════════════════════════════
-// 6. ENDPOINT DE VERIFICACIÓN DE APROBACIÓN  /wp-json/ctr/v1/check-approval/{id}
-//    Solo accesible con credenciales de admin. El proxy de login lo consulta
-//    tras autenticar al usuario para decidir si devuelve la sesión a React.
-// ════════════════════════════════════════════════════════════════════════════
-add_action( 'rest_api_init', function () {
-    register_rest_route( 'ctr/v1', '/check-approval/(?P<id>\d+)', [
-        'methods'             => 'GET',
-        'callback'            => function ( WP_REST_Request $request ) {
-            $user_id  = (int) $request['id'];
-            $aprobado = get_user_meta( $user_id, CTR_META_KEY, true );
-            return new WP_REST_Response( [
-                'approved' => (int) $aprobado === 1,
-            ], 200 );
-        },
-        'permission_callback' => function () {
-            return current_user_can( 'edit_users' );
-        },
-    ] );
-} );
-
-
-// ════════════════════════════════════════════════════════════════════════════
-// 7. EMAIL DE APROBACIÓN — enlace al login de React, no de WordPress
+// 5. EMAIL DE APROBACIÓN — enlace al login de React, no de WordPress
 // ════════════════════════════════════════════════════════════════════════════
 function ctr_enviar_email_aprobacion( $user_id ) {
     $user = get_userdata( $user_id );
@@ -224,3 +193,78 @@ function ctr_enviar_email_aprobacion( $user_id ) {
 
     wp_mail( $user->user_email, $asunto, $mensaje );
 }
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// 6. ENDPOINT PARA SOLICITAR RESTABLECIMIENTO DE CONTRASEÑA
+//    POST /wp-json/ctr/v1/forgot-password  { "user_login": "..." }
+//    Genera la clave y envía el correo usando el filtro retrieve_password_message.
+// ════════════════════════════════════════════════════════════════════════════
+add_action( 'rest_api_init', function () {
+    register_rest_route( 'ctr/v1', '/forgot-password', [
+        'methods'             => 'POST',
+        'permission_callback' => '__return_true',
+        'callback'            => function ( WP_REST_Request $request ) {
+            $user_login = sanitize_text_field( $request->get_param( 'user_login' ) ?? '' );
+
+            if ( empty( $user_login ) ) {
+                return new WP_Error( 'missing_field', 'El campo user_login es requerido.', [ 'status' => 400 ] );
+            }
+
+            // Buscar por email o por username
+            $user = is_email( $user_login )
+                ? get_user_by( 'email', $user_login )
+                : get_user_by( 'login', $user_login );
+
+            if ( ! $user ) {
+                // Respuesta genérica — no revelar si el usuario existe
+                return new WP_REST_Response( [ 'success' => true ], 200 );
+            }
+
+            // Generar clave de reset (función disponible desde WP 4.4)
+            $key = get_password_reset_key( $user );
+            if ( is_wp_error( $key ) ) {
+                return new WP_Error( 'reset_failed', 'No se pudo generar el enlace.', [ 'status' => 500 ] );
+            }
+
+            $reset_url = 'https://compratureloj.com.mx/nueva-contrasena?key=' . $key . '&login=' . rawurlencode( $user->user_login );
+            $nombre    = $user->first_name ?: $user->user_login;
+
+            $asunto  = 'Restablece tu contraseña — Compra Tu Reloj';
+            $mensaje =
+                "Se ha recibido una solicitud para restablecer la contraseña de su cuenta.\n\n" .
+                "Hemos recibido una solicitud para restablecer la contraseña asociada a la siguiente cuenta:\n\n" .
+                "Sitio: Compra tu Reloj\n" .
+                "Usuario: {$nombre}\n\n" .
+                "Si usted realizó esta solicitud, puede restablecer su contraseña de forma segura utilizando el siguiente enlace:\n\n" .
+                $reset_url . "\n\n" .
+                "Si usted no solicitó este cambio, puede ignorar este correo con total tranquilidad. Su contraseña permanecerá sin cambios y no será necesario realizar ninguna acción.\n";
+
+            wp_mail( $user->user_email, $asunto, $mensaje );
+
+            return new WP_REST_Response( [ 'success' => true ], 200 );
+        },
+    ] );
+} );
+
+
+// ════════════════════════════════════════════════════════════════════════════
+// 7. ENDPOINT DE VERIFICACIÓN DE APROBACIÓN  /wp-json/ctr/v1/check-approval/{id}
+//    Solo accesible con credenciales de admin. El proxy de login lo consulta
+//    tras autenticar al usuario para decidir si devuelve la sesión a React.
+// ════════════════════════════════════════════════════════════════════════════
+add_action( 'rest_api_init', function () {
+    register_rest_route( 'ctr/v1', '/check-approval/(?P<id>\d+)', [
+        'methods'             => 'GET',
+        'callback'            => function ( WP_REST_Request $request ) {
+            $user_id  = (int) $request['id'];
+            $aprobado = get_user_meta( $user_id, CTR_META_KEY, true );
+            return new WP_REST_Response( [
+                'approved' => (int) $aprobado === 1,
+            ], 200 );
+        },
+        'permission_callback' => function () {
+            return current_user_can( 'edit_users' );
+        },
+    ] );
+} );

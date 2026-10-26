@@ -6,6 +6,14 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { axios, BASE_URL, BASE_URL_WP, auth } from './client';
+import { REVIEWS_PRODUCT_ID } from '../config/constants';
+
+const decodeEntities = (str) =>
+    typeof str === 'string'
+        ? str.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#039;/g, "'")
+        : str;
+
+const normalizeProduct = (p) => ({ ...p, name: decodeEntities(p.name) });
 
 // Retry automático cuando SiteGround/WooCommerce devuelve 202, 400 u otro
 // status inesperado en lugar de datos reales (caché intermitente del hosting).
@@ -61,19 +69,27 @@ export const obtenerProductos = async (page = 1, perPage = 12, busqueda = "") =>
         // Paginación client-side sobre los resultados filtrados
         const totalPaginas = Math.max(1, Math.ceil(filtrados.length / perPage));
         const inicio       = (page - 1) * perPage;
-        const productos    = filtrados.slice(inicio, inicio + perPage);
+        const productos    = filtrados.slice(inicio, inicio + perPage).map(normalizeProduct);
 
         return { productos, totalPaginas };
     }
 
-    // Sin búsqueda: paginación normal server-side
+    // Sin búsqueda: traemos todos, ordenamos instock primero y paginamos client-side
     const respuesta = await wcGet(`${BASE_URL}/products`, {
-        params: { status: 'publish', per_page: perPage, page },
+        params: { status: 'publish', per_page: 100, page: 1 },
         auth,
     });
 
-    const totalPaginas = parseInt(respuesta.headers['x-wp-totalpages'] || '1', 10);
-    const productos    = Array.isArray(respuesta.data) ? respuesta.data : [];
+    const todos = Array.isArray(respuesta.data) ? respuesta.data : [];
+
+    todos.sort((a, b) => {
+        const enStock = p => p.stock_status === 'instock' ? 0 : 1;
+        return enStock(a) - enStock(b);
+    });
+
+    const totalPaginas = Math.max(1, Math.ceil(todos.length / perPage));
+    const inicio       = (page - 1) * perPage;
+    const productos    = todos.slice(inicio, inicio + perPage).map(normalizeProduct);
 
     return { productos, totalPaginas };
 };
@@ -83,7 +99,7 @@ export const obtenerProductos = async (page = 1, perPage = 12, busqueda = "") =>
 // Usado en la página de detalle (DetalleProducto) y en EditWatch.
 export const obtenerProducto = async (id) => {
     const response = await axios.get(`${BASE_URL}/products/${id}`, { auth });
-    return response.data;
+    return normalizeProduct(response.data);
 };
 
 // ── obtenerProductosPorIds ────────────────────────────────────────────────────
@@ -102,7 +118,7 @@ export const obtenerProductosPorIds = async (ids) => {
         auth,
     });
 
-    return response.data;
+    return Array.isArray(response.data) ? response.data.map(normalizeProduct) : [];
 };
 
 // ── obtenerProductosPorCategoria ──────────────────────────────────────────────
@@ -147,21 +163,50 @@ export const obtenerProductosPorCategoria = async (slug, page = 1, perPage = 12,
 
         const totalPaginas = Math.max(1, Math.ceil(filtrados.length / perPage));
         const inicio       = (page - 1) * perPage;
-        const productos    = filtrados.slice(inicio, inicio + perPage);
+        const productos    = filtrados.slice(inicio, inicio + perPage).map(normalizeProduct);
 
         return { productos, totalPaginas };
     }
 
-    // Sin búsqueda: paginación server-side normal
+    // Sin búsqueda: traemos todos, ordenamos instock primero y paginamos client-side
     const productosRespuesta = await wcGet(`${BASE_URL}/products`, {
-        params: { status: 'publish', category: categoriaId, per_page: perPage, page },
+        params: { status: 'publish', category: categoriaId, per_page: 100, page: 1 },
         auth,
     });
 
-    const totalPaginas = parseInt(productosRespuesta.headers['x-wp-totalpages'] || '1', 10);
-    const productos    = Array.isArray(productosRespuesta.data) ? productosRespuesta.data : [];
+    const todosCategoria = Array.isArray(productosRespuesta.data) ? productosRespuesta.data : [];
+
+    todosCategoria.sort((a, b) => {
+        const enStock = p => p.stock_status === 'instock' ? 0 : 1;
+        return enStock(a) - enStock(b);
+    });
+
+    const totalPaginas = Math.max(1, Math.ceil(todosCategoria.length / perPage));
+    const inicio       = (page - 1) * perPage;
+    const productos    = todosCategoria.slice(inicio, inicio + perPage).map(normalizeProduct);
 
     return { productos, totalPaginas };
+};
+
+// ── obtenerTodosProductos ─────────────────────────────────────────────────────
+// Trae todos los productos en cualquier estado. Solo lo usa el admin.
+export const obtenerTodosProductos = async () => {
+    const response = await axios.get(`${BASE_URL}/products`, {
+        params: { status: 'any', per_page: 100 },
+        auth,
+    });
+    return Array.isArray(response.data) ? response.data : [];
+};
+
+// ── obtenerProductosPendientes ────────────────────────────────────────────────
+// Trae todos los productos en estado draft (pendientes de publicar).
+// Solo lo usa el admin desde el Dashboard.
+export const obtenerProductosPendientes = async () => {
+    const response = await axios.get(`${BASE_URL}/products`, {
+        params: { status: 'draft', per_page: 100 },
+        auth,
+    });
+    return Array.isArray(response.data) ? response.data.map(normalizeProduct) : [];
 };
 
 // ── obtenerMisProductos ───────────────────────────────────────────────────────
@@ -178,10 +223,12 @@ export const obtenerMisProductos = async (vendedorId) => {
     });
     const todos = Array.isArray(wcRespuesta.data) ? wcRespuesta.data : [];
 
-    return todos.filter(p => {
-        const meta = (p.meta_data || []).find(m => m.key === 'vendedor_id');
-        return meta?.value === idStr;
-    });
+    return todos
+        .filter(p => {
+            const meta = (p.meta_data || []).find(m => m.key === 'vendedor_id');
+            return meta?.value === idStr;
+        })
+        .map(normalizeProduct);
 };
 
 // ── crearProducto ─────────────────────────────────────────────────────────────
@@ -228,28 +275,11 @@ export const eliminarProducto = async (id) => {
     return response.data;
 };
 
-// ── _resolverProductoAncla ────────────────────────────────────────────────────
-// Obtiene el ID del primer producto publicado para anclar las reseñas.
-// Las reseñas en WooCommerce requieren un product_id válido; usamos el
-// primer producto existente para no depender de un ID hardcodeado.
-let _anclaCache = null;
-const _resolverProductoAncla = async () => {
-    if (_anclaCache) return _anclaCache;
-    const res = await axios.get(`${BASE_URL}/products`, {
-        params: { status: 'any', per_page: 1, page: 1 },
-        auth,
-    });
-    const lista = Array.isArray(res.data) ? res.data : [];
-    if (!lista.length) throw new Error('No hay productos en WooCommerce para anclar reseñas.');
-    _anclaCache = lista[0].id;
-    return _anclaCache;
-};
 
 // ── obtenerResenas ────────────────────────────────────────────────────────────
 export const obtenerResenas = async (_ignored, perPage = 20) => {
-    const productId = await _resolverProductoAncla();
     const response = await axios.get(`${BASE_URL}/products/reviews`, {
-        params: { product: productId, status: 'approved', per_page: perPage },
+        params: { product: REVIEWS_PRODUCT_ID, status: 'approved', per_page: perPage },
         auth,
     });
     return Array.isArray(response.data) ? response.data : [];
@@ -270,9 +300,8 @@ export const crearResena = async (_ignored, { nombre, email, resena, calificacio
 
 // ── obtenerTodasResenas ───────────────────────────────────────────────────────
 export const obtenerTodasResenas = async (_ignored, status = 'hold') => {
-    const productId = await _resolverProductoAncla();
     const response = await axios.get(`${BASE_URL}/products/reviews`, {
-        params: { product: productId, status, per_page: 50 },
+        params: { product: REVIEWS_PRODUCT_ID, status, per_page: 50 },
         auth,
     });
     return Array.isArray(response.data) ? response.data : [];

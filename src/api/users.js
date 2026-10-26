@@ -13,6 +13,18 @@
 
 import { axios, BASE_URL_WP, auth } from './client';
 
+// ── obtenerUsuariosPorIds ─────────────────────────────────────────────────────
+// Trae varios usuarios en una sola petición usando ?include=
+// Usado en RelojesPendientes para mostrar el nombre del vendedor.
+export const obtenerUsuariosPorIds = async (ids) => {
+    if (!ids.length) return [];
+    const response = await axios.get(`${BASE_URL_WP}/users`, {
+        params: { include: ids.join(','), per_page: ids.length, context: 'edit' },
+        auth,
+    });
+    return Array.isArray(response.data) ? response.data : [];
+};
+
 const USE_PROXY = process.env.REACT_APP_USE_PROXY === 'true';
 
 // ── loginUsuario ──────────────────────────────────────────────────────────────
@@ -93,15 +105,9 @@ export const actualizarUsuario = async (id, datos) => {
 // pero WordPress procesa la solicitud y envía el email internamente.
 // El componente ForgotPassword asume siempre éxito y muestra un mensaje genérico.
 export const solicitarResetPassword = async (userLogin) => {
-    const body = new FormData();
-    body.append('action',     'lostpassword');
-    body.append('user_login', userLogin);
-
-    // En producción: el proxy expone /api/reset-password → wp-login.php (server-side).
-    // En desarrollo: construimos la URL directamente desde BASE_URL_WP.
-    const url = USE_PROXY
-        ? '/api/reset-password'
-        : `${BASE_URL_WP.replace('/wp-json/wp/v2', '')}/wp-login.php`;
-
-    await fetch(url, { method: 'POST', body, mode: 'no-cors' });
+    await fetch('/api/reset-password', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ user_login: userLogin }),
+    });
 };

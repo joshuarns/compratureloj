@@ -25,6 +25,8 @@ export {
     obtenerProductosPorIds,
     obtenerProductosPorCategoria,
     obtenerMisProductos,
+    obtenerTodosProductos,
+    obtenerProductosPendientes,
     crearProducto,
     actualizarProducto,
     eliminarProducto,
@@ -44,6 +46,7 @@ export {
     loginUsuario,
     createUser,
     obtenerUsuario,
+    obtenerUsuariosPorIds,
     actualizarUsuario,
     solicitarResetPassword,
 } from './users';

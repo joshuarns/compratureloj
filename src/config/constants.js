@@ -13,6 +13,12 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 
+// ── 0. MODO PROXIMAMENTE ──────────────────────────────────────────────────────
+// Cuando está en true, toda la app muestra la pantalla "Próximamente"
+// en lugar del contenido real. Cambia a false y haz deploy para lanzar el sitio.
+export const MODO_PROXIMAMENTE = false;
+
+
 // ── 1. EMAILJS ────────────────────────────────────────────────────────────────
 // Credenciales del servicio EmailJS (https://emailjs.com).
 // El SERVICE_ID y PUBLIC_KEY son compartidos por todos los templates.
@@ -38,16 +44,16 @@ export const EMAILJS_TEMPLATE_CONTACTO = "PENDIENTE";
 
 // Templates de notificación (crear en EmailJS dashboard)
 export const EMAILJS_TEMPLATE_REGISTRO          = "PENDIENTE";
-export const EMAILJS_TEMPLATE_CUENTA_APROBADA   = "PENDIENTE";
+export const EMAILJS_TEMPLATE_CUENTA_APROBADA   = "template_lrkundk";
 export const EMAILJS_TEMPLATE_CAMBIO_CONTRASENA = "PENDIENTE";
-export const EMAILJS_TEMPLATE_RELOJ_PUBLICADO   = "PENDIENTE";
-export const EMAILJS_TEMPLATE_RELOJ_MODIFICADO  = "PENDIENTE";
+export const EMAILJS_TEMPLATE_RELOJ_PUBLICADO   = "template_lrkundk";
+export const EMAILJS_TEMPLATE_RELOJ_MODIFICADO  = "template_5h7o98s";
 
 
 // ── 5. RESEÑAS ────────────────────────────────────────────────────────────────
 // ID del producto de WooCommerce usado como ancla para las reseñas del público.
 // Crea un producto oculto en WP y pon su ID aquí.
-export const REVIEWS_PRODUCT_ID = 1;
+export const REVIEWS_PRODUCT_ID = 2470;
 
 
 // ── 2. IMÁGENES ───────────────────────────────────────────────────────────────

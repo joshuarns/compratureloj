@@ -9,7 +9,8 @@ import ErrorImagenes from "../WatchForm/ErrorImagenes";
 import '../FormSellWatch/FormSellWatch.css';
 import './EditWatch.css';
 
-import { MAX_IMAGENES, MAX_MB } from "../../config/constants";
+import { MAX_IMAGENES, MAX_MB, EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_RELOJ_MODIFICADO, EMAILJS_PUBLIC_KEY } from "../../config/constants";
+import emailjs from "@emailjs/browser";
 
 // Estado inicial vacío — mismo shape que WatchFormFields espera
 const PRODUCTO_VACIO = {
@@ -190,6 +191,21 @@ function EditWatch() {
       });
       setExito(true);
 
+      // Notificar al admin — fire-and-forget
+      emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_RELOJ_MODIFICADO,
+        {
+          vendedor_nombre: usuario?.nombre || '—',
+          vendedor_email:  usuario?.email  || '—',
+          reloj_nombre:    producto.name,
+          marca:           producto.marca  || '—',
+          modelo:          producto.modelo || '—',
+          fecha: new Date().toLocaleString('es-MX', { dateStyle: 'medium', timeStyle: 'short' }),
+        },
+        EMAILJS_PUBLIC_KEY
+      ).catch(() => {});
+
     } catch (err) {
       setErrorMsg("No se pudieron guardar los cambios. Intenta de nuevo.");
     } finally {
@@ -303,7 +319,7 @@ function EditWatch() {
                     (máx. {MAX_IMAGENES - totalImagenes} más, {MAX_MB} MB por foto)
                   </span>
                 </label>
-                <input type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,.heic,.heif" multiple onChange={handleImagenesNuevas} />
+                <input type="file" accept="image/*,.heic,.heif" multiple onChange={handleImagenesNuevas} />
               </>
             )}
 

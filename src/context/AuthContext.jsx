@@ -127,19 +127,26 @@ export function AuthProvider({ children }) {
     });
   }, []);
 
-  // ── Hidratación de roles ──────────────────────────────────────────────────
-  // Si la sesión guardada en localStorage no tiene `roles` (fue creada antes de
-  // que se añadiera ese campo), los obtenemos silenciosamente al arrancar la app.
-  // Así el tab "Gestionar reseñas" aparece sin que el admin tenga que cerrar sesión.
+  // ── Hidratación de sesión incompleta ─────────────────────────────────────
+  // Si la sesión en localStorage tiene campos vacíos (nombre, email, roles)
+  // los re-obtenemos silenciosamente de WordPress al arrancar la app.
+  // Cubre sesiones guardadas antes de que se añadieran estos campos.
   useEffect(() => {
-    if (!usuario || (usuario.roles && usuario.roles.length > 0)) return;
+    if (!usuario) return;
+    const faltaRoles  = !usuario.roles || usuario.roles.length === 0;
+    const faltaNombre = !usuario.nombre;
+    const faltaEmail  = !usuario.email;
+    if (!faltaRoles && !faltaNombre && !faltaEmail) return;
+
     obtenerUsuario(usuario.id)
       .then(data => {
-        if (data.roles?.length > 0) {
-          actualizarDatos({ roles: data.roles });
-        }
+        const updates = {};
+        if (faltaRoles  && data.roles?.length > 0) updates.roles  = data.roles;
+        if (faltaNombre && data.name)               updates.nombre = data.name;
+        if (faltaEmail  && data.email)              updates.email  = data.email;
+        if (Object.keys(updates).length > 0) actualizarDatos(updates);
       })
-      .catch(() => {}); // no crítico — si falla, el tab simplemente no aparece
+      .catch(() => {});
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Revalidación en background ────────────────────────────────────────────
