@@ -1,22 +1,45 @@
-import './Proximamente.css';
+import { useSEO } from "../hooks/useSEO";
+import Logo from "../assets/images/logo-ctr-gold.png";
+import "./Proximamente.css";
 
-export default function Proximamente() {
+/**
+ * Proximamente — página de "próximamente".
+ * Mientras MODO_PROXIMAMENTE (config/constants.js) sea true, App.js la
+ * renderiza en lugar de todo el sitio, sin navbar ni footer.
+ */
+function Proximamente() {
+  useSEO({ titulo: "Próximamente" });
+
   return (
     <div className="proximamente">
-      <div className="proximamente__inner">
-        <div className="proximamente__icon">⌚</div>
-        <p className="proximamente__brand">Compra Tu Reloj</p>
-        <h1 className="proximamente__titulo">Próximamente</h1>
-        <p className="proximamente__sub">
-          Estamos preparando algo especial.<br />
-          Vuelve pronto.
+      <div className="proximamenteInner">
+        <img src={Logo} alt="Compra Tu Reloj" className="proximamenteLogo" />
+
+        <h1 className="proximamenteTitulo">Próximamente</h1>
+        <hr className="proximamenteLinea" />
+
+        <p className="proximamenteTexto">
+          Estamos preparando algo especial para ti. Muy pronto podrás
+          comprar y vender relojes de lujo con total confianza en
+          Compra Tu Reloj.
         </p>
-        <div className="proximamente__contacto">
-          <a href="mailto:info.compratureloj@gmail.com">info.compratureloj@gmail.com</a>
-          <span>·</span>
-          <a href="https://wa.link/g5a0s0" target="_blank" rel="noreferrer">WhatsApp</a>
+
+        <div className="proximamenteContacto">
+          <a
+            href="https://wa.link/g5a0s0"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="proximamenteBtn proximamenteBtn--primario"
+          >
+            WhatsApp
+          </a>
+          <a href="mailto:info.compratureloj@gmail.com" className="proximamenteBtn">
+            Escríbenos
+          </a>
         </div>
       </div>
     </div>
   );
 }
+
+export default Proximamente;

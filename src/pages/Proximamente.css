@@ -1,69 +1,77 @@
+/* ── Página Próximamente (modo mantenimiento en todo el sitio) ── */
 .proximamente {
   min-height: 100vh;
-  background: #1c2946;
+  background-color: #1d2946;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 32px 24px;
-}
-
-.proximamente__inner {
+  padding: 48px 16px;
   text-align: center;
-  max-width: 480px;
 }
 
-.proximamente__icon {
-  font-size: 56px;
-  margin-bottom: 24px;
-  opacity: 0.9;
+.proximamenteInner {
+  max-width: 560px;
+  width: 100%;
 }
 
-.proximamente__brand {
-  font-family: 'Bai Jamjuree', sans-serif;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.5);
-  margin: 0 0 16px;
+.proximamenteLogo {
+  width: 200px;
+  max-width: 70%;
+  margin-bottom: 48px;
 }
 
-.proximamente__titulo {
-  font-family: 'Bai Jamjuree', sans-serif;
-  font-size: clamp(40px, 8vw, 64px);
+.proximamenteTitulo {
+  font-family: "Bai Jamjuree", sans-serif !important;
+  font-size: clamp(36px, 9vw, 60px);
   font-weight: 700;
   color: #fff;
-  margin: 0 0 20px;
-  line-height: 1.1;
+  margin-bottom: 16px;
+  letter-spacing: 0.02em;
 }
 
-.proximamente__sub {
-  font-family: 'Mulish', sans-serif;
-  font-size: 16px;
-  color: rgba(255, 255, 255, 0.6);
+.proximamenteTexto {
+  font-family: "Mulish", sans-serif;
+  font-size: 17px;
+  color: rgba(255, 255, 255, 0.75);
   line-height: 1.7;
-  margin: 0 0 40px;
+  margin-bottom: 40px;
 }
 
-.proximamente__contacto {
+.proximamenteLinea {
+  width: 64px;
+  height: 2px;
+  background-color: #c9a45c;
+  margin: 0 auto 40px;
+  border: 0;
+}
+
+.proximamenteContacto {
   display: flex;
-  align-items: center;
-  justify-content: center;
   gap: 12px;
-  font-family: 'Mulish', sans-serif;
-  font-size: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
-.proximamente__contacto a {
-  color: rgba(255, 255, 255, 0.7);
+.proximamenteBtn {
+  display: inline-block;
+  font-family: "Bai Jamjuree", sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 14px 32px;
+  border-radius: 999px;
   text-decoration: none;
-  transition: color 0.2s;
-}
-
-.proximamente__contacto a:hover {
+  border: 2px solid #fff;
   color: #fff;
+  transition: background-color 0.2s, color 0.2s;
 }
 
-.proximamente__contacto span {
-  color: rgba(255, 255, 255, 0.3);
+.proximamenteBtn:hover,
+.proximamenteBtn--primario {
+  background-color: #fff;
+  color: #1d2946;
+}
+
+.proximamenteBtn--primario:hover {
+  background-color: transparent;
+  color: #fff;
 }
