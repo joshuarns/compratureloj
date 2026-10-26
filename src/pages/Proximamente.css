@@ -1,0 +1,77 @@
+/* ── Página Próximamente (modo mantenimiento en todo el sitio) ── */
+.proximamente {
+  min-height: 100vh;
+  background-color: #1d2946;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 16px;
+  text-align: center;
+}
+
+.proximamenteInner {
+  max-width: 560px;
+  width: 100%;
+}
+
+.proximamenteLogo {
+  width: 200px;
+  max-width: 70%;
+  margin-bottom: 48px;
+}
+
+.proximamenteTitulo {
+  font-family: "Bai Jamjuree", sans-serif !important;
+  font-size: clamp(36px, 9vw, 60px);
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 16px;
+  letter-spacing: 0.02em;
+}
+
+.proximamenteTexto {
+  font-family: "Mulish", sans-serif;
+  font-size: 17px;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.7;
+  margin-bottom: 40px;
+}
+
+.proximamenteLinea {
+  width: 64px;
+  height: 2px;
+  background-color: #c9a45c;
+  margin: 0 auto 40px;
+  border: 0;
+}
+
+.proximamenteContacto {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.proximamenteBtn {
+  display: inline-block;
+  font-family: "Bai Jamjuree", sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 14px 32px;
+  border-radius: 999px;
+  text-decoration: none;
+  border: 2px solid #fff;
+  color: #fff;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.proximamenteBtn:hover,
+.proximamenteBtn--primario {
+  background-color: #fff;
+  color: #1d2946;
+}
+
+.proximamenteBtn--primario:hover {
+  background-color: transparent;
+  color: #fff;
+}

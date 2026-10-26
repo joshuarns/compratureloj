@@ -99,3 +99,9 @@ export const STORAGE_KEY_ULTIMA_VALIDACION = "ultimaValidacion";
 
 // Array de IDs de productos guardados como favoritos (watchlist)
 export const STORAGE_KEY_WATCHLIST = "watchlist";
+
+
+// ── 6. MODO PRÓXIMAMENTE ──────────────────────────────────────────────────────
+// Cuando es true, TODO el sitio (cualquier ruta) muestra la página
+// "Próximamente" en lugar de la app. Ponlo en false para abrir el sitio.
+export const MODO_PROXIMAMENTE = true;

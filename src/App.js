@@ -15,6 +15,8 @@ import Footer                from "./components/Footer/Footer";
 import InstallPWA            from "./components/InstallPWA/InstallPWA";
 import ScrollToTop           from "./components/ScrollToTop";
 import { Container }         from "react-bootstrap";
+import Proximamente          from "./pages/Proximamente";
+import { MODO_PROXIMAMENTE } from "./config/constants";
 
 // ── Páginas — carga diferida (lazy) ──────────────────────────────────────────
 // Cada import() genera un chunk JS separado que el navegador descarga
@@ -54,6 +56,9 @@ function PageFallback() {
 
 // ── App principal ─────────────────────────────────────────────────────────────
 function App() {
+  // Modo "Próximamente": cualquier ruta muestra solo la página de próximamente
+  if (MODO_PROXIMAMENTE) return <Proximamente />;
+
   return (
     <ErrorBoundary>
       <AuthProvider>
