@@ -16,7 +16,7 @@
 // ── 0. MODO PROXIMAMENTE ──────────────────────────────────────────────────────
 // Cuando está en true, toda la app muestra la pantalla "Próximamente"
 // en lugar del contenido real. Cambia a false y haz deploy para lanzar el sitio.
-export const MODO_PROXIMAMENTE = false;
+export const MODO_PROXIMAMENTE = true;
 
 
 // ── 1. EMAILJS ────────────────────────────────────────────────────────────────
@@ -105,9 +105,3 @@ export const STORAGE_KEY_ULTIMA_VALIDACION = "ultimaValidacion";
 
 // Array de IDs de productos guardados como favoritos (watchlist)
 export const STORAGE_KEY_WATCHLIST = "watchlist";
-
-
-// ── 6. MODO PRÓXIMAMENTE ──────────────────────────────────────────────────────
-// Cuando es true, TODO el sitio (cualquier ruta) muestra la página
-// "Próximamente" en lugar de la app. Ponlo en false para abrir el sitio.
-export const MODO_PROXIMAMENTE = true;
