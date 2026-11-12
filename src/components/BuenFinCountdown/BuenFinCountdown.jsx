@@ -61,7 +61,7 @@ function BuenFinCountdown({ className = "" }) {
         <p className="buenFinTexto">
           {enCurso
             ? "Los descuentos ya están activos. ¡Encuentra tu próximo reloj!"
-            : "Los descuentos comienzan a las 12:00 a.m. No te lo pierdas."}
+            : "La promoción comienza a las 12:00 a.m. No te la pierdas."}
         </p>
       </div>
 
