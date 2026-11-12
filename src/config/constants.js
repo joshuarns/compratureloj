@@ -105,3 +105,11 @@ export const STORAGE_KEY_ULTIMA_VALIDACION = "ultimaValidacion";
 
 // Array de IDs de productos guardados como favoritos (watchlist)
 export const STORAGE_KEY_WATCHLIST = "watchlist";
+
+
+// ── 7. BUEN FIN ───────────────────────────────────────────────────────────────
+// Fechas del contador del Buen Fin (hora del centro de México, UTC-6).
+// Antes de INICIO muestra la cuenta regresiva; entre INICIO y FIN muestra
+// "¡Ya comenzó!"; después de FIN el banner desaparece solo.
+export const BUEN_FIN_INICIO = "2026-11-13T00:00:00-06:00";
+export const BUEN_FIN_FIN    = "2026-11-17T00:00:00-06:00";

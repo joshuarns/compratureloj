@@ -3,6 +3,7 @@ import { Container } from "react-bootstrap";
 import ListaProductos from "../components/ListaProductos/ListaProductos";
 import PopularModels from "../components/PopularModels/PopularModels";
 import CarruselResenas from "../components/CarruselResenas/CarruselResenas";
+import BuenFinCountdown from "../components/BuenFinCountdown/BuenFinCountdown";
 import { useSEO } from "../hooks/useSEO";
 import aboutImg from "../assets/images/f335eec8.jpg";
 import "./Home.css";
@@ -47,6 +48,11 @@ function Home() {
         <div className="heroScroll">↓</div>
 
       </div>
+
+      {/* ── Contador Buen Fin (se oculta solo cuando termina) ── */}
+      <Container style={{ paddingTop: "40px", paddingBottom: "40px" }}>
+        <BuenFinCountdown />
+      </Container>
 
       {/* ── Sección de marcas populares con fondo oscuro ── */}
       {/* Al hacer clic en una marca navega a /shop?categoria=<slug> */}
