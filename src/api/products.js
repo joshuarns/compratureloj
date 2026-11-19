@@ -199,18 +199,19 @@ export const obtenerTodosProductos = async () => {
 };
 
 // ── obtenerProductosPendientes ────────────────────────────────────────────────
-// Trae todos los productos en estado draft o pending (pendientes de publicar).
-// WooCommerce puede asignar 'draft' o 'pending' dependiendo de la configuración
-// de WordPress, así que traemos ambos para no perder ninguno.
+// Trae todos los productos que NO están publicados, usando status=any para
+// evitar depender de un status específico (WooCommerce puede usar 'draft',
+// 'pending' u otro según la config de WordPress).
 // Solo lo usa el admin desde el Dashboard.
 export const obtenerProductosPendientes = async () => {
-    const [resDraft, resPending] = await Promise.all([
-        axios.get(`${BASE_URL}/products`, { params: { status: 'draft',   per_page: 100 }, auth }),
-        axios.get(`${BASE_URL}/products`, { params: { status: 'pending', per_page: 100 }, auth }),
-    ]);
-    const draft   = Array.isArray(resDraft.data)   ? resDraft.data   : [];
-    const pending = Array.isArray(resPending.data)  ? resPending.data  : [];
-    return [...draft, ...pending].map(normalizeProduct);
+    const response = await axios.get(`${BASE_URL}/products`, {
+        params: { status: 'any', per_page: 100 },
+        auth,
+    });
+    const todos = Array.isArray(response.data) ? response.data : [];
+    return todos
+        .filter(p => p.status !== 'publish' && p.status !== 'private' && p.status !== 'trash')
+        .map(normalizeProduct);
 };
 
 // ── obtenerMisProductos ───────────────────────────────────────────────────────
