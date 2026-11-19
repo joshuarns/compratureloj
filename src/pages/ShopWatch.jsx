@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import ListaProductos from "../components/ListaProductos/ListaProductos";
-import BuenFinCountdown from "../components/BuenFinCountdown/BuenFinCountdown";
 import { useSEO } from "../hooks/useSEO";
 import './ShopWatch.css';
 
@@ -132,9 +131,6 @@ function ShopWatch() {
             )}
           </div>
         </div>
-
-        {/* ── Contador Buen Fin ── */}
-        <BuenFinCountdown className="mb-4" />
 
         {/* ── Grid de productos con paginación ── */}
         <ListaProductos
