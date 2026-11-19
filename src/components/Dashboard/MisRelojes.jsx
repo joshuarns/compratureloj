@@ -22,6 +22,7 @@ export default function MisRelojes({ usuario }) {
 
     const togglePublicar = async (reloj) => {
         const nuevoStatus = reloj.status === 'publish' ? 'draft' : 'publish';
+        // 'pending' también se trata como no publicado → se publica igual que 'draft'
         setPublicando(reloj.id);
         try {
             await actualizarProducto(reloj.id, { status: nuevoStatus });

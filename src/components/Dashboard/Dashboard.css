@@ -198,7 +198,7 @@
 
 /* Cada clase corresponde a un status de WooCommerce */
 .statusBadge.draft      { background-color: #fff3cd; color: #856404; } /* Amarillo — en revisión */
-.statusBadge.pending    { background-color: #cfe2ff; color: #084298; } /* Azul — pendiente */
+.statusBadge.pending    { background-color: #fff3cd; color: #856404; } /* Amarillo — en revisión (igual que draft) */
 .statusBadge.publish    { background-color: #d1e7dd; color: #0a3622; } /* Verde — en venta */
 .statusBadge.private    { background-color: #e2e3e5; color: #41464b; } /* Gris — no publicado */
 .statusBadge.outofstock { background-color: #e5e5ea; color: #636366; } /* Gris — sin existencia */

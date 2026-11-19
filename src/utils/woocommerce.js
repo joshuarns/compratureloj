@@ -194,7 +194,7 @@ export const formatPeso = (value) =>
 //   private → visible solo para usuarios con sesión (no usado actualmente)
 export const estadoProductoTexto = {
   draft:   "En revisión",
-  pending: "Pendiente",
+  pending: "En revisión",
   publish: "En venta",
   private: "No publicado",
 };
