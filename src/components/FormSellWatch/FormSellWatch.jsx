@@ -192,11 +192,12 @@ function FormSellWatch() {
       navigate('/product-review');
 
     } catch (error) {
+      console.error('[FormSellWatch] Error al enviar:', error?.message, error?.response?.data);
       setPasoEnvio("");
       setErrorEnvio(
         error.message === "Debes subir al menos una foto del reloj."
           ? error.message
-          : "Ocurrió un error al enviar tu reloj. Verifica tu conexión e intenta de nuevo."
+          : `Error al enviar tu reloj: ${error?.response?.data?.message || error?.message || "Error desconocido"}. Intenta de nuevo o contacta soporte.`
       );
       setEnviando(false);
     }
