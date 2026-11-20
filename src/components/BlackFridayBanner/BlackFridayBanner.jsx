@@ -24,14 +24,13 @@ export default function BlackFridayBanner() {
   const [cerrado,  setCerrado]  = useState(false);
 
   useEffect(() => {
-    if (!label) return;
     const id = setInterval(() => {
       const next = getRemainingLabel();
       setLabel(next);
       if (!next) clearInterval(id);
     }, 1_000);
     return () => clearInterval(id);
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!label || cerrado) return null;
 
