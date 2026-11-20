@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import ListaProductos from "../components/ListaProductos/ListaProductos";
+import BlackFridayBanner from "../components/BlackFridayBanner/BlackFridayBanner";
 import { useSEO } from "../hooks/useSEO";
 import './ShopWatch.css';
 
@@ -93,6 +94,7 @@ function ShopWatch() {
 
   return (
     <div className="shopPage">
+      <BlackFridayBanner />
       <div className="container">
 
         {/* ── Encabezado ── */}

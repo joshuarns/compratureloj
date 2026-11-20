@@ -1,0 +1,95 @@
+.bfBanner {
+  position: relative;
+  background: #0a0a0a;
+  color: #fff;
+  padding: 12px 48px 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 2px solid #d4a843;
+}
+
+.bfBannerInner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  font-family: "Mulish", sans-serif;
+  font-size: 14px;
+}
+
+.bfBannerIcon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.bfBannerText {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.bfBannerText strong {
+  font-family: "Bai Jamjuree", sans-serif;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  color: #d4a843;
+}
+
+.bfBannerSep {
+  color: #555;
+}
+
+.bfBannerTimer {
+  font-family: "Bai Jamjuree", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #d4a843;
+  background: rgba(212, 168, 67, 0.12);
+  border: 1px solid rgba(212, 168, 67, 0.3);
+  border-radius: 4px;
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+
+.bfBannerClose {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 4px 6px;
+  line-height: 1;
+  border-radius: 4px;
+  transition: color 0.2s;
+}
+
+.bfBannerClose:hover {
+  color: #fff;
+}
+
+@media (max-width: 576px) {
+  .bfBanner {
+    padding: 10px 44px 10px 16px;
+  }
+
+  .bfBannerInner {
+    font-size: 13px;
+    gap: 6px;
+  }
+
+  .bfBannerText strong {
+    font-size: 13px;
+  }
+
+  .bfBannerSep {
+    display: none;
+  }
+}

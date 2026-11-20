@@ -3,6 +3,7 @@ import { Container } from "react-bootstrap";
 import ListaProductos from "../components/ListaProductos/ListaProductos";
 import PopularModels from "../components/PopularModels/PopularModels";
 import CarruselResenas from "../components/CarruselResenas/CarruselResenas";
+import BlackFridayBanner from "../components/BlackFridayBanner/BlackFridayBanner";
 import { useSEO } from "../hooks/useSEO";
 import aboutImg from "../assets/images/f335eec8.jpg";
 import "./Home.css";
@@ -15,6 +16,8 @@ function Home() {
 
   return (
     <div style={{ backgroundColor: "#f5f5f7" }}>
+
+      <BlackFridayBanner />
 
       {/* ════════════════════════════════════════════
           BANNER HERO — PROPUESTA APPLE
