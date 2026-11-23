@@ -54,7 +54,8 @@ function ProductCard({ producto }) {
         <p className="productCardPrice"
           dangerouslySetInnerHTML={{ __html: producto.price_html }}
         />
-        <span className="msisBadge">3 y 6 meses sin intereses</span>
+        {/* MSI desactivado temporalmente — se reactiva en diciembre */}
+        {/* <span className="msisBadge">3 y 6 meses sin intereses</span> */}
         {producto.stock_status === 'outofstock' ? (
           <span className="btnVerProducto btnVerProductoAgotado">Sin existencia</span>
         ) : (
